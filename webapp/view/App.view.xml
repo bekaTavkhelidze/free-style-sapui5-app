@@ -3,5 +3,6 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
     <App id="app">
+        <mvc:XMLView viewName="freestylesapui5app.view.ListReport"></mvc:XMLView>
     </App>
 </mvc:View>
