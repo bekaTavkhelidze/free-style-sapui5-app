@@ -14,6 +14,16 @@
       "id": "@sap/generator-fiori:basic",
       "version": "1.18.7",
       "toolsId": "0468e152-8091-467a-837d-750e815ef152"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "http://localhost:4004/v2/root",
+        "type": "OData",
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "odataVersion": "2.0"
+        }
+      }
     }
   },
   "sap.ui": {
@@ -51,6 +61,10 @@
         "settings": {
           "bundleName": "freestylesapui5app.i18n.i18n"
         }
+      },
+      "": {
+        "dataSource": "mainService",
+        "settings": { "defaultBindingMode": "TwoWay" }
       }
     },
     "resources": {

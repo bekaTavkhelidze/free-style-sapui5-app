@@ -1,13 +1,16 @@
 <mvc:View
+    controllerName="freestylesapui5app.controller.ListReport"
     xmlns="sap.m"
     xmlns:f="sap.f"
     xmlns:core="sap.ui.core"
     xmlns:fb="sap.ui.comp.filterbar"
-    xmlns:mvc="sap.ui.core.mvc">
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:mdc="sap.ui.mdc"
+    xmlns:mdct="sap.ui.mdc.table">
     <f:DynamicPage id="ListReportPage" preserveHeaderStateOnScroll="true" headerExpanded="true"
         toggleHeaderOnTitleClick="true">
         <f:title>
-            <f:DynamicPageTitle id="ListReportTitleId">
+            <f:DynamicPageTitle id="dynamicPageTitleId">
                 <f:heading>
                     <Title text="Product List Report" level="H2" />
                 </f:heading>
@@ -30,58 +33,30 @@
                                     <SearchField placeholder="Search" />
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem name="Availebility" label="Availebility"
+                            <fb:FilterGroupItem name="Email" label="Email:"
                                 groupName="Group1"
                                 visibleInFilterBar="true">
                                 <fb:control>
-                                    <MultiComboBox
-                                        name="Availebility"
-                                        selectionChange=".onSelectionChange"
-                                        items="{
-												path: '/ProductNames',
-												templateShareable: true
-											}"
-                                    >
-                                        <core:Item key="{key}" text="{name}" />
-                                    </MultiComboBox>
+                                    <MultiInput
+                                        name="Email"
+                                    />
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem name="PriceRange" label="Price Range"
+                            <fb:FilterGroupItem name="PhoneNumber" label="PhoneNumber:"
                                 groupName="Group1" visibleInFilterBar="true">
                                 <fb:control>
                                     <MultiInput
-                                        name="PriceRange"
-                                    >
-                                        <core:Item key="{key}" text="{name}" />
-                                    </MultiInput>
-
+                                        name="PhoneNumber"
+                                    />
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem name="Category" label="Category"
+                            <fb:FilterGroupItem name="Address" label="Address:"
                                 groupName="Group1"
                                 visibleInFilterBar="true">
                                 <fb:control>
-                                    <MultiComboBox
-                                        name="Category"
-                                        selectionChange=".onSelectionChange"
-                                        items="{
-												path: '/ProductCategories',
-												templateShareable: true
-											}"
-                                    >
-                                        <core:Item key="{key}" text="{name}" />
-                                    </MultiComboBox>
-                                </fb:control>
-                            </fb:FilterGroupItem>
-
-                            <fb:FilterGroupItem name="Supplier:" label="SupplierName"
-                                groupName="Group1" visibleInFilterBar="true">
-                                <fb:control>
                                     <MultiInput
-                                        name="Supplier"
-                                    >
-                                        <core:Item key="{key}" text="{name}" />
-                                    </MultiInput>
+                                        name="Address"
+                                    />
 
                                 </fb:control>
                             </fb:FilterGroupItem>
@@ -93,8 +68,39 @@
             </f:DynamicPageHeader>
         </f:header>
         <f:content>
+            <Table items="{Stores>/}">
+                <columns>
+                    <Column>
+                        <Text text="Address" />
+                    </Column>
+                    <Column>
+                        <Text text="Name" />
+                    </Column>
+                    <Column>
+                        <Text text="Email" />
+                    </Column>
+                    <Column>
+                        <Text text="PhoneNumber" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation">
+                        <cells>
+                            <Text text="{Stores>Address}" />
+                        </cells>
+                        <cells>
+                            <Text text="{Stores>Name}" />
+                        </cells>
+                        <cells>
+                            <Text text="{Stores>Email}" />
+                        </cells>
+                        <cells>
+                            <Text text="{Stores>PhoneNumber}" />
+                        </cells>
+                    </ColumnListItem>
 
-
+                </items>
+            </Table>
         </f:content>
     </f:DynamicPage>
 </mvc:View>
