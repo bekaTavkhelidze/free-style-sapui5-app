@@ -5,102 +5,109 @@
     xmlns:core="sap.ui.core"
     xmlns:fb="sap.ui.comp.filterbar"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns:mdc="sap.ui.mdc"
-    xmlns:mdct="sap.ui.mdc.table">
-    <f:DynamicPage id="ListReportPage" preserveHeaderStateOnScroll="true" headerExpanded="true"
-        toggleHeaderOnTitleClick="true">
+    xmlns:t="sap.ui.table"
+>
+    <f:DynamicPage
+        id="ListReportPage"
+        headerExpanded="true"
+        toggleHeaderOnTitleClick="true"
+        preserveHeaderStateOnScroll="false">
         <f:title>
             <f:DynamicPageTitle id="dynamicPageTitleId">
                 <f:heading>
-                    <Title text="Product List Report" level="H2" />
+                    <Title text="{i18n>ListReportPageTitle}" level="H2" />
                 </f:heading>
             </f:DynamicPageTitle>
         </f:title>
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
-                    <fb:FilterBar basicSearch="Search" id="filterbar" persistencyKey="myPersKey"
+                    <fb:FilterBar
+                        id="filterbar"
                         useToolbar="false"
-                        search="onSearch"
-                        filterChange=".onFilterChange"
-                        afterVariantLoad=".onAfterVariantLoad">
+                        search="onGoButtonPressed"
+                        basicSearch="Search">
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem
-                                name="SearchName"
-                                groupName="Group1"
+                                name="Name"
+                                groupName="ListReportGroup"
                                 visibleInFilterBar="true">
                                 <fb:control>
                                     <SearchField placeholder="Search" />
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem name="Email" label="Email:"
-                                groupName="Group1"
+                            <fb:FilterGroupItem
+                                name="Email"
+                                label="{i18n>emailFilterLabel}"
+                                groupName="ListReportGroup"
                                 visibleInFilterBar="true">
                                 <fb:control>
-                                    <MultiInput
-                                        name="Email"
-                                    />
+                                    <MultiInput name="Email" />
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem name="PhoneNumber" label="PhoneNumber:"
-                                groupName="Group1" visibleInFilterBar="true">
-                                <fb:control>
-                                    <MultiInput
-                                        name="PhoneNumber"
-                                    />
-                                </fb:control>
-                            </fb:FilterGroupItem>
-                            <fb:FilterGroupItem name="Address" label="Address:"
-                                groupName="Group1"
+                            <fb:FilterGroupItem
+                                name="PhoneNumber"
+                                label="{i18n>phoneFilterLabel}"
+                                groupName="ListReportGroup"
                                 visibleInFilterBar="true">
                                 <fb:control>
-                                    <MultiInput
-                                        name="Address"
-                                    />
-
+                                    <MultiInput name="PhoneNumber" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem
+                                name="Address"
+                                label="{i18n>addressFilterLabel}"
+                                groupName="ListReportGroup"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <MultiInput name="Address" />
                                 </fb:control>
                             </fb:FilterGroupItem>
                         </fb:filterGroupItems>
                     </fb:FilterBar>
-
                 </f:content>
-
             </f:DynamicPageHeader>
         </f:header>
         <f:content>
-            <Table items="{Stores>/}">
-                <columns>
-                    <Column>
-                        <Text text="Address" />
-                    </Column>
-                    <Column>
-                        <Text text="Name" />
-                    </Column>
-                    <Column>
-                        <Text text="Email" />
-                    </Column>
-                    <Column>
-                        <Text text="PhoneNumber" />
-                    </Column>
-                </columns>
-                <items>
-                    <ColumnListItem type="Navigation">
-                        <cells>
-                            <Text text="{Stores>Address}" />
-                        </cells>
-                        <cells>
-                            <Text text="{Stores>Name}" />
-                        </cells>
-                        <cells>
-                            <Text text="{Stores>Email}" />
-                        </cells>
-                        <cells>
-                            <Text text="{Stores>PhoneNumber}" />
-                        </cells>
-                    </ColumnListItem>
-
-                </items>
-            </Table>
+            <t:Table
+                rows="{Stores>/}"
+                id="StoresTable"
+                selectionMode="MultiToggle"
+                rowMode="Auto">
+                <t:extension>
+                    <OverflowToolbar style="Clear">
+                        <Title text="{i18n>nameTableTitle}" />
+                        <Button text="{i18n>addStore}" />
+                        <Button text="{i18n>deleteStore}" />
+                    </OverflowToolbar>
+                </t:extension>
+                <t:columns>
+                    <t:Column>
+                        <Label text="{i18n>addressColumnTitle}" />
+                        <t:template>
+                            <Text text="{Stores>Address}" wrapping="false" />
+                        </t:template>
+                    </t:Column>
+                    <t:Column>
+                        <Label text="{i18n>nameColumnTitle}" />
+                        <t:template>
+                            <Text text="{Stores>Name}" wrapping="false" />
+                        </t:template>
+                    </t:Column>
+                    <t:Column>
+                        <Label text="{i18n>emailColumnTitle}" />
+                        <t:template>
+                            <Text text="{Stores>Email}" wrapping="false" />
+                        </t:template>
+                    </t:Column>
+                    <t:Column>
+                        <Label text="{i18n>phoneColumnTitle}" />
+                        <t:template>
+                            <Text text="{Stores>PhoneNumber}" wrapping="false" />
+                        </t:template>
+                    </t:Column>
+                </t:columns>
+            </t:Table>
         </f:content>
     </f:DynamicPage>
 </mvc:View>
