@@ -1,0 +1,113 @@
+<mvc:View
+    controllerName="freestylesapui5app.controller.ORProducts"
+    xmlns="sap.uxap"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:layout="sap.ui.layout"
+    xmlns:m="sap.m"
+>
+    <ObjectPageLayout
+        id="ObjectPageLayout"
+        enableLazyLoading="true"
+        beforeNavigate="onBeforeNavigate"
+        useIconTabBar="true"
+        showTitleInHeaderContent="true"
+        upperCaseAnchorBar="false">
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:Title text="{i18n>ORTitle}" wrapping="true" />
+                </expandedHeading>
+
+                <snappedHeading>
+                    <m:Title text="{i18n>ORTitle}" wrapping="true" />
+                </snappedHeading>
+
+                <expandedContent>
+                    <m:Text text="Id Here" />
+                </expandedContent>
+
+                <snappedContent>
+                    <m:Text text="Id Here" />
+                </snappedContent>
+
+                <snappedTitleOnMobile>
+                    <m:Title text="Id Here" />
+                </snappedTitleOnMobile>
+
+                <actions>
+                    <m:Button text="{i18n>EditBtn}" type="Emphasized" />
+                    <m:Button type="Transparent" text="{i18n>DeleteBtn}" />
+                </actions>
+            </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+
+        <headerContent>
+            <m:FlexBox wrap="Wrap" fitContainer="true">
+                <m:Avatar class="sapUiSmallMarginEnd"
+                    src="./test-resources/sap/uxap/images/imageID_275314.png" displaySize="L" />
+
+                <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+                    <m:Link text="+33 6 4512 5158" />
+                    <m:Link text="DeniseSmith@sap.com" />
+                </layout:VerticalLayout>
+
+                <layout:HorizontalLayout class="sapUiSmallMarginBeginEnd">
+                    <m:Image src="./test-resources/sap/uxap/images/linkedin.png" />
+                    <m:Image src="./test-resources/sap/uxap/images/Twitter.png"
+                        class="sapUiSmallMarginBegin" />
+                </layout:HorizontalLayout>
+
+                <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+                    <m:Label text="Hello! I am Denise and I use UxAP" />
+                    <m:VBox>
+                        <m:Label text="Achieved goals" />
+                        <m:ProgressIndicator percentValue="30" displayValue="30%" />
+                    </m:VBox>
+                </layout:VerticalLayout>
+
+                <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+                    <m:Label text="San Jose, USA" />
+                </layout:VerticalLayout>
+            </m:FlexBox>
+        </headerContent>
+
+        <sections>
+            <ObjectPageSection
+                titleUppercase="false"
+                id="goals"
+                title="2014 Goals Plan">
+                <subSections>
+                    <ObjectPageSubSection id="goalsSS1" titleUppercase="false">
+                        <m:Text text="Yes!!!" />
+                    </ObjectPageSubSection>
+                    <ObjectPageSubSection
+                        id="goalsSS2"
+                        titleUppercase="true"
+                        title="Products information"
+                    >
+                        <m:Text text="Yes!!!" />
+                        <m:Text text="Yes!!!" />
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+            <ObjectPageSection
+                titleUppercase="false"
+                id="connections"
+                title="Connections">
+                <subSections>
+                    <ObjectPageSubSection
+                        id="connectionsSS1"
+                        titleUppercase="false"
+                        title="Connections">
+                        <blocks>
+                            <m:Text text="Yess!!" />
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+    </ObjectPageLayout>
+</mvc:View>

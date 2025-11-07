@@ -91,12 +91,23 @@
           "name": "RouteListReport",
           "pattern": "",
           "target": ["TargetListReport"]
+        },
+        {
+          "pattern": "ORProducts/{id}",
+          "name": "ORProducts",
+          "target": "TargetOR"
         }
       ],
       "targets": {
         "TargetListReport": {
+          "transition": "slide",
           "id": "ListReport",
           "name": "ListReport"
+        },
+        "TargetOR": {
+          "id": "ORProducts",
+          "name": "ORProducts",
+          "transition": "slide"
         }
       }
     },

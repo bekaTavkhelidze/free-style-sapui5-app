@@ -73,6 +73,7 @@
                 items="{/Stores}"
                 id="StoresTable"
                 inset="false"
+                autoPopinMode="true"
                 width="auto">
                 <headerToolbar>
                     <OverflowToolbar>
@@ -98,7 +99,7 @@
                         <Text text="{i18n>phoneColumnTitle}" />
                     </Column>
                 </columns>
-                <ColumnListItem type="Navigation">
+                <ColumnListItem type="Navigation" press="onGoToORProductsDetailPress">
                     <cells>
                         <Text text="{Address}" />
                     </cells>

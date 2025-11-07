@@ -27,6 +27,15 @@ sap.ui.define(
         const oBinding = oList.getBinding('items');
         oBinding.filter(aFilters);
       },
+      onGoToORProductsDetailPress(oEvent) {
+        const oItem = oEvent.getSource();
+        const oContext = oItem.getBindingContext();
+        const sProductId = oContext.getProperty('ID');
+
+        this.getOwnerComponent()
+          .getRouter()
+          .navTo('ORProducts', { id: sProductId });
+      },
     });
   }
 );
