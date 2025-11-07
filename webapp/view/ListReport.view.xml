@@ -68,7 +68,11 @@
             </f:DynamicPageHeader>
         </f:header>
         <f:content>
-            <Table mode="MultiSelect" items="{/Stores}" id="StoresTable" inset="false"
+            <Table
+                mode="MultiSelect"
+                items="{/Stores}"
+                id="StoresTable"
+                inset="false"
                 width="auto">
                 <headerToolbar>
                     <OverflowToolbar>

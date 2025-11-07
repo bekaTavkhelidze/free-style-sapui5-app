@@ -89,7 +89,7 @@
       "routes": [
         {
           "name": "RouteListReport",
-          "pattern": ":?query:",
+          "pattern": "",
           "target": ["TargetListReport"]
         }
       ],

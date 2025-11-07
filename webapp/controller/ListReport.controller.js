@@ -8,8 +8,6 @@ sap.ui.define(
     'use strict';
 
     return Controller.extend('freestylesapui5app.controller.ListReport', {
-      onInit() {},
-
       onGoButtonPressed() {
         const oFilter = this.getView().byId('filterbar');
 
