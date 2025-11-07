@@ -1,0 +1,114 @@
+<mvc:View
+    controllerName="freestylesapui5app.controller.ListReport"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:mvc="sap.ui.core.mvc"
+>
+    <f:DynamicPage
+        id="ListReportPage"
+        headerExpanded="true"
+        toggleHeaderOnTitleClick="true"
+        preserveHeaderStateOnScroll="false">
+        <f:title>
+            <f:DynamicPageTitle id="dynamicPageTitleId">
+                <f:heading>
+                    <Title text="{i18n>ListReportPageTitle}" level="H2" />
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar
+                        id="filterbar"
+                        useToolbar="false"
+                        search="onGoButtonPressed"
+                        basicSearch="Search">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem
+                                name="Name"
+                                groupName="ListReportGroup"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <SearchField placeholder="{i18n>searchInput}" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem
+                                name="Email"
+                                label="{i18n>emailFilterLabel}"
+                                groupName="ListReportGroup"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <MultiInput name="Email" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem
+                                name="PhoneNumber"
+                                label="{i18n>phoneFilterLabel}"
+                                groupName="ListReportGroup"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <MultiInput name="PhoneNumber" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem
+                                name="Address"
+                                label="{i18n>addressFilterLabel}"
+                                groupName="ListReportGroup"
+                                visibleInFilterBar="true">
+                                <fb:control>
+                                    <MultiInput name="Address" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <Table mode="MultiSelect" items="{/Stores}" id="StoresTable" inset="false"
+                width="auto">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <content>
+                            <Title text="{i18n>nameTableTitle}" level="H2" />
+                            <ToolbarSpacer />
+                            <Button text="{i18n>addStore}" type="Emphasized" />
+                            <Button text="{i18n>deleteStore}" type="Default" />
+                        </content>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column>
+                        <Text text="{i18n>addressColumnTitle}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>nameColumnTitle}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>emailColumnTitle}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>phoneColumnTitle}" />
+                    </Column>
+                </columns>
+                <ColumnListItem type="Navigation">
+                    <cells>
+                        <Text text="{Address}" />
+                    </cells>
+                    <cells>
+                        <Text text="{Name}" />
+                    </cells>
+                    <cells>
+                        <Text text="{Email}" />
+                    </cells>
+                    <cells>
+                        <Text text="{PhoneNumber}" />
+                    </cells>
+                </ColumnListItem>
+            </Table>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

@@ -1,0 +1,110 @@
+{
+  "_version": "1.76.0",
+  "sap.app": {
+    "id": "freestylesapui5app",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.18.7",
+      "toolsId": "0468e152-8091-467a-837d-750e815ef152"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "http://localhost:4004/v2/root",
+        "type": "OData",
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "odataVersion": "2.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.142.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "freestylesapui5app.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "settings": { "defaultBindingMode": "TwoWay" }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "freestylesapui5app.view",
+        "async": true,
+        "viewPath": "freestylesapui5app.view"
+      },
+      "routes": [
+        {
+          "name": "RouteListReport",
+          "pattern": ":?query:",
+          "target": ["TargetListReport"]
+        }
+      ],
+      "targets": {
+        "TargetListReport": {
+          "id": "ListReport",
+          "name": "ListReport"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "freestylesapui5app.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}
