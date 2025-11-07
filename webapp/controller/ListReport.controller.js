@@ -3,21 +3,12 @@ sap.ui.define(
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
-    'sap/ui/model/json/JSONModel',
   ],
-  (Controller, Filter, FilterOperator, JSONModel) => {
+  (Controller, Filter, FilterOperator) => {
     'use strict';
 
     return Controller.extend('freestylesapui5app.controller.ListReport', {
-      onInit() {
-        const oModelFromComp = this.getOwnerComponent().getModel();
-        oModelFromComp.read('/Stores', {
-          success: (oData) => {
-            const oJsonModel = new JSONModel(oData.results);
-            this.getView().setModel(oJsonModel, 'Stores');
-          },
-        });
-      },
+      onInit() {},
 
       onGoButtonPressed() {
         const oFilter = this.getView().byId('filterbar');
@@ -28,14 +19,14 @@ sap.ui.define(
         aFilterItems.forEach((oItem) => {
           const sName = oItem.getName();
           const oControl = oItem.getControl();
-          const sValue = oControl.getValue && oControl.getValue();
+          const sValue = oControl.getValue();
           if (sValue) {
             aFilters.push(new Filter(sName, FilterOperator.Contains, sValue));
           }
         });
 
         const oList = this.byId('StoresTable');
-        const oBinding = oList.getBinding('rows');
+        const oBinding = oList.getBinding('items');
         oBinding.filter(aFilters);
       },
     });

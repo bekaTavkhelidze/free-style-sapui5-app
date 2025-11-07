@@ -5,7 +5,6 @@
     xmlns:core="sap.ui.core"
     xmlns:fb="sap.ui.comp.filterbar"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns:t="sap.ui.table"
 >
     <f:DynamicPage
         id="ListReportPage"
@@ -33,7 +32,7 @@
                                 groupName="ListReportGroup"
                                 visibleInFilterBar="true">
                                 <fb:control>
-                                    <SearchField placeholder="Search" />
+                                    <SearchField placeholder="{i18n>searchInput}" />
                                 </fb:control>
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem
@@ -69,45 +68,47 @@
             </f:DynamicPageHeader>
         </f:header>
         <f:content>
-            <t:Table
-                rows="{Stores>/}"
-                id="StoresTable"
-                selectionMode="MultiToggle"
-                rowMode="Auto">
-                <t:extension>
-                    <OverflowToolbar style="Clear">
-                        <Title text="{i18n>nameTableTitle}" />
-                        <Button text="{i18n>addStore}" />
-                        <Button text="{i18n>deleteStore}" />
+            <Table mode="MultiSelect" items="{/Stores}" id="StoresTable" inset="false"
+                width="auto">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <content>
+                            <Title text="{i18n>nameTableTitle}" level="H2" />
+                            <ToolbarSpacer />
+                            <Button text="{i18n>addStore}" type="Emphasized" />
+                            <Button text="{i18n>deleteStore}" type="Default" />
+                        </content>
                     </OverflowToolbar>
-                </t:extension>
-                <t:columns>
-                    <t:Column>
-                        <Label text="{i18n>addressColumnTitle}" />
-                        <t:template>
-                            <Text text="{Stores>Address}" wrapping="false" />
-                        </t:template>
-                    </t:Column>
-                    <t:Column>
-                        <Label text="{i18n>nameColumnTitle}" />
-                        <t:template>
-                            <Text text="{Stores>Name}" wrapping="false" />
-                        </t:template>
-                    </t:Column>
-                    <t:Column>
-                        <Label text="{i18n>emailColumnTitle}" />
-                        <t:template>
-                            <Text text="{Stores>Email}" wrapping="false" />
-                        </t:template>
-                    </t:Column>
-                    <t:Column>
-                        <Label text="{i18n>phoneColumnTitle}" />
-                        <t:template>
-                            <Text text="{Stores>PhoneNumber}" wrapping="false" />
-                        </t:template>
-                    </t:Column>
-                </t:columns>
-            </t:Table>
+                </headerToolbar>
+                <columns>
+                    <Column>
+                        <Text text="{i18n>addressColumnTitle}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>nameColumnTitle}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>emailColumnTitle}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>phoneColumnTitle}" />
+                    </Column>
+                </columns>
+                <ColumnListItem type="Navigation">
+                    <cells>
+                        <Text text="{Address}" />
+                    </cells>
+                    <cells>
+                        <Text text="{Name}" />
+                    </cells>
+                    <cells>
+                        <Text text="{Email}" />
+                    </cells>
+                    <cells>
+                        <Text text="{PhoneNumber}" />
+                    </cells>
+                </ColumnListItem>
+            </Table>
         </f:content>
     </f:DynamicPage>
 </mvc:View>

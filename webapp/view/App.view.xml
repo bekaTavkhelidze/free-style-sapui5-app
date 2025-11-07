@@ -1,4 +1,4 @@
-<mvc:View controllerName="freestylesapui5app.controller.App"
+<mvc:View
     displayBlock="true"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
