@@ -56,7 +56,6 @@
                     <m:Link text="{Email}" />
                 </layout:VerticalLayout>
 
-
                 <layout:HorizontalLayout class="sapUiSmallMarginBeginEnd">
                     <m:Image src="./test-resources/sap/uxap/images/linkedin.png" />
                     <m:Image src="./test-resources/sap/uxap/images/Twitter.png"

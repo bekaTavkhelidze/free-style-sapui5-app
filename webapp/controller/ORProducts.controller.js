@@ -15,6 +15,7 @@ sap.ui.define(
           .getRoute('ORProducts')
           .attachPatternMatched(this.onObjectMatched, this);
       },
+
       onObjectMatched(oEvent) {
         const activeId = globalThis.decodeURIComponent(
           oEvent.getParameter('arguments').id
@@ -26,14 +27,41 @@ sap.ui.define(
           urlParameters: {
             $expand: 'Products',
           },
-          success: (oData) => {
-            console.log(oData);
+          success: () => {
             const oContext = ODataModel.createBindingContext(
               "/Stores(guid'" + activeId + "')"
             );
             this.getView().setBindingContext(oContext);
           },
         });
+      },
+
+      onSearchProduct(oValue) {
+        const aFilter = [];
+        const sQuery = oValue.getParameter('query').trim();
+        if (sQuery) {
+          aFilter.push(
+            new Filter({
+              filters: [
+                new Filter('Name', FilterOperator.Contains, sQuery),
+                new Filter('Status', FilterOperator.Contains, sQuery),
+                new Filter(
+                  'Price_amount',
+                  FilterOperator.Contains,
+                  Number(sQuery)
+                ),
+                new Filter('ID', FilterOperator.Contains, sQuery),
+              ],
+              and: false,
+            })
+          );
+        }
+
+        const oTable = this.byId('productsTable');
+
+        const oBinding = oTable.getBinding('items');
+
+        oBinding.filter(aFilter);
       },
     });
   }
