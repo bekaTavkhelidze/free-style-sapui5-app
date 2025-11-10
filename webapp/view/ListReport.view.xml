@@ -18,6 +18,7 @@
                 </f:heading>
             </f:DynamicPageTitle>
         </f:title>
+
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>

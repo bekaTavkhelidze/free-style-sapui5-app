@@ -7,6 +7,7 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:layout="sap.ui.layout"
     xmlns:m="sap.m"
+    xmlns:forms="sap.ui.layout.form"
 >
     <ObjectPageLayout
         id="ObjectPageLayout"
@@ -26,15 +27,15 @@
                 </snappedHeading>
 
                 <expandedContent>
-                    <m:Text text="Id Here" />
+                    <m:Text text="ID: {Name}" />
                 </expandedContent>
 
                 <snappedContent>
-                    <m:Text text="Id Here" />
+                    <m:Text text="{Name}" />
                 </snappedContent>
 
                 <snappedTitleOnMobile>
-                    <m:Title text="Id Here" />
+                    <m:Title text="{Name}" />
                 </snappedTitleOnMobile>
 
                 <actions>
@@ -44,15 +45,17 @@
             </ObjectPageDynamicHeaderTitle>
         </headerTitle>
 
+
         <headerContent>
             <m:FlexBox wrap="Wrap" fitContainer="true">
                 <m:Avatar class="sapUiSmallMarginEnd"
                     src="./test-resources/sap/uxap/images/imageID_275314.png" displaySize="L" />
 
                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                    <m:Link text="+33 6 4512 5158" />
-                    <m:Link text="DeniseSmith@sap.com" />
+                    <m:Link text="{PhoneNumber}" />
+                    <m:Link text="{Email}" />
                 </layout:VerticalLayout>
+
 
                 <layout:HorizontalLayout class="sapUiSmallMarginBeginEnd">
                     <m:Image src="./test-resources/sap/uxap/images/linkedin.png" />
@@ -61,35 +64,111 @@
                 </layout:HorizontalLayout>
 
                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                    <m:Label text="Hello! I am Denise and I use UxAP" />
-                    <m:VBox>
-                        <m:Label text="Achieved goals" />
-                        <m:ProgressIndicator percentValue="30" displayValue="30%" />
-                    </m:VBox>
-                </layout:VerticalLayout>
-
-                <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                    <m:Label text="San Jose, USA" />
+                    <m:Label text="Address: {Address}" />
                 </layout:VerticalLayout>
             </m:FlexBox>
         </headerContent>
 
         <sections>
             <ObjectPageSection
-                titleUppercase="false"
-                id="goals"
-                title="2014 Goals Plan">
+                titleUppercase="true"
+                id="storeDetails"
+                title="Store Details">
                 <subSections>
-                    <ObjectPageSubSection id="goalsSS1" titleUppercase="false">
-                        <m:Text text="Yes!!!" />
+                    <ObjectPageSubSection id="goalsSS1" titleUppercase="true">
+                        <forms:SimpleForm class="sapUxAPObjectPageSubSectionAlignContent">
+
+                            <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+                                <m:HBox renderType="Bare">
+
+                                    <m:Label labelFor="StoreName" text="Name"
+                                        class="sapUiTinyMarginEnd" />
+                                    <m:Text text="{Name}" id="StoreName" />
+                                </m:HBox>
+
+
+                            </layout:VerticalLayout>
+                            <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+                                <m:FlexBox gap="10px" alignItems="Center">
+
+                                    <m:Label labelFor="phoneNumber" text="Phone" />
+                                    <m:Link text="{PhoneNumber}" id="phoneNumber" />
+                                </m:FlexBox>
+                                <m:FlexBox gap="10px" alignItems="Center">
+
+                                    <m:Label labelFor="Email" text="Email:" />
+                                    <m:Link text="{Email}" id="Email" />
+                                </m:FlexBox>
+
+
+                            </layout:VerticalLayout>
+                            <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+                                <m:FlexBox gap="10px" alignItems="Center">
+
+                                    <m:Label labelFor="Address" text="Address" />
+                                    <m:Text text="{Address}" id="Address" />
+                                </m:FlexBox>
+                                <m:FlexBox gap="10px" alignItems="Center">
+                                    <m:Label labelFor="FloorArea" text="FloorArea:" />
+                                    <m:Text text="{FloorArea}" id="FloorArea" />
+                                </m:FlexBox>
+
+
+                            </layout:VerticalLayout>
+                        </forms:SimpleForm>
+
                     </ObjectPageSubSection>
                     <ObjectPageSubSection
-                        id="goalsSS2"
+                        id="productDetails"
                         titleUppercase="true"
-                        title="Products information"
+                        title="Assembly Options"
                     >
-                        <m:Text text="Yes!!!" />
-                        <m:Text text="Yes!!!" />
+                        <m:Table
+                            items="{Products}"
+                            id="productsTable"
+                            autoPopinMode="true"
+                            width="auto">
+                            <m:headerToolbar>
+                                <m:OverflowToolbar>
+                                    <m:content>
+                                        <m:Title text="{i18n>nameTableTitle}" level="H2" />
+                                        <m:ToolbarSpacer />
+                                        <m:SearchField search="onSearchProduct"
+                                            placeholder="{i18n>search}" width="200px" />
+                                        <m:Button text="{i18n>addStore}" type="Emphasized" />
+                                        <m:Button text="{i18n>deleteStore}" type="Default" />
+                                    </m:content>
+                                </m:OverflowToolbar>
+                            </m:headerToolbar>
+                            <m:columns>
+                                <m:Column>
+                                    <m:Text text="{i18n>IdColumnTitle}" />
+                                </m:Column>
+                                <m:Column>
+                                    <m:Text text="{i18n>nameColumnTitle}" />
+                                </m:Column>
+                                <m:Column>
+                                    <m:Text text="{i18n>StatusColumnTitle}" />
+                                </m:Column>
+                                <m:Column>
+                                    <m:Text text="{i18n>PriceColumn}" />
+                                </m:Column>
+                            </m:columns>
+                            <m:ColumnListItem type="Navigation">
+                                <m:cells>
+                                    <m:Text text="{ID}" />
+                                </m:cells>
+                                <m:cells>
+                                    <m:Text text="{Name}" />
+                                </m:cells>
+                                <m:cells>
+                                    <m:Text text="{Status}" />
+                                </m:cells>
+                                <m:cells>
+                                    <m:Text text="{Price_amount}USD" />
+                                </m:cells>
+                            </m:ColumnListItem>
+                        </m:Table>
                     </ObjectPageSubSection>
                 </subSections>
             </ObjectPageSection>
@@ -103,7 +182,7 @@
                         titleUppercase="false"
                         title="Connections">
                         <blocks>
-                            <m:Text text="Yess!!" />
+                            <m:Text text="what?"></m:Text>
                         </blocks>
                     </ObjectPageSubSection>
                 </subSections>
