@@ -12,7 +12,6 @@
     <ObjectPageLayout
         id="ObjectPageLayout"
         enableLazyLoading="true"
-        beforeNavigate="onBeforeNavigate"
         useIconTabBar="true"
         showTitleInHeaderContent="true"
         upperCaseAnchorBar="false">
@@ -27,7 +26,7 @@
                 </snappedHeading>
 
                 <expandedContent>
-                    <m:Text text="ID: {Name}" />
+                    <m:Text text="{Name}" />
                 </expandedContent>
 
                 <snappedContent>
@@ -63,7 +62,7 @@
                 </layout:HorizontalLayout>
 
                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                    <m:Label text="Address: {Address}" />
+                    <m:Label text="{i18n>addressFilterLabel}: {Address}" />
                 </layout:VerticalLayout>
             </m:FlexBox>
         </headerContent>
@@ -72,47 +71,35 @@
             <ObjectPageSection
                 titleUppercase="true"
                 id="storeDetails"
-                title="Store Details">
+                title="{i18n>StoreDetails}">
                 <subSections>
                     <ObjectPageSubSection id="goalsSS1" titleUppercase="true">
                         <forms:SimpleForm class="sapUxAPObjectPageSubSectionAlignContent">
-
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                                <m:HBox renderType="Bare">
-
-                                    <m:Label labelFor="StoreName" text="Name"
-                                        class="sapUiTinyMarginEnd" />
-                                    <m:Text text="{Name}" id="StoreName" />
-                                </m:HBox>
-
-
+                                <m:FlexBox gap="10px" alignItems="Center">
+                                    <m:Label labelFor="StoreName" text="{i18n>nameColumnTitle}:" />
+                                    <m:Input value="{Name}" id="StoreName" />
+                                </m:FlexBox>
                             </layout:VerticalLayout>
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                                 <m:FlexBox gap="10px" alignItems="Center">
-
-                                    <m:Label labelFor="phoneNumber" text="Phone" />
-                                    <m:Link text="{PhoneNumber}" id="phoneNumber" />
+                                    <m:Label labelFor="phoneNumber" text="{i18n>phoneColumnTitle}:" />
+                                    <m:Input value="{PhoneNumber}" id="phoneNumber" />
                                 </m:FlexBox>
                                 <m:FlexBox gap="10px" alignItems="Center">
-
-                                    <m:Label labelFor="Email" text="Email:" />
-                                    <m:Link text="{Email}" id="Email" />
+                                    <m:Label labelFor="Email" text="{i18n>emailColumnTitle}:" />
+                                    <m:Input value="{Email}" id="Email" />
                                 </m:FlexBox>
-
-
                             </layout:VerticalLayout>
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                                 <m:FlexBox gap="10px" alignItems="Center">
-
-                                    <m:Label labelFor="Address" text="Address" />
-                                    <m:Text text="{Address}" id="Address" />
+                                    <m:Label labelFor="Address" text="{i18n>addressColumnTitle}" />
+                                    <m:Input value="{Address}" id="Address" />
                                 </m:FlexBox>
                                 <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label labelFor="FloorArea" text="FloorArea:" />
-                                    <m:Text text="{FloorArea}" id="FloorArea" />
+                                    <m:Label labelFor="FloorArea" text="{i18n>floorArea}:" />
+                                    <m:Input value="{FloorArea}" id="FloorArea" />
                                 </m:FlexBox>
-
-
                             </layout:VerticalLayout>
                         </forms:SimpleForm>
 
@@ -120,8 +107,7 @@
                     <ObjectPageSubSection
                         id="productDetails"
                         titleUppercase="true"
-                        title="Assembly Options"
-                    >
+                        title="{i18n>AssemblyOptions}">
                         <m:Table
                             items="{Products}"
                             id="productsTable"
@@ -173,15 +159,25 @@
             </ObjectPageSection>
             <ObjectPageSection
                 titleUppercase="false"
-                id="connections"
-                title="Connections">
+                id="connections">
                 <subSections>
                     <ObjectPageSubSection
                         id="connectionsSS1"
                         titleUppercase="false"
-                        title="Connections">
+                        title="{i18n>storeCreateDetail}">
                         <blocks>
-                            <m:Text text="what?"></m:Text>
+                            <forms:SimpleForm class="sapUxAPObjectPageSubSectionAlignContent">
+                                <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+                                    <m:Label labelFor="createdAt" text="{i18n>createdAt}:" />
+                                    <m:Text id="createdAt" text="{createdAt}" />
+                                </layout:VerticalLayout>
+                                <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+                                    <m:Label labelFor="modifyTime" text="{i18n>modifyTime}:" />
+                                    <m:Text text="{modifiedAt}" id="modifyTime" />
+                                    <m:Label labelFor="Established" text="{i18n>Established}:" />
+                                    <m:Text text="{Established}" id="Established" />
+                                </layout:VerticalLayout>
+                            </forms:SimpleForm>
                         </blocks>
                     </ObjectPageSubSection>
                 </subSections>

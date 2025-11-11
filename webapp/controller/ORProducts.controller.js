@@ -32,6 +32,9 @@ sap.ui.define(
               "/Stores(guid'" + activeId + "')"
             );
             this.getView().setBindingContext(oContext);
+            // console.log(data);
+            // console.log(oContext);
+            // this.byId('createdAt').setText('{createdAt}');
           },
         });
       },

@@ -13,15 +13,14 @@ sap.ui.define(
 
         const aFilterItems = oFilter.getFilterGroupItems();
         const aFilters = [];
-
-        aFilterItems.forEach((oItem) => {
+        for (let oItem of aFilterItems) {
           const sName = oItem.getName();
           const oControl = oItem.getControl();
           const sValue = oControl.getValue();
           if (sValue) {
             aFilters.push(new Filter(sName, FilterOperator.Contains, sValue));
           }
-        });
+        }
 
         const oList = this.byId('StoresTable');
         const oBinding = oList.getBinding('items');
