@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="freestylesapui5app.controller.ListReport"
+    controllerName="freestylesapui5app.controller.ListReportStores"
     xmlns="sap.m"
     xmlns:f="sap.f"
     xmlns:core="sap.ui.core"
@@ -18,6 +18,7 @@
                 </f:heading>
             </f:DynamicPageTitle>
         </f:title>
+
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
@@ -25,14 +26,15 @@
                         id="filterbar"
                         useToolbar="false"
                         search="onGoButtonPressed"
-                        basicSearch="Search">
+                    >
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem
                                 name="Name"
+                                label="{i18n>nameColumnTitle}"
                                 groupName="ListReportGroup"
                                 visibleInFilterBar="true">
                                 <fb:control>
-                                    <SearchField placeholder="{i18n>searchInput}" />
+                                    <Input name="Name" placeholder="{i18n>searchInput}" />
                                 </fb:control>
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem
@@ -68,7 +70,12 @@
             </f:DynamicPageHeader>
         </f:header>
         <f:content>
-            <Table mode="MultiSelect" items="{/Stores}" id="StoresTable" inset="false"
+            <Table
+                mode="MultiSelect"
+                items="{/Stores}"
+                id="StoresTable"
+                inset="false"
+                autoPopinMode="true"
                 width="auto">
                 <headerToolbar>
                     <OverflowToolbar>
@@ -94,7 +101,7 @@
                         <Text text="{i18n>phoneColumnTitle}" />
                     </Column>
                 </columns>
-                <ColumnListItem type="Navigation">
+                <ColumnListItem type="Navigation" press="onGoToORProductsDetailPress">
                     <cells>
                         <Text text="{Address}" />
                     </cells>

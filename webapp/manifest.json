@@ -89,14 +89,33 @@
       "routes": [
         {
           "name": "RouteListReport",
-          "pattern": ":?query:",
+          "pattern": "",
           "target": ["TargetListReport"]
+        },
+        {
+          "pattern": "StoreDetails/{id}",
+          "name": "ObjectPageStoreDetails",
+          "target": "TargetObjectPageStoreDetails"
+        },
+        {
+          "pattern": "Chart",
+          "name": "Chart",
+          "target": "Chart"
         }
       ],
       "targets": {
         "TargetListReport": {
-          "id": "ListReport",
-          "name": "ListReport"
+          "transition": "slide",
+          "id": "ListReportStores",
+          "name": "ListReportStores"
+        },
+        "TargetObjectPageStoreDetails": {
+          "id": "ObjectPageStoreDetails",
+          "name": "ObjectPageStoreDetails",
+          "transition": "slide"
+        },
+        "Chart": {
+          "id": "Chart"
         }
       }
     },
