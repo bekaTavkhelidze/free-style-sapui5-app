@@ -1,9 +1,7 @@
 <mvc:View
-    controllerName="freestylesapui5app.controller.ORProducts"
+    controllerName="freestylesapui5app.controller.ObjectPageStoreDetails"
     xmlns="sap.uxap"
-    xmlns:f="sap.f"
     xmlns:core="sap.ui.core"
-    xmlns:fb="sap.ui.comp.filterbar"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:layout="sap.ui.layout"
     xmlns:m="sap.m"
@@ -47,22 +45,21 @@
 
         <headerContent>
             <m:FlexBox wrap="Wrap" fitContainer="true">
-                <m:Avatar class="sapUiSmallMarginEnd"
-                    src="./test-resources/sap/uxap/images/imageID_275314.png" displaySize="L" />
+                <m:Avatar
+                    displaySize="XL"
+                    backgroundColor="Transparent"
+                    press="onPress" />
 
                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                     <m:Link text="{PhoneNumber}" />
                     <m:Link text="{Email}" />
                 </layout:VerticalLayout>
 
-                <layout:HorizontalLayout class="sapUiSmallMarginBeginEnd">
-                    <m:Image src="./test-resources/sap/uxap/images/linkedin.png" />
-                    <m:Image src="./test-resources/sap/uxap/images/Twitter.png"
-                        class="sapUiSmallMarginBegin" />
-                </layout:HorizontalLayout>
 
                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                    <m:Label text="{i18n>addressFilterLabel}: {Address}" />
+                    <m:Label labelFor="AddressHeader" showColon="true"
+                        text="{i18n>addressFilterLabel} " />
+                    <m:Text text="{Address}" id="AddressHeader"></m:Text>
                 </layout:VerticalLayout>
             </m:FlexBox>
         </headerContent>
@@ -77,28 +74,38 @@
                         <forms:SimpleForm class="sapUxAPObjectPageSubSectionAlignContent">
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                                 <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label labelFor="StoreName" text="{i18n>nameColumnTitle}:" />
-                                    <m:Input value="{Name}" id="StoreName" />
+                                    <m:Label labelFor="StoreName" showColon="true"
+                                        text="{i18n>nameColumnTitle}" />
+                                    <!-- <m:Input value="{Name}" id="StoreName" /> -->
+                                    <m:Text text="{Name}" id="StoreName" />
                                 </m:FlexBox>
                             </layout:VerticalLayout>
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                                 <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label labelFor="phoneNumber" text="{i18n>phoneColumnTitle}:" />
-                                    <m:Input value="{PhoneNumber}" id="phoneNumber" />
+                                    <m:Label showColon="true" labelFor="phoneNumber"
+                                        text="{i18n>phoneColumnTitle}" />
+                                    <!-- <m:Input value="{PhoneNumber}" id="phoneNumber" /> -->
+                                    <m:Text text="{PhoneNumber}" id="phoneNumber" />
                                 </m:FlexBox>
                                 <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label labelFor="Email" text="{i18n>emailColumnTitle}:" />
-                                    <m:Input value="{Email}" id="Email" />
+                                    <m:Label labelFor="Email" showColon="true"
+                                        text="{i18n>emailColumnTitle}" />
+                                    <!-- <m:Input value="{Email}" id="Email" /> -->
+                                    <m:Text text="{Email}" id="Email" />
                                 </m:FlexBox>
                             </layout:VerticalLayout>
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                                 <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label labelFor="Address" text="{i18n>addressColumnTitle}" />
-                                    <m:Input value="{Address}" id="Address" />
+                                    <m:Label labelFor="Address" showColon="true"
+                                        text="{i18n>addressColumnTitle}" />
+                                    <!-- <m:Input value="{Address}" id="Address" /> -->
+                                    <m:Text text="{Address}" id="Address" />
                                 </m:FlexBox>
                                 <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label labelFor="FloorArea" text="{i18n>floorArea}:" />
-                                    <m:Input value="{FloorArea}" id="FloorArea" />
+                                    <m:Label labelFor="FloorArea" showColon="true"
+                                        text="{i18n>floorArea}" />
+                                    <!-- <m:Input value="{FloorArea}" id="FloorArea" /> -->
+                                    <m:Text text="{FloorArea}" id="FloorArea" />
                                 </m:FlexBox>
                             </layout:VerticalLayout>
                         </forms:SimpleForm>
@@ -150,7 +157,11 @@
                                     <m:Text text="{Status}" />
                                 </m:cells>
                                 <m:cells>
-                                    <m:Text text="{Price_amount}USD" />
+                                    <m:FlexBox direction="Row" gap="2px">
+                                        <m:Text text="{Price_amount}" />
+                                        <m:Text text="{Price_currency}" />
+
+                                    </m:FlexBox>
                                 </m:cells>
                             </m:ColumnListItem>
                         </m:Table>
@@ -168,13 +179,16 @@
                         <blocks>
                             <forms:SimpleForm class="sapUxAPObjectPageSubSectionAlignContent">
                                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                                    <m:Label labelFor="createdAt" text="{i18n>createdAt}:" />
+                                    <m:Label labelFor="createdAt" showColon="true"
+                                        text="{i18n>createdAt}" />
                                     <m:Text id="createdAt" text="{createdAt}" />
                                 </layout:VerticalLayout>
                                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                                    <m:Label labelFor="modifyTime" text="{i18n>modifyTime}:" />
+                                    <m:Label labelFor="modifyTime" showColon="true"
+                                        text="{i18n>modifyTime}" />
                                     <m:Text text="{modifiedAt}" id="modifyTime" />
-                                    <m:Label labelFor="Established" text="{i18n>Established}:" />
+                                    <m:Label labelFor="Established" text="{i18n>Established}"
+                                        showColon="true" />
                                     <m:Text text="{Established}" id="Established" />
                                 </layout:VerticalLayout>
                             </forms:SimpleForm>

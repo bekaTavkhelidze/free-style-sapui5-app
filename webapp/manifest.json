@@ -93,21 +93,29 @@
           "target": ["TargetListReport"]
         },
         {
-          "pattern": "ORProducts/{id}",
-          "name": "ORProducts",
-          "target": "TargetOR"
+          "pattern": "StoreDetails/{id}",
+          "name": "ObjectPageStoreDetails",
+          "target": "TargetObjectPageStoreDetails"
+        },
+        {
+          "pattern": "Chart",
+          "name": "Chart",
+          "target": "Chart"
         }
       ],
       "targets": {
         "TargetListReport": {
           "transition": "slide",
-          "id": "ListReport",
-          "name": "ListReport"
+          "id": "ListReportStores",
+          "name": "ListReportStores"
         },
-        "TargetOR": {
-          "id": "ORProducts",
-          "name": "ORProducts",
+        "TargetObjectPageStoreDetails": {
+          "id": "ObjectPageStoreDetails",
+          "name": "ObjectPageStoreDetails",
           "transition": "slide"
+        },
+        "Chart": {
+          "id": "Chart"
         }
       }
     },

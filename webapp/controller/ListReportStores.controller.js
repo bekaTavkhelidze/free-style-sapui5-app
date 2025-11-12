@@ -7,16 +7,17 @@ sap.ui.define(
   (Controller, Filter, FilterOperator) => {
     'use strict';
 
-    return Controller.extend('freestylesapui5app.controller.ListReport', {
-      onGoButtonPressed() {
-        const oFilter = this.getView().byId('filterbar');
+    return Controller.extend('freestylesapui5app.controller.ListReportStores', {
+      onGoButtonPressed(oEvent) {
+        const oFilterBarSelectionSet = oEvent.getParameter('selectionSet');
 
-        const aFilterItems = oFilter.getFilterGroupItems();
         const aFilters = [];
-        for (let oItem of aFilterItems) {
+
+        for (let oItem of oFilterBarSelectionSet) {
+          const sValue = oItem.getValue().trim();
+
           const sName = oItem.getName();
-          const oControl = oItem.getControl();
-          const sValue = oControl.getValue();
+
           if (sValue) {
             aFilters.push(new Filter(sName, FilterOperator.Contains, sValue));
           }
@@ -26,6 +27,7 @@ sap.ui.define(
         const oBinding = oList.getBinding('items');
         oBinding.filter(aFilters);
       },
+
       onGoToORProductsDetailPress(oEvent) {
         const oItem = oEvent.getSource();
         const oContext = oItem.getBindingContext();
@@ -33,7 +35,7 @@ sap.ui.define(
 
         this.getOwnerComponent()
           .getRouter()
-          .navTo('ORProducts', { id: sProductId });
+          .navTo('ObjectPageStoreDetails', { id: sProductId });
       },
     });
   }
