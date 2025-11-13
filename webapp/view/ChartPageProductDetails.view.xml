@@ -1,0 +1,49 @@
+<mvc:View
+    controllerName="freestylesapui5app.controller.ChartPageProductDetails"
+    xmlns:f="sap.f"
+    xmlns="sap.m"
+    xmlns:layout="sap.ui.layout"
+    xmlns:mvc="sap.ui.core.mvc"
+>
+    <f:DynamicPage headerExpanded="true">
+        <f:title>
+            <f:DynamicPageTitle id="dynamicPageProductDetail">
+                <f:heading>
+                    <Breadcrumbs currentLocationText="Prouct Details">
+                        <Link text="Store Details" id="goBackBtn"
+                            press="onGoBackToProductsObjectPage" />
+                    </Breadcrumbs>
+                </f:heading>
+                <f:expandedContent>
+                    <Label text="{Name}" />
+                </f:expandedContent>
+                <f:snappedContent>
+                    <Label text="{Name}" />
+                </f:snappedContent>
+                <f:snappedTitleOnMobile>
+                    <Title text="{Name}" />
+                </f:snappedTitleOnMobile>
+            </f:DynamicPageTitle>
+        </f:title>
+
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <layout:HorizontalLayout allowWrapping="true">
+                    <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                        <ObjectAttribute title="{i18n>CompanyName}" text="{ProductionCompanyName}" />
+                        <ObjectAttribute title="{i18n>Rating}" text="{Rating}" />
+                    </layout:VerticalLayout>
+
+                    <layout:VerticalLayout>
+                        <ObjectAttribute title="{i18n>Availability}" />
+                        <ObjectStatus text="{Status}" />
+                    </layout:VerticalLayout>
+                </layout:HorizontalLayout>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+
+            <Button text="click" press="onPress"></Button>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

@@ -98,9 +98,9 @@
           "target": "TargetObjectPageStoreDetails"
         },
         {
-          "pattern": "Chart",
-          "name": "Chart",
-          "target": "Chart"
+          "pattern": "ProductDetails/{id}",
+          "name": "ChartPageProductDetails",
+          "target": "ChartPageProductDetails"
         }
       ],
       "targets": {
@@ -114,8 +114,10 @@
           "name": "ObjectPageStoreDetails",
           "transition": "slide"
         },
-        "Chart": {
-          "id": "Chart"
+        "ChartPageProductDetails": {
+          "id": "ChartPageProductDetails",
+          "transition": "slide",
+          "name": "ChartPageProductDetails"
         }
       }
     },

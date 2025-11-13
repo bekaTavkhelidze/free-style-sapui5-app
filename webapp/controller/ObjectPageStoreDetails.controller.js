@@ -33,6 +33,7 @@ sap.ui.define(
               const oContext = ODataModel.createBindingContext(
                 "/Stores(guid'" + sActiveId + "')"
               );
+              console.log(oContext);
               this.getView().setBindingContext(oContext);
             },
           });
@@ -65,6 +66,21 @@ sap.ui.define(
           const oBinding = oTable.getBinding('items');
 
           oBinding.filter(aFilter);
+        },
+
+        onGoBackToStoresListReport() {
+          const oRouter = this.getOwnerComponent().getRouter();
+          oRouter.navTo('RouteListReport');
+        },
+
+        goToProductDetailChart(oEvent) {
+          const oItem = oEvent.getSource();
+          const oContext = oItem.getBindingContext();
+          const sId = oContext.getProperty('ID');
+
+          this.getOwnerComponent()
+            .getRouter()
+            .navTo('ChartPageProductDetails', { id: sId });
         },
       }
     );
