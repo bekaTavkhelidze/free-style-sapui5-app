@@ -73,7 +73,7 @@
                 id="storeDetails"
                 title="{i18n>StoreDetails}">
                 <subSections>
-                    <ObjectPageSubSection id="goalsSS1" titleUppercase="true">
+                    <ObjectPageSubSection id="StoreDetailsSubSection" titleUppercase="true">
                         <forms:SimpleForm class="sapUxAPObjectPageSubSectionAlignContent">
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                                 <m:FlexBox gap="10px" alignItems="Center">
@@ -150,7 +150,9 @@
                                     <m:Text text="{i18n>PriceColumn}" />
                                 </m:Column>
                             </m:columns>
-                            <m:ColumnListItem type="Navigation" press="goToProductDetailChart">
+                            <m:ColumnListItem
+                                type="Navigation"
+                                press="goToProductDetailChart">
                                 <m:cells>
                                     <m:Text text="{ID}" />
                                 </m:cells>
@@ -164,7 +166,6 @@
                                     <m:FlexBox direction="Row" gap="2px">
                                         <m:Text text="{Price_amount}" />
                                         <m:Text text="{Price_currency}" />
-
                                     </m:FlexBox>
                                 </m:cells>
                             </m:ColumnListItem>
@@ -174,24 +175,30 @@
             </ObjectPageSection>
             <ObjectPageSection
                 titleUppercase="false"
-                id="connections">
+                id="CreateDetailsSection">
                 <subSections>
                     <ObjectPageSubSection
-                        id="connectionsSS1"
+                        id="CreateDetailsSubSection"
                         titleUppercase="false"
                         title="{i18n>storeCreateDetail}">
                         <blocks>
                             <forms:SimpleForm class="sapUxAPObjectPageSubSectionAlignContent">
                                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                                    <m:Label labelFor="createdAt" showColon="true"
+                                    <m:Label
+                                        labelFor="createdAt"
+                                        showColon="true"
                                         text="{i18n>createdAt}" />
                                     <m:Text id="createdAt" text="{createdAt}" />
                                 </layout:VerticalLayout>
                                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                                    <m:Label labelFor="modifyTime" showColon="true"
+                                    <m:Label
+                                        labelFor="modifyTime"
+                                        showColon="true"
                                         text="{i18n>modifyTime}" />
                                     <m:Text text="{modifiedAt}" id="modifyTime" />
-                                    <m:Label labelFor="Established" text="{i18n>Established}"
+                                    <m:Label
+                                        labelFor="Established"
+                                        text="{i18n>Established}"
                                         showColon="true" />
                                     <m:Text text="{Established}" id="Established" />
                                 </layout:VerticalLayout>

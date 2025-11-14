@@ -33,7 +33,7 @@ sap.ui.define(
               const oContext = ODataModel.createBindingContext(
                 "/Stores(guid'" + sActiveId + "')"
               );
-              console.log(oContext);
+
               this.getView().setBindingContext(oContext);
             },
           });
@@ -80,7 +80,7 @@ sap.ui.define(
 
           this.getOwnerComponent()
             .getRouter()
-            .navTo('ChartPageProductDetails', { id: sId });
+            .navTo('ChartPageStoreDetails', { id: sId });
         },
       }
     );

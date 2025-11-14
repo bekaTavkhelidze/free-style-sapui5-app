@@ -1,9 +1,15 @@
 sap.ui.define(
-  ['sap/ui/core/mvc/Controller', 'sap/ui/core/routing/History'],
-  function (Controller, History) {
+  [
+    'sap/ui/core/mvc/Controller',
+    'sap/ui/core/routing/History',
+    'sap/viz/ui5/data/FlattenedDataset',
+    'sap/viz/ui5/format/ChartFormatter',
+    'sap/viz/ui5/api/env/Format',
+  ],
+  function (Controller, History, FlattenedDataset, ChartFormatter, Format) {
     'use strict';
     return Controller.extend(
-      'freestylesapui5app.controller.ChartPageProductDetails',
+      'freestylesapui5app.controller.ChartPageStoreDetails',
       {
         onInit() {
           const oHistory = History.getInstance();
@@ -14,7 +20,7 @@ sap.ui.define(
 
           const oRouter = this.getOwnerComponent().getRouter();
           oRouter
-            .getRoute('ChartPageProductDetails')
+            .getRoute('ChartPageStoreDetails')
             .attachPatternMatched(this.onObjectMatched, this);
         },
 
@@ -34,7 +40,6 @@ sap.ui.define(
               const oContext = oDataModel.createBindingContext(
                 "/Products(guid'" + sActiveId + "')"
               );
-
               this.getView().setBindingContext(oContext);
             },
           });
