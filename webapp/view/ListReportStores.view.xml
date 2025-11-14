@@ -12,7 +12,7 @@
         toggleHeaderOnTitleClick="true"
         preserveHeaderStateOnScroll="false">
         <f:title>
-            <f:DynamicPageTitle id="dynamicPageTitleId">
+            <f:DynamicPageTitle id="ListReportStoresPageTitle">
                 <f:heading>
                     <Title text="{i18n>ListReportPageTitle}" level="H2" />
                 </f:heading>
@@ -25,16 +25,15 @@
                     <fb:FilterBar
                         id="filterbar"
                         useToolbar="false"
-                        search="onGoButtonPressed"
-                    >
+                        search="onGoButtonPressed">
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem
                                 name="Name"
-                                label="{i18n>nameColumnTitle}"
                                 groupName="ListReportGroup"
                                 visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input name="Name" placeholder="{i18n>searchInput}" />
+                                    <Input liveChange="onSearchInput" name="Name"
+                                        placeholder="{i18n>searchInput}" />
                                 </fb:control>
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem
@@ -74,7 +73,6 @@
                 mode="MultiSelect"
                 items="{/Stores}"
                 id="StoresTable"
-                inset="false"
                 autoPopinMode="true"
                 width="auto">
                 <headerToolbar>

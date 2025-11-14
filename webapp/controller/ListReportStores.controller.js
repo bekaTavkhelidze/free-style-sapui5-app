@@ -23,9 +23,7 @@ sap.ui.define(
           }
         }
 
-        const oList = this.byId('StoresTable');
-        const oBinding = oList.getBinding('items');
-        oBinding.filter(aFilters);
+        this.filterFunction(aFilters);
       },
 
       onGoToORProductsDetailPress(oEvent) {
@@ -36,6 +34,33 @@ sap.ui.define(
         this.getOwnerComponent()
           .getRouter()
           .navTo('ObjectPageStoreDetails', { id: sProductId });
+      },
+
+      onSearchInput(oEvent) {
+        const sValue = oEvent.getSource().getValue().trim();
+
+        const aFilter = [];
+        if (sValue) {
+          aFilter.push(
+            new Filter({
+              filters: [
+                new Filter('Name', FilterOperator.Contains, sValue),
+                new Filter('Address', FilterOperator.Contains, sValue),
+                new Filter('PhoneNumber', FilterOperator.Contains, sValue),
+                new Filter('Email', FilterOperator.Contains, sValue),
+              ],
+              and: false,
+            })
+          );
+        }
+
+        this.filterFunction(aFilter);
+      },
+
+      filterFunction(aValue) {
+        const oList = this.byId('StoresTable');
+        const oBinding = oList.getBinding('items');
+        oBinding.filter(aValue);
       },
     });
   }
