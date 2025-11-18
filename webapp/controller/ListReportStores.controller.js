@@ -23,7 +23,7 @@ sap.ui.define(
           }
         }
 
-        this.filterFunction(aFilters);
+        this._filterFunction(aFilters);
       },
 
       onColumnListItemGoToProductsDetailPress(oEvent) {
@@ -54,10 +54,10 @@ sap.ui.define(
           );
         }
 
-        this.filterFunction(aFilter);
+        this._filterFunction(aFilter);
       },
 
-      filterFunction(aValue) {
+      _filterFunction(aValue) {
         const oList = this.byId('idStoresTable');
         const oBinding = oList.getBinding('items');
         oBinding.filter(aValue);

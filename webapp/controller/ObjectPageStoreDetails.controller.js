@@ -7,13 +7,12 @@ sap.ui.define(
   (Controller, Filter, FilterOperator) => {
     'use strict';
 
-    _activeId: null;
     return Controller.extend(
       'freestylesapui5app.controller.ObjectPageStoreDetails',
       {
+        _activeId: null,
         onInit() {
           const oRouter = this.getOwnerComponent().getRouter();
-          console.log('onInit function');
 
           oRouter
             .getRoute('ObjectPageStoreDetails')
@@ -28,21 +27,6 @@ sap.ui.define(
             path: "/Stores(guid'" + sActiveId + "' )",
             Parameters: { $expand: 'Products' },
           });
-
-          // const ODataModel = this.getOwnerComponent().getModel();
-
-          // ODataModel.read("/Stores(guid'" + sActiveId + "' )", {
-          //   urlParameters: {
-          //     $expand: 'Products',
-          //   },
-          //   success: () => {
-          //     const oContext = ODataModel.createBindingContext(
-          //       "/Stores(guid'" + sActiveId + "')"
-          //     );
-
-          //     this.getView().setBindingContext(oContext);
-          //   },
-          // });
         },
 
         onSearchFieldProductSearch(oValue) {
