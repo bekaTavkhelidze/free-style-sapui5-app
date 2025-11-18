@@ -1,212 +1,212 @@
 <mvc:View
     controllerName="freestylesapui5app.controller.ObjectPageStoreDetails"
-    xmlns="sap.uxap"
-    xmlns:core="sap.ui.core"
+    xmlns:uxap="sap.uxap"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:layout="sap.ui.layout"
-    xmlns:m="sap.m"
+    xmlns="sap.m"
     xmlns:forms="sap.ui.layout.form"
 >
-    <ObjectPageLayout
-        id="ObjectPageLayout"
+    <uxap:ObjectPageLayout
+        id="idStoreObjectPageLayout"
         enableLazyLoading="true"
         useIconTabBar="true"
         showTitleInHeaderContent="true"
         upperCaseAnchorBar="false">
-        <headerTitle>
-            <ObjectPageDynamicHeaderTitle>
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
 
-                <expandedHeading>
-                    <m:Breadcrumbs currentLocationText="Store Details">
-                        <m:Link press="onGoBackToStoresListReport" text="Stores" />
-                    </m:Breadcrumbs>
-                </expandedHeading>
+                <uxap:expandedHeading>
+                    <Breadcrumbs currentLocationText="{i18n>storeDetails}">
+                        <Link press="onStoreLinkGoBackToStoresListReportPress" text="{i18n>store}" />
+                    </Breadcrumbs>
+                </uxap:expandedHeading>
 
-                <snappedHeading>
-                    <m:Title text="{i18n>ORTitle}" wrapping="true" />
-                </snappedHeading>
+                <uxap:snappedHeading>
+                    <Title text="{i18n>objectPageTitle}" wrapping="true" />
+                </uxap:snappedHeading>
 
-                <expandedContent>
-                    <m:Text text="{Name}" />
-                </expandedContent>
+                <uxap:expandedContent>
+                    <Text text="{Name}" />
+                </uxap:expandedContent>
 
-                <snappedContent>
-                    <m:Text text="{Name}" />
-                </snappedContent>
+                <uxap:snappedContent>
+                    <Text text="{Name}" />
+                </uxap:snappedContent>
 
-                <snappedTitleOnMobile>
-                    <m:Title text="{Name}" />
-                </snappedTitleOnMobile>
+                <uxap:snappedTitleOnMobile>
+                    <Title text="{Name}" />
+                </uxap:snappedTitleOnMobile>
 
-                <actions>
-                    <m:Button text="{i18n>EditBtn}" type="Emphasized" />
-                    <m:Button type="Transparent" text="{i18n>DeleteBtn}" />
-                </actions>
-            </ObjectPageDynamicHeaderTitle>
-        </headerTitle>
+                <uxap:actions>
+                    <Button text="{i18n>editBtn}" type="Emphasized" />
+                    <Button type="Transparent" text="{i18n>deleteBtn}" />
+                </uxap:actions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
 
 
-        <headerContent>
-            <m:FlexBox wrap="Wrap" fitContainer="true">
-                <m:Avatar
+        <uxap:headerContent>
+            <FlexBox wrap="Wrap" fitContainer="true">
+                <Avatar
                     displaySize="XL"
                     backgroundColor="Transparent"
-                    press="onPress" />
+                />
 
                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                    <m:Link text="{PhoneNumber}" />
-                    <m:Link text="{Email}" />
+                    <Link text="{PhoneNumber}" />
+                    <Link text="{Email}" />
                 </layout:VerticalLayout>
 
 
                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                    <m:Label labelFor="AddressHeader" showColon="true"
+                    <Label labelFor="addressHeader" showColon="true"
                         text="{i18n>addressFilterLabel} " />
-                    <m:Text text="{Address}" id="AddressHeader"></m:Text>
+                    <Text text="{Address}" id="idAddressHeaderText"></Text>
                 </layout:VerticalLayout>
-            </m:FlexBox>
-        </headerContent>
+            </FlexBox>
+        </uxap:headerContent>
 
-        <sections>
-            <ObjectPageSection
+        <uxap:sections>
+            <uxap:ObjectPageSection
                 titleUppercase="true"
-                id="storeDetails"
-                title="{i18n>StoreDetails}">
-                <subSections>
-                    <ObjectPageSubSection id="StoreDetailsSubSection" titleUppercase="true">
+                id="idStoreDetailsObjectPageSection"
+                title="{i18n>storeDetails}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection id="idStoreDetailsObjectPageSubSection"
+                        titleUppercase="true">
                         <forms:SimpleForm class="sapUxAPObjectPageSubSectionAlignContent">
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                                <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label labelFor="StoreName" showColon="true"
+                                <FlexBox alignItems="Center">
+                                    <Label labelFor="idNameStoreText" showColon="true"
                                         text="{i18n>nameColumnTitle}" />
-                                    <!-- <m:Input value="{Name}" id="StoreName" /> -->
-                                    <m:Text text="{Name}" id="StoreName" />
-                                </m:FlexBox>
+                                    <!-- <Input value="{Name}" id="storeName" /> -->
+                                    <Text text="{Name}" id="idNameStoreText" />
+                                </FlexBox>
                             </layout:VerticalLayout>
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                                <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label showColon="true" labelFor="phoneNumber"
+                                <FlexBox alignItems="Center">
+                                    <Label showColon="true" labelFor="idPhoneNumberText"
                                         text="{i18n>phoneColumnTitle}" />
-                                    <!-- <m:Input value="{PhoneNumber}" id="phoneNumber" /> -->
-                                    <m:Text text="{PhoneNumber}" id="phoneNumber" />
-                                </m:FlexBox>
-                                <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label labelFor="Email" showColon="true"
+                                    <!-- <Input value="{PhoneNumber}" id="phoneNumber" /> -->
+                                    <Text text="{PhoneNumber}" id="idPhoneNumberText" />
+                                </FlexBox>
+                                <FlexBox alignItems="Center">
+                                    <Label labelFor="idEmailText" showColon="true"
                                         text="{i18n>emailColumnTitle}" />
-                                    <!-- <m:Input value="{Email}" id="Email" /> -->
-                                    <m:Text text="{Email}" id="Email" />
-                                </m:FlexBox>
+                                    <!-- <Input value="{Email}" id="email" /> -->
+                                    <Text text="{Email}" id="idEmailText" />
+                                </FlexBox>
                             </layout:VerticalLayout>
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                                <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label labelFor="Address" showColon="true"
+                                <FlexBox alignItems="Center">
+                                    <Label labelFor="idAddressText" showColon="true"
                                         text="{i18n>addressColumnTitle}" />
-                                    <!-- <m:Input value="{Address}" id="Address" /> -->
-                                    <m:Text text="{Address}" id="Address" />
-                                </m:FlexBox>
-                                <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label labelFor="FloorArea" showColon="true"
+                                    <!-- <Input value="{Address}" id="address" /> -->
+                                    <Text text="{Address}" id="idAddressText" />
+                                </FlexBox>
+                                <FlexBox alignItems="Center">
+                                    <Label labelFor="idFloorAreaText" showColon="true"
                                         text="{i18n>floorArea}" />
-                                    <!-- <m:Input value="{FloorArea}" id="FloorArea" /> -->
-                                    <m:Text text="{FloorArea}" id="FloorArea" />
-                                </m:FlexBox>
+                                    <!-- <Input value="{FloorArea}" id="floorArea" /> -->
+                                    <Text text="{FloorArea}" id="idFloorAreaText" />
+                                </FlexBox>
                             </layout:VerticalLayout>
                         </forms:SimpleForm>
 
-                    </ObjectPageSubSection>
-                    <ObjectPageSubSection
-                        id="productDetails"
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection
+                        id="idProductDetailsObjectPageSubSection"
                         titleUppercase="true"
-                        title="{i18n>AssemblyOptions}">
-                        <m:Table
+                        title="{i18n>assemblyOptions}">
+                        <Table
                             items="{Products}"
-                            id="productsTable"
+                            id="idProductsTable"
                             autoPopinMode="true"
                             mode="SingleSelectLeft"
                             width="auto">
-                            <m:headerToolbar>
-                                <m:OverflowToolbar>
-                                    <m:content>
-                                        <m:Title text="{i18n>nameTableTitle}" level="H2" />
-                                        <m:ToolbarSpacer />
-                                        <m:SearchField search="onSearchProduct"
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    <content>
+                                        <Title text="{i18n>nameTableTitle}" level="H2" />
+                                        <ToolbarSpacer />
+                                        <SearchField search="onSearchFieldProductSearch"
                                             placeholder="{i18n>search}" width="200px" />
-                                        <m:Button text="{i18n>addStore}" type="Emphasized" />
-                                        <m:Button text="{i18n>deleteStore}" type="Default" />
-                                    </m:content>
-                                </m:OverflowToolbar>
-                            </m:headerToolbar>
-                            <m:columns>
-                                <m:Column>
-                                    <m:Text text="{i18n>IdColumnTitle}" />
-                                </m:Column>
-                                <m:Column>
-                                    <m:Text text="{i18n>nameColumnTitle}" />
-                                </m:Column>
-                                <m:Column>
-                                    <m:Text text="{i18n>StatusColumnTitle}" />
-                                </m:Column>
-                                <m:Column>
-                                    <m:Text text="{i18n>PriceColumn}" />
-                                </m:Column>
-                            </m:columns>
-                            <m:ColumnListItem
+                                        <Button text="{i18n>addStore}" type="Emphasized" />
+                                        <Button text="{i18n>deleteStore}" type="Default" />
+                                    </content>
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column>
+                                    <Text text="{i18n>idColumnTitle}" />
+                                </Column>
+                                <Column>
+                                    <Text text="{i18n>nameColumnTitle}" />
+                                </Column>
+                                <Column>
+                                    <Text text="{i18n>statusColumnTitle}" />
+                                </Column>
+                                <Column>
+                                    <Text text="{i18n>priceColumn}" />
+                                </Column>
+                            </columns>
+                            <ColumnListItem
                                 type="Navigation"
-                                press="goToProductDetailChart">
-                                <m:cells>
-                                    <m:Text text="{ID}" />
-                                </m:cells>
-                                <m:cells>
-                                    <m:Text text="{Name}" />
-                                </m:cells>
-                                <m:cells>
-                                    <m:Text text="{Status}" />
-                                </m:cells>
-                                <m:cells>
-                                    <m:FlexBox direction="Row" gap="2px">
-                                        <m:Text text="{Price_amount}" />
-                                        <m:Text text="{Price_currency}" />
-                                    </m:FlexBox>
-                                </m:cells>
-                            </m:ColumnListItem>
-                        </m:Table>
-                    </ObjectPageSubSection>
-                </subSections>
-            </ObjectPageSection>
-            <ObjectPageSection
+                                press="onColumnListItemGoToProductDetailChartPress">
+                                <cells>
+                                    <Text text="{ID}" />
+                                </cells>
+                                <cells>
+                                    <Text text="{Name}" />
+                                </cells>
+                                <cells>
+                                    <Text text="{Status}" />
+                                </cells>
+                                <cells>
+                                    <FlexBox direction="Row">
+                                        <Text text="{Price_amount}" />
+                                        <Text text="{Price_currency}" />
+                                    </FlexBox>
+                                </cells>
+                            </ColumnListItem>
+                        </Table>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection
                 titleUppercase="false"
-                id="CreateDetailsSection">
-                <subSections>
-                    <ObjectPageSubSection
-                        id="CreateDetailsSubSection"
+                id="idCreateDetailsObjectPageSection">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection
+                        id="idCreateDetailsObjectPageSubSection"
                         titleUppercase="false"
                         title="{i18n>storeCreateDetail}">
-                        <blocks>
+                        <uxap:blocks>
                             <forms:SimpleForm class="sapUxAPObjectPageSubSectionAlignContent">
                                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                                    <m:Label
-                                        labelFor="createdAt"
+                                    <Label
+                                        labelFor="idCreatedAtText"
                                         showColon="true"
                                         text="{i18n>createdAt}" />
-                                    <m:Text id="createdAt" text="{createdAt}" />
+                                    <Text id="idCreatedAtText" text="{createdAt}" />
                                 </layout:VerticalLayout>
                                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                                    <m:Label
-                                        labelFor="modifyTime"
+                                    <Label
+                                        labelFor="idModifiedAtText"
                                         showColon="true"
                                         text="{i18n>modifyTime}" />
-                                    <m:Text text="{modifiedAt}" id="modifyTime" />
-                                    <m:Label
-                                        labelFor="Established"
-                                        text="{i18n>Established}"
+                                    <Text text="{modifiedAt}" id="idModifiedAtText" />
+                                    <Label
+                                        labelFor="idEstablishedText"
+                                        text="{i18n>established}"
                                         showColon="true" />
-                                    <m:Text text="{Established}" id="Established" />
+                                    <Text text="{Established}" id="idEstablishedText" />
                                 </layout:VerticalLayout>
                             </forms:SimpleForm>
-                        </blocks>
-                    </ObjectPageSubSection>
-                </subSections>
-            </ObjectPageSection>
-        </sections>
-    </ObjectPageLayout>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+    </uxap:ObjectPageLayout>
 </mvc:View>

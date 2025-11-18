@@ -8,7 +8,7 @@ sap.ui.define(
     'use strict';
 
     return Controller.extend('freestylesapui5app.controller.ListReportStores', {
-      onGoButtonPressed(oEvent) {
+      onFilterBarGoButtonSearch(oEvent) {
         const oFilterBarSelectionSet = oEvent.getParameter('selectionSet');
 
         const aFilters = [];
@@ -26,7 +26,7 @@ sap.ui.define(
         this.filterFunction(aFilters);
       },
 
-      onGoToORProductsDetailPress(oEvent) {
+      onColumnListItemGoToProductsDetailPress(oEvent) {
         const oItem = oEvent.getSource();
         const oContext = oItem.getBindingContext();
         const sProductId = oContext.getProperty('ID');
@@ -36,7 +36,7 @@ sap.ui.define(
           .navTo('ObjectPageStoreDetails', { id: sProductId });
       },
 
-      onSearchInput(oEvent) {
+      onInputListReportLiveChange(oEvent) {
         const sValue = oEvent.getSource().getValue().trim();
 
         const aFilter = [];
@@ -58,7 +58,7 @@ sap.ui.define(
       },
 
       filterFunction(aValue) {
-        const oList = this.byId('StoresTable');
+        const oList = this.byId('idStoresTable');
         const oBinding = oList.getBinding('items');
         oBinding.filter(aValue);
       },

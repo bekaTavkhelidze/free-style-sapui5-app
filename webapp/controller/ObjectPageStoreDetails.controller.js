@@ -7,39 +7,45 @@ sap.ui.define(
   (Controller, Filter, FilterOperator) => {
     'use strict';
 
+    _activeId: null;
     return Controller.extend(
       'freestylesapui5app.controller.ObjectPageStoreDetails',
       {
         onInit() {
           const oRouter = this.getOwnerComponent().getRouter();
+          console.log('onInit function');
 
           oRouter
             .getRoute('ObjectPageStoreDetails')
-            .attachPatternMatched(this.onObjectMatched, this);
+            .attachPatternMatched(this._onObjectMatched, this);
         },
 
-        onObjectMatched(oEvent) {
-          const sActiveId = globalThis.decodeURIComponent(
-            oEvent.getParameter('arguments').id
-          );
+        _onObjectMatched(oEvent) {
+          const sActiveId = oEvent.getParameter('arguments').id;
 
-          const ODataModel = this.getOwnerComponent().getModel();
-
-          ODataModel.read("/Stores(guid'" + sActiveId + "' )", {
-            urlParameters: {
-              $expand: 'Products',
-            },
-            success: () => {
-              const oContext = ODataModel.createBindingContext(
-                "/Stores(guid'" + sActiveId + "')"
-              );
-
-              this.getView().setBindingContext(oContext);
-            },
+          this._activeId = sActiveId;
+          this.getView().bindElement({
+            path: "/Stores(guid'" + sActiveId + "' )",
+            Parameters: { $expand: 'Products' },
           });
+
+          // const ODataModel = this.getOwnerComponent().getModel();
+
+          // ODataModel.read("/Stores(guid'" + sActiveId + "' )", {
+          //   urlParameters: {
+          //     $expand: 'Products',
+          //   },
+          //   success: () => {
+          //     const oContext = ODataModel.createBindingContext(
+          //       "/Stores(guid'" + sActiveId + "')"
+          //     );
+
+          //     this.getView().setBindingContext(oContext);
+          //   },
+          // });
         },
 
-        onSearchProduct(oValue) {
+        onSearchFieldProductSearch(oValue) {
           const aFilter = [];
           const sQuery = oValue.getParameter('query').trim();
 
@@ -61,26 +67,22 @@ sap.ui.define(
             );
           }
 
-          const oTable = this.byId('productsTable');
+          const oTable = this.byId('idProductsTable');
 
           const oBinding = oTable.getBinding('items');
 
           oBinding.filter(aFilter);
         },
 
-        onGoBackToStoresListReport() {
+        onStoreLinkGoBackToStoresListReportPress() {
           const oRouter = this.getOwnerComponent().getRouter();
           oRouter.navTo('RouteListReport');
         },
 
-        goToProductDetailChart(oEvent) {
-          const oItem = oEvent.getSource();
-          const oContext = oItem.getBindingContext();
-          const sId = oContext.getProperty('ID');
-
+        onColumnListItemGoToProductDetailChartPress() {
           this.getOwnerComponent()
             .getRouter()
-            .navTo('ChartPageStoreDetails', { id: sId });
+            .navTo('ChartPageStoreDetails', { id: this._activeId });
         },
       }
     );
