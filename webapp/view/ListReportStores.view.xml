@@ -1,15 +1,9 @@
-<mvc:View
-    controllerName="freestylesapui5app.controller.ListReportStores"
+<mvc:View controllerName="freestylesapui5app.controller.ListReportStores"
     xmlns="sap.m"
     xmlns:f="sap.f"
     xmlns:fb="sap.ui.comp.filterbar"
-    xmlns:mvc="sap.ui.core.mvc"
->
-    <f:DynamicPage
-        id="idDynamicPage"
-        headerExpanded="true"
-        toggleHeaderOnTitleClick="true"
-        preserveHeaderStateOnScroll="false">
+    xmlns:mvc="sap.ui.core.mvc">
+    <f:DynamicPage id="idDynamicPage" headerExpanded="true" toggleHeaderOnTitleClick="true" preserveHeaderStateOnScroll="false">
         <f:title>
             <f:DynamicPageTitle id="idListReportDynamicPageTitle">
                 <f:heading>
@@ -21,45 +15,24 @@
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
-                    <fb:FilterBar
-                        id="idListReportFilterBar"
-                        useToolbar="false"
-                        search="onFilterBarGoButtonSearch">
+                    <fb:FilterBar id="idListReportFilterBar" useToolbar="false" search="onFilterBarGoButtonSearch">
                         <fb:filterGroupItems>
-                            <fb:FilterGroupItem
-                                name="Name"
-                                groupName="ListReportGroup"
-                                visibleInFilterBar="true">
+                            <fb:FilterGroupItem name="Name" groupName="ListReportGroup" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input
-                                        liveChange="onInputListReportLiveChange"
-                                        name="Name"
-                                        placeholder="{i18n>searchInput}" />
+                                    <Input liveChange="onInputListReportLiveChange" name="Name" placeholder="{i18n>searchInput}" />
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem
-                                name="Email"
-                                label="{i18n>emailFilterLabel}"
-                                groupName="ListReportGroup"
-                                visibleInFilterBar="true">
+                            <fb:FilterGroupItem name="Email" label="{i18n>emailFilterLabel}" groupName="ListReportGroup" visibleInFilterBar="true">
                                 <fb:control>
                                     <MultiInput name="Email" />
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem
-                                name="PhoneNumber"
-                                label="{i18n>phoneFilterLabel}"
-                                groupName="ListReportGroup"
-                                visibleInFilterBar="true">
+                            <fb:FilterGroupItem name="PhoneNumber" label="{i18n>phoneFilterLabel}" groupName="ListReportGroup" visibleInFilterBar="true">
                                 <fb:control>
                                     <MultiInput name="PhoneNumber" />
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem
-                                name="Address"
-                                label="{i18n>addressFilterLabel}"
-                                groupName="ListReportGroup"
-                                visibleInFilterBar="true">
+                            <fb:FilterGroupItem name="Address" label="{i18n>addressFilterLabel}" groupName="ListReportGroup" visibleInFilterBar="true">
                                 <fb:control>
                                     <MultiInput name="Address" />
                                 </fb:control>
@@ -70,18 +43,13 @@
             </f:DynamicPageHeader>
         </f:header>
         <f:content>
-            <Table
-                mode="MultiSelect"
-                items="{/Stores}"
-                id="idStoresTable"
-                autoPopinMode="true"
-                width="auto">
+            <Table mode="MultiSelect" items="{/Stores}" id="idStoresTable" autoPopinMode="true" width="auto">
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>
                             <Title text="{i18n>nameTableTitle}" level="H2" />
                             <ToolbarSpacer />
-                            <Button text="{i18n>addStore}" type="Emphasized" />
+                            <Button text="{i18n>addStore}" type="Emphasized" press="onAddButtonStorePress" />
                             <Button text="{i18n>deleteStore}" type="Default" />
                         </content>
                     </OverflowToolbar>

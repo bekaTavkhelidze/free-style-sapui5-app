@@ -3,8 +3,10 @@ sap.ui.define(
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
+    'sap/ui/model/json/JSONModel',
+    'sap/m/MessageToast',
   ],
-  (Controller, Filter, FilterOperator) => {
+  (Controller, Filter, FilterOperator, JSONModel, MessageToast) => {
     'use strict';
 
     return Controller.extend('freestylesapui5app.controller.ListReportStores', {
@@ -61,6 +63,46 @@ sap.ui.define(
         const oList = this.byId('idStoresTable');
         const oBinding = oList.getBinding('items');
         oBinding.filter(aValue);
+      },
+
+      async onAddButtonStorePress() {
+        this.oDialog ??= await this.loadFragment({
+          name: 'freestylesapui5app.fragments.CreateStoreDialog',
+        });
+        this.getView().addDependent(this.oDialog);
+
+        const ODialogData = new JSONModel({
+          Name: '',
+          FloorArea: '',
+          Address: '',
+          Email: '',
+          PhoneNumber: '',
+        });
+        this.getView().setModel(ODialogData, 'createStory');
+
+        this.oDialog.open();
+      },
+
+      onCreateButtonPress() {
+        const oFormData = this.getView().getModel('createStory').getData();
+
+        const oDataModel = this.getOwnerComponent().getModel();
+        oDataModel.create('/Stores', oFormData, {
+          success: () => {
+            var sSuccessMsg =
+              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy\r\n eirmod.';
+            MessageToast.show(sSuccessMsg);
+            this.oDialog.close();
+          },
+          error() {
+            var sErrorMsg = 'somthing went wrong';
+            MessageToast.show(sErrorMsg);
+            this.oDialog.close();
+          },
+        });
+      },
+      onCancelButtonPress() {
+        this.oDialog.close();
       },
     });
   }
