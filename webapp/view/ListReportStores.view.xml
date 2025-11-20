@@ -50,7 +50,7 @@
                             <Title text="{i18n>nameTableTitle}" level="H2" />
                             <ToolbarSpacer />
                             <Button text="{i18n>addStore}" type="Emphasized" press="onAddButtonStorePress" />
-                            <Button text="{i18n>deleteStore}" type="Default" />
+                            <Button text="{i18n>deleteStore}" type="Default" press="onDeleteButtonPress"/>
                         </content>
                     </OverflowToolbar>
                 </headerToolbar>

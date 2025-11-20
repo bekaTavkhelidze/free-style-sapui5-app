@@ -5,11 +5,20 @@ sap.ui.define(
     'sap/ui/model/FilterOperator',
     'sap/ui/model/json/JSONModel',
     'sap/m/MessageToast',
+    'sap/ui/model/BindingMode',
   ],
-  (Controller, Filter, FilterOperator, JSONModel, MessageToast) => {
+  (
+    Controller,
+    Filter,
+    FilterOperator,
+    JSONModel,
+    MessageToast,
+    BindingMode
+  ) => {
     'use strict';
 
     return Controller.extend('freestylesapui5app.controller.ListReportStores', {
+      _oDialog: null,
       onFilterBarGoButtonSearch(oEvent) {
         const oFilterBarSelectionSet = oEvent.getParameter('selectionSet');
 
@@ -66,43 +75,99 @@ sap.ui.define(
       },
 
       async onAddButtonStorePress() {
-        this.oDialog ??= await this.loadFragment({
+        this._oDialog ??= await this.loadFragment({
           name: 'freestylesapui5app.fragments.CreateStoreDialog',
         });
-        this.getView().addDependent(this.oDialog);
+        this.getView().addDependent(this._oDialog);
 
-        const ODialogData = new JSONModel({
+        const oDialogData = new JSONModel({
           Name: '',
           FloorArea: '',
           Address: '',
           Email: '',
           PhoneNumber: '',
         });
-        this.getView().setModel(ODialogData, 'createStory');
+        this.getView().setModel(oDialogData, 'createStory');
 
-        this.oDialog.open();
+        const oValidationCreateStore = new JSONModel({
+          Name: true,
+          FloorArea: true,
+          Address: true,
+          Email: true,
+          PhoneNumber: true,
+        });
+        oValidationCreateStore.setDefaultBindingMode(BindingMode.TwoWay);
+
+        this.getView().setModel(oValidationCreateStore, 'validation');
+
+        this._oDialog.open();
       },
 
       onCreateButtonPress() {
         const oFormData = this.getView().getModel('createStory').getData();
 
+        // validate Input
+        if (!this._validate()) return;
+
+        const oBundle = this.getView().getModel('i18n').getResourceBundle();
+
         const oDataModel = this.getOwnerComponent().getModel();
         oDataModel.create('/Stores', oFormData, {
           success: () => {
-            var sSuccessMsg =
-              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy\r\n eirmod.';
+            this.onCancelButtonPress();
+            var sSuccessMsg = oBundle.getText('successTextCreateStore');
             MessageToast.show(sSuccessMsg);
-            this.oDialog.close();
           },
           error() {
-            var sErrorMsg = 'somthing went wrong';
+            this.onCancelButtonPress();
+            var sErrorMsg = oBundle.getText('errorTextCreateStore');
             MessageToast.show(sErrorMsg);
-            this.oDialog.close();
           },
         });
       },
       onCancelButtonPress() {
-        this.oDialog.close();
+        this._oDialog.close();
+      },
+
+      _validate() {
+        const oInput = this.getView().getModel('createStory').getData();
+        const oValidationModel = this.getView().getModel('validation');
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        oValidationModel.setProperty('/Name', !!oInput.Name);
+
+        const bEmailValid = !!oInput.Email && emailRegex.test(oInput.Email);
+        oValidationModel.setProperty('/Email', bEmailValid);
+
+        oValidationModel.setProperty('/Address', !!oInput.Address);
+        oValidationModel.setProperty('/FloorArea', !!oInput.FloorArea);
+        oValidationModel.setProperty('/PhoneNumber', !!oInput.PhoneNumber);
+
+        return !Object.values(oValidationModel.getData()).includes(false);
+      },
+
+      onDeleteButtonPress() {
+        const oTable = this.byId('idStoresTable');
+        const oSelected = oTable.getSelectedItems();
+
+        const oDataModel = this.getView().getModel();
+        const oBundle = this.getView().getModel('i18n').getResourceBundle();
+
+        oSelected.forEach((oItem) => {
+          const sPath = oItem.getBindingContext().getPath();
+
+          oDataModel.remove(sPath, {
+            success: () => {
+              var sSuccessMsg = oBundle.getText('successTextDeleteStore');
+              MessageToast.show(sSuccessMsg);
+            },
+            error: () => {
+              var sErrorMsg = oBundle.getText('errorTextCreateStore');
+              MessageToast.show(sErrorMsg);
+            },
+          });
+        });
       },
     });
   }

@@ -1,26 +1,26 @@
 <core:FragmentDefinition xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:forms="sap.ui.layout.form">
-    <Dialog id="idCreateStoreDialog" title="Create Store">
+    <Dialog id="idCreateStoreDialog" title="{i18n>createStoreDialogTitle}">
         <content>
             <forms:SimpleForm>
-                <Label labelFor="idNameCreateText" text="{i18n>nameColumnTitle}" showColon="true" />
-                <Input id='idNameCreateText' value="{createStory>/Name}"/>
-                <Label labelFor="idEmailCreateText" text="{i18n>emailColumnTitle}" showColon="true" />
-                <Input type="Email" value="{createStory>/Email}" id='idEmailCreateText' />
-                <Label labelFor="idPhoneNumberCreateText" text="{i18n>phoneColumnTitle}" showColon="true" />
-                <Input type="Tel" id='idPhoneNumberCreateText' value="{createStory>/PhoneNumber}" />
-                <Label labelFor="idFloorAreaCreateText" text="{i18n>floorArea}" showColon="true" />
-                <Input id='idFloorAreaCreateText' value="{createStory>/FloorArea}"/>
-                <Label labelFor="idAddressCreateText" text="{i18n>addressColumnTitle}" showColon="true" />
-                <Input id='idAddressCreateText' value="{createStory>/Address}"/>
+                <Label labelFor="idNameCreateText" required="true" text="{i18n>nameColumnTitle}" showColon="true" />
+                <Input id='idNameCreateText' value="{createStory>/Name}" valueLiveUpdate="true" valueState="{= ${validation>/Name} ? 'None' : 'Error'}" valueStateText="{i18n>nameInputValidationText}" />
+                <Label labelFor="idEmailCreateText" required="true" text="{i18n>emailColumnTitle}" showColon="true" />
+                <Input type="Email" value="{createStory>/Email}" id='idEmailCreateText' valueState="{= ${validation>/Email} ? 'None' : 'Error'}" valueStateText="{i18n>emailInputValidationText}" />
+                <Label labelFor="idPhoneNumberCreateText" required="true" text="{i18n>phoneColumnTitle}" showColon="true" />
+                <Input type="Tel" id='idPhoneNumberCreateText' valueLiveUpdate="true" value="{createStory>/PhoneNumber}" valueState="{= ${validation>/PhoneNumber} ? 'None' : 'Error'}" />
+                <Label labelFor="idFloorAreaCreateText" required="true" text="{i18n>floorArea}" showColon="true" />
+                <Input id='idFloorAreaCreateText' value="{createStory>/FloorArea}" valueState="{= ${validation>/Email} ? 'None' : 'Error'}" />
+                <Label labelFor="idAddressCreateText" required="true" text="{i18n>addressColumnTitle}" showColon="true" />
+                <Input id='idAddressCreateText' value="{createStory>/Address}" valueState="{= ${validation>/Address} ? 'None' : 'Error'}"/>
             </forms:SimpleForm>
         </content>
         <beginButton>
-            <Button text="Create" press="onCreateButtonPress"></Button>
+            <Button text="{i18n>create}" press="onCreateButtonPress"></Button>
         </beginButton>
         <endButton>
-            <Button text="Cancel" press="onCancelButtonPress" />
+            <Button text="{i18n>cancel}" press="onCancelButtonPress" />
         </endButton>
     </Dialog>
 </core:FragmentDefinition>
