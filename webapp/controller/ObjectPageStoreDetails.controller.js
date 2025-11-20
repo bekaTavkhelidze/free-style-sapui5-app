@@ -3,8 +3,9 @@ sap.ui.define(
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
+    'sap/ui/model/json/JSONModel',
   ],
-  (Controller, Filter, FilterOperator) => {
+  (Controller, Filter, FilterOperator, JSONModel) => {
     'use strict';
 
     return Controller.extend(
@@ -23,10 +24,11 @@ sap.ui.define(
           const sActiveId = oEvent.getParameter('arguments').id;
 
           this._activeId = sActiveId;
-          this.getView().bindElement({
+          const oData = this.getView().bindElement({
             path: "/Stores(guid'" + sActiveId + "' )",
             Parameters: { $expand: 'Products' },
           });
+          console.log(oData.getObject());
         },
 
         onSearchFieldProductSearch(oValue) {
@@ -67,6 +69,29 @@ sap.ui.define(
           this.getOwnerComponent()
             .getRouter()
             .navTo('ChartPageStoreDetails', { id: this._activeId });
+        },
+
+        onEditButtonPress() {
+          const oEditMode = this.getView().getModel('isEditModeActive');
+
+          const oObject = this.getView().getBindingContext().getObject();
+          console.log(oObject);
+
+          const oEditInputs = new JSONModel({
+            Email: oObject.Email,
+            Name: oObject.Name,
+            PhoneNumber: oObject.PhoneNumber,
+            Address: oObject.Address,
+            FloorArea: oObject.FloorArea,
+          });
+          this.getView().setModel(oEditInputs, 'editInputs');
+          oEditMode.setProperty('/isEditModeActive', true);
+        },
+
+        onCancelButtonPress() {
+          const oEditMode = this.getView().getModel('isEditModeActive');
+
+          oEditMode.setProperty('/isEditModeActive', false);
         },
       }
     );

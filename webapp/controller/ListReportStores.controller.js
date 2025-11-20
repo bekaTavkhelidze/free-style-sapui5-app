@@ -19,6 +19,7 @@ sap.ui.define(
 
     return Controller.extend('freestylesapui5app.controller.ListReportStores', {
       _oDialog: null,
+
       onFilterBarGoButtonSearch(oEvent) {
         const oFilterBarSelectionSet = oEvent.getParameter('selectionSet');
 
