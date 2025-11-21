@@ -87,14 +87,15 @@
                                         <Title text="{i18n>nameTableTitle}" level="H2" />
                                         <ToolbarSpacer />
                                         <SearchField search="onSearchFieldProductSearch" placeholder="{i18n>search}" width="200px" />
-                                        <Button text="{i18n>addStore}" type="Emphasized" />
-                                        <Button text="{i18n>deleteStore}" type="Default" />
+                                        <Button text="{i18n>addStore}" type="Emphasized" press="onAddButtonProductPress" />
+                                        <Button text="{i18n>deleteStore}" type="Default" press="onDeleteButtonProductPress"/>
                                     </content>
                                 </OverflowToolbar>
                             </headerToolbar>
+
                             <columns>
                                 <Column>
-                                    <Text text="{i18n>idColumnTitle}" />
+                                    <Text text="{i18n>madeInColumnTitle}" />
                                 </Column>
                                 <Column>
                                     <Text text="{i18n>nameColumnTitle}" />
@@ -106,9 +107,14 @@
                                     <Text text="{i18n>priceColumn}" />
                                 </Column>
                             </columns>
+                            <InputListItem >
+
+                                <Text text="t"></Text>
+
+                            </InputListItem>
                             <ColumnListItem type="Navigation" press="onColumnListItemGoToProductDetailChartPress">
                                 <cells>
-                                    <Text text="{ID}" />
+                                    <Text text="{MadeIn}" />
                                 </cells>
                                 <cells>
                                     <Text text="{Name}" />

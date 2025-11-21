@@ -33,35 +33,32 @@ sap.ui.define(
         onSearchFieldProductSearch(oValue) {
           const aFilter = [];
           const sQuery = oValue.getParameter('query').trim();
-
           if (sQuery) {
             aFilter.push(
               new Filter({
                 filters: [
                   new Filter('Name', FilterOperator.Contains, sQuery),
                   new Filter('Status', FilterOperator.Contains, sQuery),
+                  new Filter('MadeIn', FilterOperator.Contains, sQuery),
                   new Filter(
                     'Price_amount',
-                    FilterOperator.Contains,
-                    Number(sQuery)
+                    FilterOperator.EQ,
+                    Number(sQuery) ? Number(sQuery) : -1
                   ),
-                  new Filter('ID', FilterOperator.Contains, sQuery),
                 ],
                 and: false,
               })
             );
           }
-
           const oTable = this.byId('idProductsTable');
 
           const oBinding = oTable.getBinding('items');
-
           oBinding.filter(aFilter);
         },
 
         onStoreLinkGoBackToStoresListReportPress() {
           const oModel = this.getView().getModel();
-          if (oModel.getPendingChanges()) {
+          if (oModel.getPendingChanges().length < 1) {
             const vErrorMessage = this.getOwnerComponent()
               .getModel('i18n')
               .getResourceBundle()
@@ -69,13 +66,15 @@ sap.ui.define(
             return MessageBox.warning(vErrorMessage);
           }
 
+          this._cancelEdit();
           const oRouter = this.getOwnerComponent().getRouter();
           oRouter.navTo('RouteListReport');
         },
 
         onColumnListItemGoToProductDetailChartPress() {
           const oModel = this.getView().getModel();
-          if (oModel.getPendingChanges()) {
+
+          if (oModel.getPendingChanges().length < 1) {
             const vErrorMessage = this.getOwnerComponent()
               .getModel('i18n')
               .getResourceBundle()
@@ -83,6 +82,7 @@ sap.ui.define(
             return MessageBox.warning(vErrorMessage);
           }
 
+          this._cancelEdit();
           this.getOwnerComponent()
             .getRouter()
             .navTo('ChartPageStoreDetails', { id: this._activeId });
@@ -96,9 +96,8 @@ sap.ui.define(
         onSaveButtonPress() {
           const oEditMode = this.getView().getModel('isEditModeActive');
           const oModel = this.getView().getModel();
-          console.log(oModel.getPendingChanges());
+
           if (!this._validate()) return;
-          // oModel.submitChanges();
 
           oEditMode.setProperty('/isEditModeActive', false);
         },
@@ -128,13 +127,28 @@ sap.ui.define(
         },
 
         onCancelButtonPress() {
-          const oEditMode = this.getView().getModel('isEditModeActive');
           const oModel = this.getView().getModel();
 
           oModel.resetChanges();
+          this._cancelEdit();
+        },
 
+        _cancelEdit() {
+          const oEditMode = this.getView().getModel('isEditModeActive');
           oEditMode.setProperty('/isEditModeActive', false);
         },
+
+        onDeleteButtonProductPress() {
+          const oTable = this.getView().byId('idProductsTable');
+          const aSelectedProducts = oTable.getSelectedItem();
+          const sPath = aSelectedProducts.getBindingContext().getPath();
+
+          const oModel = this.getView().getModel();
+
+          oModel.remove(sPath);
+        },
+
+        onAddButtonProductPress() {},
       }
     );
   }
