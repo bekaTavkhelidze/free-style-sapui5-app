@@ -90,17 +90,6 @@ sap.ui.define(
         });
         this.getView().setModel(oDialogData, 'createStory');
 
-        const oValidationCreateStore = new JSONModel({
-          Name: true,
-          FloorArea: true,
-          Address: true,
-          Email: true,
-          PhoneNumber: true,
-        });
-        oValidationCreateStore.setDefaultBindingMode(BindingMode.TwoWay);
-
-        this.getView().setModel(oValidationCreateStore, 'validation');
-
         this._oDialog.open();
       },
 
@@ -132,7 +121,8 @@ sap.ui.define(
 
       _validate() {
         const oInput = this.getView().getModel('createStory').getData();
-        const oValidationModel = this.getView().getModel('validation');
+        const oValidationModel =
+          this.getOwnerComponent().getModel('validation');
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

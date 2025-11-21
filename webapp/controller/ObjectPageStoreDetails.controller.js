@@ -3,9 +3,9 @@ sap.ui.define(
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
-    'sap/ui/model/json/JSONModel',
+    'sap/m/MessageBox',
   ],
-  (Controller, Filter, FilterOperator, JSONModel) => {
+  (Controller, Filter, FilterOperator, MessageBox) => {
     'use strict';
 
     return Controller.extend(
@@ -28,7 +28,6 @@ sap.ui.define(
             path: "/Stores(guid'" + sActiveId + "' )",
             Parameters: { $expand: 'Products' },
           });
-          console.log(oData.getObject());
         },
 
         onSearchFieldProductSearch(oValue) {
@@ -61,11 +60,29 @@ sap.ui.define(
         },
 
         onStoreLinkGoBackToStoresListReportPress() {
+          const oModel = this.getView().getModel();
+          if (oModel.getPendingChanges()) {
+            const vErrorMessage = this.getOwnerComponent()
+              .getModel('i18n')
+              .getResourceBundle()
+              .getText('unsavedChange');
+            return MessageBox.warning(vErrorMessage);
+          }
+
           const oRouter = this.getOwnerComponent().getRouter();
           oRouter.navTo('RouteListReport');
         },
 
         onColumnListItemGoToProductDetailChartPress() {
+          const oModel = this.getView().getModel();
+          if (oModel.getPendingChanges()) {
+            const vErrorMessage = this.getOwnerComponent()
+              .getModel('i18n')
+              .getResourceBundle()
+              .getText('unsavedChange');
+            return MessageBox.warning(vErrorMessage);
+          }
+
           this.getOwnerComponent()
             .getRouter()
             .navTo('ChartPageStoreDetails', { id: this._activeId });
@@ -73,23 +90,48 @@ sap.ui.define(
 
         onEditButtonPress() {
           const oEditMode = this.getView().getModel('isEditModeActive');
-
-          const oObject = this.getView().getBindingContext().getObject();
-          console.log(oObject);
-
-          const oEditInputs = new JSONModel({
-            Email: oObject.Email,
-            Name: oObject.Name,
-            PhoneNumber: oObject.PhoneNumber,
-            Address: oObject.Address,
-            FloorArea: oObject.FloorArea,
-          });
-          this.getView().setModel(oEditInputs, 'editInputs');
           oEditMode.setProperty('/isEditModeActive', true);
+        },
+
+        onSaveButtonPress() {
+          const oEditMode = this.getView().getModel('isEditModeActive');
+          const oModel = this.getView().getModel();
+          console.log(oModel.getPendingChanges());
+          if (!this._validate()) return;
+          // oModel.submitChanges();
+
+          oEditMode.setProperty('/isEditModeActive', false);
+        },
+        _validate() {
+          const oData = this.getView().getBindingContext().getObject();
+
+          const oValidationModel = this.getView().getModel('validation');
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          oValidationModel.setProperty('/PhoneNumber', !!oData.PhoneNumber);
+
+          oValidationModel.setProperty('/Name', !!oData.Name);
+
+          const bEmailValid = !!oData.Email && emailRegex.test(oData.Email);
+          oValidationModel.setProperty('/Email', bEmailValid);
+
+          oValidationModel.setProperty('/Address', !!oData.Address);
+          oValidationModel.setProperty('/FloorArea', !!oData.FloorArea);
+
+          if (
+            !oData.PhoneNumber ||
+            !oData.Address ||
+            !oData.FloorArea ||
+            !oData.Name ||
+            bEmailValid
+          )
+            return false;
         },
 
         onCancelButtonPress() {
           const oEditMode = this.getView().getModel('isEditModeActive');
+          const oModel = this.getView().getModel();
+
+          oModel.resetChanges();
 
           oEditMode.setProperty('/isEditModeActive', false);
         },

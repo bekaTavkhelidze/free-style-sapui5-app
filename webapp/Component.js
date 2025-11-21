@@ -3,8 +3,9 @@ sap.ui.define(
     'sap/ui/core/UIComponent',
     'freestylesapui5app/model/models',
     'sap/ui/model/json/JSONModel',
+    'sap/ui/model/BindingMode',
   ],
-  (UIComponent, models, JSONModel) => {
+  (UIComponent, models, JSONModel, BindingMode) => {
     'use strict';
 
     return UIComponent.extend('freestylesapui5app.Component', {
@@ -24,6 +25,17 @@ sap.ui.define(
 
         // enable routing
         this.getRouter().initialize();
+
+        const oValidationCreateStore = new JSONModel({
+          Name: true,
+          FloorArea: true,
+          Address: true,
+          Email: true,
+          PhoneNumber: true,
+        });
+        oValidationCreateStore.setDefaultBindingMode(BindingMode.TwoWay);
+
+        this.setModel(oValidationCreateStore, 'validation');
 
         const isEditModeActive = new JSONModel({
           isEditModeActive: false,

@@ -54,7 +54,7 @@
                 </layout:VerticalLayout>
             </FlexBox>
         </uxap:headerContent>
-
+        <!-- valueState="{= ${validation>/Email} ? 'None' : 'Error'}" -->
         <uxap:sections>
             <uxap:ObjectPageSection titleUppercase="true" id="idStoreDetailsObjectPageSection" title="{i18n>storeDetails}">
                 <uxap:subSections>
@@ -62,20 +62,20 @@
                         <forms:SimpleForm class="sapUxAPObjectPageSubSectionAlignContent">
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                                 <Label labelFor="idNameStoreInput" showColon="true" text="{i18n>nameColumnTitle}" />
-                                <Input value="{= ${isEditModeActive>/isEditModeActive} ? ${editInputs>/Name} : ${PhoneNumber}}" id="idNameStoreInput" editable="{isEditModeActive>/isEditModeActive}" />
+                                <Input value="{Name}" id="idNameStoreInput" valueLiveUpdate="true" valueState="{= ${Name} ? 'None' : 'Error'}" editable="{isEditModeActive>/isEditModeActive}" />
                             </layout:VerticalLayout>
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                                 <Label showColon="true" labelFor="idPhoneNumberInput" text="{i18n>phoneColumnTitle}" />
-                                <Input value="{PhoneNumber}" id="idPhoneNumberInput" editable="{isEditModeActive>/isEditModeActive}" />
+                                <Input value="{PhoneNumber}" id="idPhoneNumberInput" valueLiveUpdate="true" valueState="{= ${PhoneNumber} ? 'None' : 'Error'}" editable="{isEditModeActive>/isEditModeActive}" />
                                 <Label labelFor="idEmailInput" showColon="true" text="{i18n>emailColumnTitle}" />
-                                <Input value="{Email}" id="idEmailInput" editable="{isEditModeActive>/isEditModeActive}" />
+                                <Input value="{Email}" id="idEmailInput" valueLiveUpdate="true" valueState="{= ${Email} ? 'None' : 'Error'}" editable="{isEditModeActive>/isEditModeActive}" />
                             </layout:VerticalLayout>
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
 
                                 <Label labelFor="idAddressInput" showColon="true" text="{i18n>addressColumnTitle}" />
-                                <Input value="{Address}" id="idAddressInput" editable="{isEditModeActive>/isEditModeActive}" />
+                                <Input value="{Address}" id="idAddressInput" valueLiveUpdate="true" valueState="{= ${Address} ? 'None' : 'Error'}" editable="{isEditModeActive>/isEditModeActive}" />
                                 <Label labelFor="idFloorAreaText" showColon="true" text="{i18n>floorArea}" />
-                                <Input value="{FloorArea}" id="idFloorAreaInput" editable="{isEditModeActive>/isEditModeActive}" />
+                                <Input value="{FloorArea}" id="idFloorAreaInput" valueLiveUpdate="true" valueState="{= ${FloorArea} ? 'None' : 'Error'}" editable="{isEditModeActive>/isEditModeActive}" />
                             </layout:VerticalLayout>
                         </forms:SimpleForm>
                     </uxap:ObjectPageSubSection>
@@ -151,7 +151,7 @@
         <uxap:footer>
             <OverflowToolbar>
                 <ToolbarSpacer/>
-                <Button type="Accept" text="Save"/>
+                <Button type="Accept" text="Save" press="onSaveButtonPress"/>
                 <Button type="Reject" text="Cancel" press="onCancelButtonPress"/>
             </OverflowToolbar>
         </uxap:footer>
