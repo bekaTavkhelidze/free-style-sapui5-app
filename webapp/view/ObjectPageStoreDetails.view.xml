@@ -54,7 +54,6 @@
                 </layout:VerticalLayout>
             </FlexBox>
         </uxap:headerContent>
-        <!-- valueState="{= ${validation>/Email} ? 'None' : 'Error'}" -->
         <uxap:sections>
             <uxap:ObjectPageSection titleUppercase="true" id="idStoreDetailsObjectPageSection" title="{i18n>storeDetails}">
                 <uxap:subSections>
@@ -107,11 +106,6 @@
                                     <Text text="{i18n>priceColumn}" />
                                 </Column>
                             </columns>
-                            <InputListItem >
-
-                                <Text text="t"></Text>
-
-                            </InputListItem>
                             <ColumnListItem type="Navigation" press="onColumnListItemGoToProductDetailChartPress">
                                 <cells>
                                     <Text text="{MadeIn}" />
@@ -157,8 +151,8 @@
         <uxap:footer>
             <OverflowToolbar>
                 <ToolbarSpacer/>
-                <Button type="Accept" text="Save" press="onSaveButtonPress"/>
-                <Button type="Reject" text="Cancel" press="onCancelButtonPress"/>
+                <Button type="Accept" text="{i18n>save}" press="onSaveButtonPress"/>
+                <Button type="Reject" text="{i18n>cancel}" press="onCancelButtonPress"/>
             </OverflowToolbar>
         </uxap:footer>
     </uxap:ObjectPageLayout>
