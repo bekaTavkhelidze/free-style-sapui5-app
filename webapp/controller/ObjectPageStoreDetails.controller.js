@@ -12,6 +12,7 @@ sap.ui.define(
       'freestylesapui5app.controller.ObjectPageStoreDetails',
       {
         _activeId: null,
+        _oDialog: null,
         onInit() {
           const oRouter = this.getOwnerComponent().getRouter();
 
@@ -148,7 +149,59 @@ sap.ui.define(
           oModel.remove(sPath);
         },
 
-        onAddButtonProductPress() {},
+        async onAddButtonProductPress() {
+          this._oDialog ??= await this.loadFragment({
+            name: 'freestylesapui5app.fragments.CreateProductDialog',
+          });
+          this.getView().addDependent(this._oDialog);
+          const oModel = this.getView().getModel();
+
+          const oContext = oModel.createEntry('/Products', {
+            properties: {
+              Name: '',
+              Status: '231',
+              MadeIn: '',
+              Rating: null,
+              Price_amount: '',
+              Specs: 'Test',
+              Store_ID: this._activeId,
+            },
+          });
+          this.byId('idCreateProductDialog').bindElement(oContext.getPath());
+
+          const oDataContext = this._oDialog.open();
+        },
+
+        onCreateButtonProductPress() {
+          const {
+            Name,
+            Status,
+            MadeIn,
+            Rating,
+            Price_amount,
+            Store_ID,
+            Specs,
+          } = this.byId('idCreateProductDialog')
+            .getBindingContext()
+            .getObject();
+          console.log(
+            Name,
+            Status,
+            MadeIn,
+            Rating,
+            Price_amount,
+            Store_ID,
+            Specs
+          );
+          if (!Name || !Status || !MadeIn || !Rating || !Price_amount) return;
+          const oModel = this.getView().getModel();
+
+          oModel.submitChanges();
+          this._oDialog.close();
+        },
+        onCancelButtonProductPress() {
+          this._oDialog.close();
+        },
       }
     );
   }

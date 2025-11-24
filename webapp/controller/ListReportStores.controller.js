@@ -5,16 +5,8 @@ sap.ui.define(
     'sap/ui/model/FilterOperator',
     'sap/ui/model/json/JSONModel',
     'sap/m/MessageToast',
-    'sap/ui/model/BindingMode',
   ],
-  (
-    Controller,
-    Filter,
-    FilterOperator,
-    JSONModel,
-    MessageToast,
-    BindingMode
-  ) => {
+  (Controller, Filter, FilterOperator, JSONModel, MessageToast) => {
     'use strict';
 
     return Controller.extend('freestylesapui5app.controller.ListReportStores', {
