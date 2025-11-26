@@ -33,6 +33,7 @@
                 <uxap:actions>
                     <Button text="{i18n>editBtn}" type="Emphasized" press="onEditButtonPress" />
                     <Button type="Transparent" text="{i18n>deleteBtn}" />
+                    <Button type="Transparent" text="invokeImportFunction" press="onInvokeImportFunctionButtonPress" />
                 </uxap:actions>
             </uxap:ObjectPageDynamicHeaderTitle>
         </uxap:headerTitle>
@@ -94,7 +95,7 @@
 
                             <columns>
                                 <Column>
-                                    <Text text="{i18n>madeInColumnTitle}" />
+                                    <Text text="{i18n>madeInColumnTitle}" visible="{!isEditModeActive>isCreateModeActive}"/>
                                 </Column>
                                 <Column>
                                     <Text text="{i18n>nameColumnTitle}" />

@@ -4,8 +4,9 @@ sap.ui.define(
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
     'sap/m/MessageBox',
+    'sap/m/MessageToast',
   ],
-  (Controller, Filter, FilterOperator, MessageBox) => {
+  (Controller, Filter, FilterOperator, MessageBox, MessageToast) => {
     'use strict';
 
     return Controller.extend(
@@ -59,7 +60,8 @@ sap.ui.define(
 
         onStoreLinkGoBackToStoresListReportPress() {
           const oModel = this.getView().getModel();
-          if (oModel.getPendingChanges().length < 1) {
+
+          if (oModel.hasPendingChanges()) {
             const vErrorMessage = this.getOwnerComponent()
               .getModel('i18n')
               .getResourceBundle()
@@ -75,7 +77,7 @@ sap.ui.define(
         onColumnListItemGoToProductDetailChartPress() {
           const oModel = this.getView().getModel();
 
-          if (oModel.getPendingChanges().length < 1) {
+          if (oModel.hasPendingChanges()) {
             const vErrorMessage = this.getOwnerComponent()
               .getModel('i18n')
               .getResourceBundle()
@@ -100,6 +102,8 @@ sap.ui.define(
 
           if (!this._validate()) return;
 
+          oModel.submitChanges();
+
           oEditMode.setProperty('/isEditModeActive', false);
         },
         _validate() {
@@ -122,9 +126,12 @@ sap.ui.define(
             !oData.Address ||
             !oData.FloorArea ||
             !oData.Name ||
-            bEmailValid
-          )
+            !bEmailValid
+          ) {
             return false;
+          } else {
+            return true;
+          }
         },
 
         onCancelButtonPress() {
@@ -184,15 +191,7 @@ sap.ui.define(
           } = this.byId('idCreateProductDialog')
             .getBindingContext()
             .getObject();
-          console.log(
-            Name,
-            Status,
-            MadeIn,
-            Rating,
-            Price_amount,
-            Store_ID,
-            Specs
-          );
+          freestylesapui5app.controller.ObjectPageStoreDetail;
           if (!Name || !Status || !MadeIn || !Rating || !Price_amount) return;
           const oModel = this.getView().getModel();
 
@@ -201,6 +200,21 @@ sap.ui.define(
         },
         onCancelButtonProductPress() {
           this._oDialog.close();
+        },
+
+        onInvokeImportFunctionButtonPress() {
+          const oBundle = this.getView().getModel('i18n').getResourceBundle();
+          const oModel = this.getView().getModel();
+
+          oModel.callFunction('/mutate', {
+            method: 'POST',
+            urlParameters: {
+              param: 'param',
+            },
+            success() {
+              MessageToast.show(oBundle.getText('mutateExecuted'));
+            },
+          });
         },
       }
     );
