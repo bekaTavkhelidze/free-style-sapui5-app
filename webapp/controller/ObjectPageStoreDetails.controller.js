@@ -29,7 +29,7 @@ sap.ui.define(
       'freestylesapui5app.controller.ObjectPageStoreDetails',
       {
         _activeId: null,
-        _oDialog: null,
+
         _oInlineRow: null,
         onInit() {
           const oRouter = this.getOwnerComponent().getRouter();
@@ -193,6 +193,8 @@ sap.ui.define(
             this.getOwnerComponent().getModel('isCreateModeActive');
           isCreateModeActive.setProperty('/isCreateModeActive', true);
 
+          const oBundle = this.getView().getModel('i18n').getResourceBundle();
+
           const oContext = new JSONModel({
             Name: '',
             Status: '',
@@ -208,10 +210,13 @@ sap.ui.define(
             selectedKey: '{createProduct>/Status}',
 
             items: [
-              new Item({ key: '', text: 'Select status' }),
-              new Item({ key: 'OK', text: 'OK' }),
-              new Item({ key: 'STORAGE', text: 'Storage' }),
-              new Item({ key: 'OUT_OF_STOCK', text: 'Out of Stock' }),
+              new Item({ key: '', text: oBundle.getText('selectStatus') }),
+              new Item({ key: 'OK', text: oBundle.getText('ok') }),
+              new Item({ key: 'STORAGE', text: oBundle.getText('storage') }),
+              new Item({
+                key: 'OUT_OF_STOCK',
+                text: oBundle.getText('outOfStock'),
+              }),
             ],
           });
 
@@ -230,6 +235,7 @@ sap.ui.define(
         },
         onCancelButtonCreateProductPress: function () {
           const oInlineRow = this._oInlineRow;
+
           const oTable = this.byId('idProductsTable');
           const isCreateModeActive =
             this.getOwnerComponent().getModel('isCreateModeActive');
@@ -258,9 +264,7 @@ sap.ui.define(
 
         onSaveButtonProductPress() {
           const data = this.getView().getModel('createProduct').getData();
-          const isCreateModeActive =
-            this.getOwnerComponent().getModel('isCreateModeActive');
-          const oTable = this.byId('idProductsTable');
+          const oBundle = this.getView().getModel('i18n').getResourceBundle();
           const oInlineRow = this._oInlineRow;
           if (!data.Name || !data.Status || !data.MadeIn || !data.Price_amount)
             return;
@@ -272,7 +276,7 @@ sap.ui.define(
                 this.onCancelButtonCreateProductPress();
               }
               oModel.refresh(true);
-              MessageToast.show('added successfull');
+              MessageToast.show(oBundle.getText('productSuccessAdd'));
             },
           });
         },
