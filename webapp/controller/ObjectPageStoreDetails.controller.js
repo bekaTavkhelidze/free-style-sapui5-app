@@ -100,6 +100,21 @@ sap.ui.define(
           const oEditMode = this.getView().getModel('isEditModeActive');
           const oModel = this.getView().getModel();
 
+          const oTable = this.byId('idProductsTable');
+          const oBinding = oTable.getBinding('items');
+
+          const aProductContexts = oBinding.getCurrentContexts();
+          const aProducts = aProductContexts.map((oCtx) => oCtx.getObject());
+          const hasMissing = aProducts.some(
+            (product) =>
+              !product.Name ||
+              !product.Status ||
+              !product.MadeIn ||
+              !product.Rating ||
+              !product.Price_amount
+          );
+
+          if (hasMissing) return;
           if (!this._validate()) return;
 
           oModel.submitChanges();
@@ -191,7 +206,7 @@ sap.ui.define(
           } = this.byId('idCreateProductDialog')
             .getBindingContext()
             .getObject();
-          freestylesapui5app.controller.ObjectPageStoreDetail;
+
           if (!Name || !Status || !MadeIn || !Rating || !Price_amount) return;
           const oModel = this.getView().getModel();
 
