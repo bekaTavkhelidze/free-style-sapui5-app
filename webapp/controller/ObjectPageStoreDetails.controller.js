@@ -78,7 +78,7 @@ sap.ui.define(
         onStoreLinkGoBackToStoresListReportPress() {
           const oModel = this.getView().getModel();
 
-          if (oModel.hasPendingChanges() || this._CheckCreateProductsInput) {
+          if (oModel.hasPendingChanges() || this._CheckCreateProductsInput()) {
             const vErrorMessage = this.getOwnerComponent()
               .getModel('i18n')
               .getResourceBundle()
@@ -94,7 +94,7 @@ sap.ui.define(
         onColumnListItemGoToProductDetailChartPress() {
           const oModel = this.getView().getModel();
 
-          if (oModel.hasPendingChanges() || this._CheckCreateProductsInput) {
+          if (oModel.hasPendingChanges() || this._CheckCreateProductsInput()) {
             const vErrorMessage = this.getOwnerComponent()
               .getModel('i18n')
               .getResourceBundle()
