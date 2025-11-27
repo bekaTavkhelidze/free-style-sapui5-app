@@ -5,8 +5,24 @@ sap.ui.define(
     'sap/ui/model/FilterOperator',
     'sap/m/MessageBox',
     'sap/m/MessageToast',
+    'sap/m/ColumnListItem',
+    'sap/m/Input',
+    'sap/m/Select',
+    'sap/ui/core/Item',
+    'sap/ui/model/json/JSONModel',
   ],
-  (Controller, Filter, FilterOperator, MessageBox, MessageToast) => {
+  (
+    Controller,
+    Filter,
+    FilterOperator,
+    MessageBox,
+    MessageToast,
+    ColumnListItem,
+    Input,
+    Select,
+    Item,
+    JSONModel
+  ) => {
     'use strict';
 
     return Controller.extend(
@@ -14,6 +30,7 @@ sap.ui.define(
       {
         _activeId: null,
         _oDialog: null,
+        _oInlineRow: null,
         onInit() {
           const oRouter = this.getOwnerComponent().getRouter();
 
@@ -61,7 +78,7 @@ sap.ui.define(
         onStoreLinkGoBackToStoresListReportPress() {
           const oModel = this.getView().getModel();
 
-          if (oModel.hasPendingChanges()) {
+          if (oModel.hasPendingChanges() || this._CheckCreateProductsInput) {
             const vErrorMessage = this.getOwnerComponent()
               .getModel('i18n')
               .getResourceBundle()
@@ -77,7 +94,7 @@ sap.ui.define(
         onColumnListItemGoToProductDetailChartPress() {
           const oModel = this.getView().getModel();
 
-          if (oModel.hasPendingChanges()) {
+          if (oModel.hasPendingChanges() || this._CheckCreateProductsInput) {
             const vErrorMessage = this.getOwnerComponent()
               .getModel('i18n')
               .getResourceBundle()
@@ -172,49 +189,98 @@ sap.ui.define(
         },
 
         async onAddButtonProductPress() {
-          this._oDialog ??= await this.loadFragment({
-            name: 'freestylesapui5app.fragments.CreateProductDialog',
-          });
-          this.getView().addDependent(this._oDialog);
-          const oModel = this.getView().getModel();
+          const isCreateModeActive =
+            this.getOwnerComponent().getModel('isCreateModeActive');
+          isCreateModeActive.setProperty('/isCreateModeActive', true);
 
-          const oContext = oModel.createEntry('/Products', {
-            properties: {
+          const oContext = new JSONModel({
+            Name: '',
+            Status: '',
+            MadeIn: '',
+            Rating: 2,
+            Price_amount: '',
+            Specs: 'Test',
+            Store_ID: this._activeId,
+          });
+          this.getView().setModel(oContext, 'createProduct');
+
+          const oSelect = new Select({
+            selectedKey: '{createProduct>/Status}',
+
+            items: [
+              new Item({ key: '', text: 'Select status' }),
+              new Item({ key: 'OK', text: 'OK' }),
+              new Item({ key: 'STORAGE', text: 'Storage' }),
+              new Item({ key: 'OUT_OF_STOCK', text: 'Out of Stock' }),
+            ],
+          });
+
+          const oInlineItemForm = new ColumnListItem({
+            cells: [
+              new Input({ value: '{createProduct>/MadeIn}' }),
+              new Input({ value: '{createProduct>/Name}' }),
+              oSelect,
+              new Input({ value: '{createProduct>/Price_amount}' }),
+            ],
+          });
+          this._oInlineRow = oInlineItemForm;
+
+          const oTable = this.byId('idProductsTable');
+          oTable.insertItem(oInlineItemForm, 0);
+        },
+        onCancelButtonCreateProductPress: function () {
+          const oInlineRow = this._oInlineRow;
+          const oTable = this.byId('idProductsTable');
+          const isCreateModeActive =
+            this.getOwnerComponent().getModel('isCreateModeActive');
+          const oCreateModel = this.getView().getModel('createProduct');
+
+          if (oInlineRow) {
+            oTable.removeItem(oInlineRow);
+            oInlineRow.destroy();
+            this._oInlineRow = null;
+          }
+
+          isCreateModeActive.setProperty('/isCreateModeActive', false);
+
+          if (oCreateModel) {
+            oCreateModel.setData({
               Name: '',
-              Status: '231',
+              Status: '',
               MadeIn: '',
-              Rating: null,
+              Rating: '',
               Price_amount: '',
               Specs: 'Test',
               Store_ID: this._activeId,
-            },
-          });
-          this.byId('idCreateProductDialog').bindElement(oContext.getPath());
-
-          const oDataContext = this._oDialog.open();
+            });
+          }
         },
 
-        onCreateButtonProductPress() {
-          const {
-            Name,
-            Status,
-            MadeIn,
-            Rating,
-            Price_amount,
-            Store_ID,
-            Specs,
-          } = this.byId('idCreateProductDialog')
-            .getBindingContext()
-            .getObject();
-
-          if (!Name || !Status || !MadeIn || !Rating || !Price_amount) return;
+        onSaveButtonProductPress() {
+          const data = this.getView().getModel('createProduct').getData();
+          const isCreateModeActive =
+            this.getOwnerComponent().getModel('isCreateModeActive');
+          const oTable = this.byId('idProductsTable');
+          const oInlineRow = this._oInlineRow;
+          if (!data.Name || !data.Status || !data.MadeIn || !data.Price_amount)
+            return;
           const oModel = this.getView().getModel();
 
-          oModel.submitChanges();
-          this._oDialog.close();
+          oModel.create('/Products', data, {
+            success: () => {
+              if (oInlineRow) {
+                this.onCancelButtonCreateProductPress();
+              }
+              oModel.refresh(true);
+              MessageToast.show('added successfull');
+            },
+          });
         },
-        onCancelButtonProductPress() {
-          this._oDialog.close();
+
+        _CheckCreateProductsInput() {
+          const data = this.getView().getModel('createProduct').getData();
+          if (data.Name || data.Status || data.MadeIn || data.Price_amount)
+            return false;
         },
 
         onInvokeImportFunctionButtonPress() {

@@ -87,8 +87,18 @@
                                         <Title text="{i18n>nameTableTitle}" level="H2" />
                                         <ToolbarSpacer />
                                         <SearchField search="onSearchFieldProductSearch" placeholder="{i18n>search}" width="200px" />
-                                        <Button text="{i18n>addStore}" type="Emphasized" press="onAddButtonProductPress" enabled="{= !${isEditModeActive>/isEditModeActive} }" />
-                                        <Button text="{i18n>deleteStore}" type="Default" press="onDeleteButtonProductPress" enabled="{= !${isEditModeActive>/isEditModeActive} }" />
+                                        <HBox
+                                        >
+
+                                            <Button text="{i18n>addStore}" type="Emphasized" press="onAddButtonProductPress" enabled="{= !${isEditModeActive>/isEditModeActive} }" visible="{= !${isCreateModeActive>/isCreateModeActive}}" />
+
+                                            <Button text="{i18n>save}" type="Emphasized" press="onSaveButtonProductPress" enabled="{= !${isEditModeActive>/isEditModeActive} }" visible="{= ${isCreateModeActive>/isCreateModeActive}}" />
+                                        </HBox>
+                                        <HBox>
+
+                                            <Button text="{i18n>deleteStore}" type="Default" press="onDeleteButtonProductPress" enabled="{= !${isEditModeActive>/isEditModeActive} }" visible="{= !${isCreateModeActive>/isCreateModeActive}}"/>
+                                            <Button text="{i18n>cancel}" type="Default" press="onCancelButtonCreateProductPress" enabled="{= !${isEditModeActive>/isEditModeActive} }" visible="{= ${isCreateModeActive>/isCreateModeActive}}"/>
+                                        </HBox>
                                     </content>
                                 </OverflowToolbar>
                             </headerToolbar>
