@@ -1,18 +1,10 @@
-<mvc:View
-    controllerName="freestylesapui5app.controller.ObjectPageStoreDetails"
+<mvc:View controllerName="freestylesapui5app.controller.ObjectPageStoreDetails"
     xmlns="sap.uxap"
-    xmlns:core="sap.ui.core"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:layout="sap.ui.layout"
     xmlns:m="sap.m"
-    xmlns:forms="sap.ui.layout.form"
->
-    <ObjectPageLayout
-        id="ObjectPageLayout"
-        enableLazyLoading="true"
-        useIconTabBar="true"
-        showTitleInHeaderContent="true"
-        upperCaseAnchorBar="false">
+    xmlns:forms="sap.ui.layout.form">
+    <ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="true" useIconTabBar="true" showTitleInHeaderContent="true" upperCaseAnchorBar="false">
         <headerTitle>
             <ObjectPageDynamicHeaderTitle>
                 <expandedHeading>
@@ -34,7 +26,6 @@
                 <snappedTitleOnMobile>
                     <m:Title text="{Name}" />
                 </snappedTitleOnMobile>
-
                 <actions>
                     <m:Button text="{i18n>EditBtn}" type="Emphasized" />
                     <m:Button type="Transparent" text="{i18n>DeleteBtn}" />
@@ -42,68 +33,54 @@
             </ObjectPageDynamicHeaderTitle>
         </headerTitle>
 
-
         <headerContent>
             <m:FlexBox wrap="Wrap" fitContainer="true">
-                <m:Avatar
-                    displaySize="XL"
-                    backgroundColor="Transparent"
-                    press="onPress" />
+                <m:Avatar displaySize="XL" backgroundColor="Transparent" press="onPress" />
 
                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                     <m:Link text="{PhoneNumber}" />
                     <m:Link text="{Email}" />
                 </layout:VerticalLayout>
 
-
                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                    <m:Label labelFor="AddressHeader" showColon="true"
-                        text="{i18n>addressFilterLabel} " />
+                    <m:Label labelFor="AddressHeader" showColon="true" text="{i18n>addressFilterLabel} " />
                     <m:Text text="{Address}" id="AddressHeader"></m:Text>
                 </layout:VerticalLayout>
             </m:FlexBox>
         </headerContent>
 
         <sections>
-            <ObjectPageSection
-                titleUppercase="true"
-                id="storeDetails"
-                title="{i18n>StoreDetails}">
+            <ObjectPageSection id="storeDetails" title="{i18n>StoreDetails}">
                 <subSections>
-                    <ObjectPageSubSection id="goalsSS1" titleUppercase="true">
+                    <ObjectPageSubSection id="StoreDetail" titleUppercase="true">
                         <forms:SimpleForm class="sapUxAPObjectPageSubSectionAlignContent">
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                                 <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label labelFor="StoreName" showColon="true"
-                                        text="{i18n>nameColumnTitle}" />
+                                    <m:Label labelFor="StoreName" showColon="true" text="{i18n>nameColumnTitle}" />
                                     <!-- <m:Input value="{Name}" id="StoreName" /> -->
                                     <m:Text text="{Name}" id="StoreName" />
                                 </m:FlexBox>
                             </layout:VerticalLayout>
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                                 <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label showColon="true" labelFor="phoneNumber"
-                                        text="{i18n>phoneColumnTitle}" />
+                                    <m:Label showColon="true" labelFor="phoneNumber" text="{i18n>phoneColumnTitle}" />
                                     <!-- <m:Input value="{PhoneNumber}" id="phoneNumber" /> -->
                                     <m:Text text="{PhoneNumber}" id="phoneNumber" />
                                 </m:FlexBox>
                                 <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label labelFor="Email" showColon="true"
-                                        text="{i18n>emailColumnTitle}" />
+                                    <m:Label labelFor="Email" showColon="true" text="{i18n>emailColumnTitle}" />
                                     <!-- <m:Input value="{Email}" id="Email" /> -->
                                     <m:Text text="{Email}" id="Email" />
                                 </m:FlexBox>
                             </layout:VerticalLayout>
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                                 <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label labelFor="Address" showColon="true"
-                                        text="{i18n>addressColumnTitle}" />
+                                    <m:Label labelFor="Address" showColon="true" text="{i18n>addressColumnTitle}" />
                                     <!-- <m:Input value="{Address}" id="Address" /> -->
                                     <m:Text text="{Address}" id="Address" />
                                 </m:FlexBox>
                                 <m:FlexBox gap="10px" alignItems="Center">
-                                    <m:Label labelFor="FloorArea" showColon="true"
-                                        text="{i18n>floorArea}" />
+                                    <m:Label labelFor="FloorArea" showColon="true" text="{i18n>floorArea}" />
                                     <!-- <m:Input value="{FloorArea}" id="FloorArea" /> -->
                                     <m:Text text="{FloorArea}" id="FloorArea" />
                                 </m:FlexBox>
@@ -111,22 +88,14 @@
                         </forms:SimpleForm>
 
                     </ObjectPageSubSection>
-                    <ObjectPageSubSection
-                        id="productDetails"
-                        titleUppercase="true"
-                        title="{i18n>AssemblyOptions}">
-                        <m:Table
-                            items="{Products}"
-                            id="productsTable"
-                            autoPopinMode="true"
-                            width="auto">
+                    <ObjectPageSubSection id="productDetails" titleUppercase="true" title="{i18n>AssemblyOptions}">
+                        <m:Table items="{Products}" id="productsTable" autoPopinMode="true" width="auto">
                             <m:headerToolbar>
                                 <m:OverflowToolbar>
                                     <m:content>
                                         <m:Title text="{i18n>nameTableTitle}" level="H2" />
                                         <m:ToolbarSpacer />
-                                        <m:SearchField search="onSearchProduct"
-                                            placeholder="{i18n>search}" width="200px" />
+                                        <m:SearchField search="onSearchProduct" placeholder="{i18n>search}" width="200px" />
                                         <m:Button text="{i18n>addStore}" type="Emphasized" />
                                         <m:Button text="{i18n>deleteStore}" type="Default" />
                                     </m:content>
@@ -168,27 +137,19 @@
                     </ObjectPageSubSection>
                 </subSections>
             </ObjectPageSection>
-            <ObjectPageSection
-                titleUppercase="false"
-                id="connections">
+            <ObjectPageSection titleUppercase="false" id="connections">
                 <subSections>
-                    <ObjectPageSubSection
-                        id="connectionsSS1"
-                        titleUppercase="false"
-                        title="{i18n>storeCreateDetail}">
+                    <ObjectPageSubSection id="connectionsSS1" titleUppercase="false" title="{i18n>storeCreateDetail}">
                         <blocks>
                             <forms:SimpleForm class="sapUxAPObjectPageSubSectionAlignContent">
                                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                                    <m:Label labelFor="createdAt" showColon="true"
-                                        text="{i18n>createdAt}" />
+                                    <m:Label labelFor="createdAt" showColon="true" text="{i18n>createdAt}" />
                                     <m:Text id="createdAt" text="{createdAt}" />
                                 </layout:VerticalLayout>
                                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                                    <m:Label labelFor="modifyTime" showColon="true"
-                                        text="{i18n>modifyTime}" />
+                                    <m:Label labelFor="modifyTime" showColon="true" text="{i18n>modifyTime}" />
                                     <m:Text text="{modifiedAt}" id="modifyTime" />
-                                    <m:Label labelFor="Established" text="{i18n>Established}"
-                                        showColon="true" />
+                                    <m:Label labelFor="Established" text="{i18n>Established}" showColon="true" />
                                     <m:Text text="{Established}" id="Established" />
                                 </layout:VerticalLayout>
                             </forms:SimpleForm>

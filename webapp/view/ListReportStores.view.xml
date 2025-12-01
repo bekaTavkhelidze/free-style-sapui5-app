@@ -1,16 +1,9 @@
-<mvc:View
-    controllerName="freestylesapui5app.controller.ListReportStores"
+<mvc:View controllerName="freestylesapui5app.controller.ListReportStores"
     xmlns="sap.m"
     xmlns:f="sap.f"
-    xmlns:core="sap.ui.core"
     xmlns:fb="sap.ui.comp.filterbar"
-    xmlns:mvc="sap.ui.core.mvc"
->
-    <f:DynamicPage
-        id="ListReportPage"
-        headerExpanded="true"
-        toggleHeaderOnTitleClick="true"
-        preserveHeaderStateOnScroll="false">
+    xmlns:mvc="sap.ui.core.mvc">
+    <f:DynamicPage id="ListReportPage" headerExpanded="true" toggleHeaderOnTitleClick="true" preserveHeaderStateOnScroll="false">
         <f:title>
             <f:DynamicPageTitle id="dynamicPageTitleId">
                 <f:heading>
@@ -22,44 +15,24 @@
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
-                    <fb:FilterBar
-                        id="filterbar"
-                        useToolbar="false"
-                        search="onGoButtonPressed"
-                    >
+                    <fb:FilterBar id="filterbar" useToolbar="false" search="onGoButtonPressed">
                         <fb:filterGroupItems>
-                            <fb:FilterGroupItem
-                                name="Name"
-                                label="{i18n>nameColumnTitle}"
-                                groupName="ListReportGroup"
-                                visibleInFilterBar="true">
+                            <fb:FilterGroupItem name="Name" label="{i18n>nameColumnTitle}" groupName="ListReportGroup" visibleInFilterBar="true">
                                 <fb:control>
                                     <Input name="Name" placeholder="{i18n>searchInput}" />
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem
-                                name="Email"
-                                label="{i18n>emailFilterLabel}"
-                                groupName="ListReportGroup"
-                                visibleInFilterBar="true">
+                            <fb:FilterGroupItem name="Email" label="{i18n>emailFilterLabel}" groupName="ListReportGroup" visibleInFilterBar="true">
                                 <fb:control>
                                     <MultiInput name="Email" />
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem
-                                name="PhoneNumber"
-                                label="{i18n>phoneFilterLabel}"
-                                groupName="ListReportGroup"
-                                visibleInFilterBar="true">
+                            <fb:FilterGroupItem name="PhoneNumber" label="{i18n>phoneFilterLabel}" groupName="ListReportGroup">
                                 <fb:control>
                                     <MultiInput name="PhoneNumber" />
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem
-                                name="Address"
-                                label="{i18n>addressFilterLabel}"
-                                groupName="ListReportGroup"
-                                visibleInFilterBar="true">
+                            <fb:FilterGroupItem name="Address" label="{i18n>addressFilterLabel}" groupName="ListReportGroup">
                                 <fb:control>
                                     <MultiInput name="Address" />
                                 </fb:control>
@@ -70,13 +43,7 @@
             </f:DynamicPageHeader>
         </f:header>
         <f:content>
-            <Table
-                mode="MultiSelect"
-                items="{/Stores}"
-                id="StoresTable"
-                inset="false"
-                autoPopinMode="true"
-                width="auto">
+            <Table mode="MultiSelect" items="{/Stores}" id="StoresTable" autoPopinMode="true" width="auto">
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>

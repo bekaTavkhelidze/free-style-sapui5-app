@@ -23,24 +23,12 @@ sap.ui.define(
             oEvent.getParameter('arguments').id
           );
 
-          const ODataModel = this.getOwnerComponent().getModel();
-
-          ODataModel.read("/Stores(guid'" + sActiveId + "' )", {
-            urlParameters: {
-              $expand: 'Products',
-            },
-            success: () => {
-              const oContext = ODataModel.createBindingContext(
-                "/Stores(guid'" + sActiveId + "')"
-              );
-              this.getView().setBindingContext(oContext);
-            },
-          });
+          this.getView().bindElement("/Stores(guid'" + sActiveId + "')");
         },
 
-        onSearchProduct(oValue) {
+        onSearchProduct(oEvent) {
           const aFilter = [];
-          const sQuery = oValue.getParameter('query').trim();
+          const sQuery = oEvent.getParameter('query').trim();
 
           if (sQuery) {
             aFilter.push(
