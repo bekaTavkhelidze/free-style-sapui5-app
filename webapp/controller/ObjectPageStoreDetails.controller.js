@@ -4,15 +4,33 @@ sap.ui.define(
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
     'sap/m/MessageBox',
+    'sap/m/MessageToast',
+    'sap/m/ColumnListItem',
+    'sap/m/Input',
+    'sap/m/Select',
+    'sap/ui/core/Item',
+    'sap/ui/model/json/JSONModel',
   ],
-  (Controller, Filter, FilterOperator, MessageBox) => {
+  (
+    Controller,
+    Filter,
+    FilterOperator,
+    MessageBox,
+    MessageToast,
+    ColumnListItem,
+    Input,
+    Select,
+    Item,
+    JSONModel
+  ) => {
     'use strict';
 
     return Controller.extend(
       'freestylesapui5app.controller.ObjectPageStoreDetails',
       {
         _activeId: null,
-        _oDialog: null,
+
+        _oInlineRow: null,
         onInit() {
           const oRouter = this.getOwnerComponent().getRouter();
 
@@ -59,7 +77,8 @@ sap.ui.define(
 
         onStoreLinkGoBackToStoresListReportPress() {
           const oModel = this.getView().getModel();
-          if (oModel.getPendingChanges().length < 1) {
+
+          if (oModel.hasPendingChanges() || this._CheckCreateProductsInput()) {
             const vErrorMessage = this.getOwnerComponent()
               .getModel('i18n')
               .getResourceBundle()
@@ -75,7 +94,7 @@ sap.ui.define(
         onColumnListItemGoToProductDetailChartPress() {
           const oModel = this.getView().getModel();
 
-          if (oModel.getPendingChanges().length < 1) {
+          if (oModel.hasPendingChanges() || this._CheckCreateProductsInput()) {
             const vErrorMessage = this.getOwnerComponent()
               .getModel('i18n')
               .getResourceBundle()
@@ -98,7 +117,24 @@ sap.ui.define(
           const oEditMode = this.getView().getModel('isEditModeActive');
           const oModel = this.getView().getModel();
 
+          const oTable = this.byId('idProductsTable');
+          const oBinding = oTable.getBinding('items');
+
+          const aProductContexts = oBinding.getCurrentContexts();
+          const aProducts = aProductContexts.map((oCtx) => oCtx.getObject());
+          const hasMissing = aProducts.some(
+            (product) =>
+              !product.Name ||
+              !product.Status ||
+              !product.MadeIn ||
+              !product.Rating ||
+              !product.Price_amount
+          );
+
+          if (hasMissing) return;
           if (!this._validate()) return;
+          oModel.submitChanges();
+
           oModel.submitChanges();
 
           oEditMode.setProperty('/isEditModeActive', false);
@@ -123,9 +159,12 @@ sap.ui.define(
             !oData.Address ||
             !oData.FloorArea ||
             !oData.Name ||
-            bEmailValid
-          )
+            !bEmailValid
+          ) {
             return false;
+          } else {
+            return true;
+          }
         },
 
         onCancelButtonPress() {
@@ -151,57 +190,117 @@ sap.ui.define(
         },
 
         async onAddButtonProductPress() {
-          this._oDialog ??= await this.loadFragment({
-            name: 'freestylesapui5app.fragments.CreateProductDialog',
-          });
-          this.getView().addDependent(this._oDialog);
-          const oModel = this.getView().getModel();
+          const isCreateModeActive =
+            this.getOwnerComponent().getModel('isCreateModeActive');
+          isCreateModeActive.setProperty('/isCreateModeActive', true);
 
-          const oContext = oModel.createEntry('/Products', {
-            properties: {
+          const oBundle = this.getView().getModel('i18n').getResourceBundle();
+
+          const oContext = new JSONModel({
+            Name: '',
+            Status: '',
+            MadeIn: '',
+            Rating: 2,
+            Price_amount: '',
+            Specs: 'Test',
+            Store_ID: this._activeId,
+          });
+          this.getView().setModel(oContext, 'createProduct');
+
+          const oSelect = new Select({
+            selectedKey: '{createProduct>/Status}',
+
+            items: [
+              new Item({ key: '', text: oBundle.getText('selectStatus') }),
+              new Item({ key: 'OK', text: oBundle.getText('ok') }),
+              new Item({ key: 'STORAGE', text: oBundle.getText('storage') }),
+              new Item({
+                key: 'OUT_OF_STOCK',
+                text: oBundle.getText('outOfStock'),
+              }),
+            ],
+          });
+
+          const oInlineItemForm = new ColumnListItem({
+            cells: [
+              new Input({ value: '{createProduct>/MadeIn}' }),
+              new Input({ value: '{createProduct>/Name}' }),
+              oSelect,
+              new Input({ value: '{createProduct>/Price_amount}' }),
+            ],
+          });
+          this._oInlineRow = oInlineItemForm;
+
+          const oTable = this.byId('idProductsTable');
+          oTable.insertItem(oInlineItemForm, 0);
+        },
+        onCancelButtonCreateProductPress: function () {
+          const oInlineRow = this._oInlineRow;
+
+          const oTable = this.byId('idProductsTable');
+          const isCreateModeActive =
+            this.getOwnerComponent().getModel('isCreateModeActive');
+          const oCreateModel = this.getView().getModel('createProduct');
+
+          if (oInlineRow) {
+            oTable.removeItem(oInlineRow);
+            oInlineRow.destroy();
+            this._oInlineRow = null;
+          }
+
+          isCreateModeActive.setProperty('/isCreateModeActive', false);
+
+          if (oCreateModel) {
+            oCreateModel.setData({
               Name: '',
-              Status: '231',
+              Status: '',
               MadeIn: '',
-              Rating: null,
+              Rating: '',
               Price_amount: '',
               Specs: 'Test',
               Store_ID: this._activeId,
-            },
-          });
-          this.byId('idCreateProductDialog').bindElement(oContext.getPath());
-
-          const oDataContext = this._oDialog.open();
+            });
+          }
         },
 
-        onCreateButtonProductPress() {
-          const {
-            Name,
-            Status,
-            MadeIn,
-            Rating,
-            Price_amount,
-            Store_ID,
-            Specs,
-          } = this.byId('idCreateProductDialog')
-            .getBindingContext()
-            .getObject();
-          console.log(
-            Name,
-            Status,
-            MadeIn,
-            Rating,
-            Price_amount,
-            Store_ID,
-            Specs
-          );
-          if (!Name || !Status || !MadeIn || !Rating || !Price_amount) return;
+        onSaveButtonProductPress() {
+          const data = this.getView().getModel('createProduct').getData();
+          const oBundle = this.getView().getModel('i18n').getResourceBundle();
+          const oInlineRow = this._oInlineRow;
+          if (!data.Name || !data.Status || !data.MadeIn || !data.Price_amount)
+            return;
           const oModel = this.getView().getModel();
 
-          oModel.submitChanges();
-          this._oDialog.close();
+          oModel.create('/Products', data, {
+            success: () => {
+              if (oInlineRow) {
+                this.onCancelButtonCreateProductPress();
+              }
+              oModel.refresh(true);
+              MessageToast.show(oBundle.getText('productSuccessAdd'));
+            },
+          });
         },
-        onCancelButtonProductPress() {
-          this._oDialog.close();
+
+        _CheckCreateProductsInput() {
+          const data = this.getView().getModel('createProduct').getData();
+          if (data.Name || data.Status || data.MadeIn || data.Price_amount)
+            return false;
+        },
+
+        onInvokeImportFunctionButtonPress() {
+          const oBundle = this.getView().getModel('i18n').getResourceBundle();
+          const oModel = this.getView().getModel();
+
+          oModel.callFunction('/mutate', {
+            method: 'POST',
+            urlParameters: {
+              param: 'param',
+            },
+            success() {
+              MessageToast.show(oBundle.getText('mutateExecuted'));
+            },
+          });
         },
       }
     );

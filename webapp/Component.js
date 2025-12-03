@@ -41,7 +41,12 @@ sap.ui.define(
           isEditModeActive: false,
         });
 
+        const isCreateModeActive = new JSONModel({
+          isCreateModeActive: false,
+        });
+
         this.setModel(isEditModeActive, 'isEditModeActive');
+        this.setModel(isCreateModeActive, 'isCreateModeActive');
       },
     });
   }
