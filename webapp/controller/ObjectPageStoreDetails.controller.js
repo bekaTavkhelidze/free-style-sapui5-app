@@ -31,7 +31,7 @@ sap.ui.define(
 
         onSearchFieldProductSearch(oValue) {
           const aFilter = [];
-          const sQuery = oValue.getParameter('query').trim();
+          const sQuery = oEvent.getParameter('query').trim();
 
           if (sQuery) {
             aFilter.push(
