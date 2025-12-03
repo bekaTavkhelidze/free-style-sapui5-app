@@ -24,8 +24,8 @@ sap.ui.define(
 
           this._activeId = sActiveId;
           this.getView().bindElement({
-            path: "/Stores(guid'" + sActiveId + "' )",
-            Parameters: { $expand: 'Products' },
+            path: "/Stores(guid'" + sActiveId + "')",
+            parameters: { $expand: 'Products' },
           });
         },
 
