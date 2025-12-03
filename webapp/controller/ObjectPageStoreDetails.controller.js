@@ -26,8 +26,8 @@ sap.ui.define(
 
           this._activeId = sActiveId;
           const oData = this.getView().bindElement({
-            path: "/Stores(guid'" + sActiveId + "' )",
-            Parameters: { $expand: 'Products' },
+            path: "/Stores(guid'" + sActiveId + "')",
+            parameters: { $expand: 'Products' },
           });
         },
 
@@ -99,6 +99,7 @@ sap.ui.define(
           const oModel = this.getView().getModel();
 
           if (!this._validate()) return;
+          oModel.submitChanges();
 
           oEditMode.setProperty('/isEditModeActive', false);
         },
