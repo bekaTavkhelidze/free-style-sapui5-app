@@ -1,0 +1,15 @@
+<mvc:View xmlns="sap.uxap"
+    xmlns:m="sap.m"
+    xmlns:mvc="sap.ui.core.mvc">
+    <ObjectPageLayout id="Chart" enableLazyLoading="true" useIconTabBar="true" showTitleInHeaderContent="true" upperCaseAnchorBar="false">
+
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:Title text="{i18n>ORTitle}" wrapping="true" />
+                </expandedHeading>
+            </ObjectPageDynamicHeaderTitle>
+
+        </headerTitle>
+    </ObjectPageLayout>
+</mvc:View>
