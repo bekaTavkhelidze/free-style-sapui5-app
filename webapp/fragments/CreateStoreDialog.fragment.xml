@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:forms="sap.ui.layout.form">
+    <Dialog id="idCreateStoreDialog" title="{i18n>createStoreDialogTitle}">
+        <content>
+            <forms:SimpleForm>
+                <Label labelFor="idNameCreateText" required="true" text="{i18n>nameColumnTitle}" showColon="true" />
+                <Input id='idNameCreateText' value="{createStory>/Name}" valueLiveUpdate="true" valueState="{= ${validation>/Name} ? 'None' : 'Warning'}" valueStateText="{i18n>nameInputValidationText}" />
+                <Label labelFor="idEmailCreateText" required="true" text="{i18n>emailColumnTitle}" showColon="true" />
+                <Input type="Email" value="{createStory>/Email}" id='idEmailCreateText' valueState="{= ${validation>/Email} ? 'None' : 'Error'}" />
+                <Label labelFor="idPhoneNumberCreateText" required="true" text="{i18n>phoneColumnTitle}" showColon="true" />
+                <Input type="Tel" id='idPhoneNumberCreateText' valueLiveUpdate="true" value="{createStory>/PhoneNumber}" valueState="{= ${validation>/PhoneNumber} ? 'None' : 'Error'}" />
+                <Label labelFor="idFloorAreaCreateText" required="true" text="{i18n>floorArea}" showColon="true" />
+                <Input id='idFloorAreaCreateText' value="{createStory>/FloorArea}" valueState="{= ${validation>/Email} ? 'None' : 'Error'}" />
+                <Label labelFor="idAddressCreateText" required="true" text="{i18n>addressColumnTitle}" showColon="true" />
+                <Input id='idAddressCreateText' value="{createStory>/Address}" valueState="{= ${validation>/Address} ? 'None' : 'Error'}"/>
+            </forms:SimpleForm>
+        </content>
+        <beginButton>
+            <Button text="{i18n>create}" press="onCreateButtonPress"></Button>
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>cancel}" press="onCancelButtonPress" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>
