@@ -8,7 +8,7 @@ sap.ui.define(
     'use strict';
 
     return Controller.extend('freestylesapui5app.controller.ListReportStores', {
-      onGoButtonPressed(oEvent) {
+      onFilterBarGoButtonSearch(oEvent) {
         const oFilterBarSelectionSet = oEvent.getParameter('selectionSet');
 
         const aFilters = [];
@@ -23,12 +23,10 @@ sap.ui.define(
           }
         }
 
-        const oList = this.byId('StoresTable');
-        const oBinding = oList.getBinding('items');
-        oBinding.filter(aFilters);
+        this._filterFunction(aFilters);
       },
 
-      onGoToORProductsDetailPress(oEvent) {
+      onColumnListItemGoToProductsDetailPress(oEvent) {
         const oItem = oEvent.getSource();
         const oContext = oItem.getBindingContext();
         const sProductId = oContext.getProperty('ID');
@@ -36,6 +34,33 @@ sap.ui.define(
         this.getOwnerComponent()
           .getRouter()
           .navTo('ObjectPageStoreDetails', { id: sProductId });
+      },
+
+      onInputListReportLiveChange(oEvent) {
+        const sValue = oEvent.getSource().getValue().trim();
+
+        const aFilter = [];
+        if (sValue) {
+          aFilter.push(
+            new Filter({
+              filters: [
+                new Filter('Name', FilterOperator.Contains, sValue),
+                new Filter('Address', FilterOperator.Contains, sValue),
+                new Filter('PhoneNumber', FilterOperator.Contains, sValue),
+                new Filter('Email', FilterOperator.Contains, sValue),
+              ],
+              and: false,
+            })
+          );
+        }
+
+        this._filterFunction(aFilter);
+      },
+
+      _filterFunction(aValue) {
+        const oList = this.byId('idStoresTable');
+        const oBinding = oList.getBinding('items');
+        oBinding.filter(aValue);
       },
     });
   }

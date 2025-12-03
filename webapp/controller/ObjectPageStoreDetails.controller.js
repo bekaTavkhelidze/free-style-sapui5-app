@@ -10,23 +10,26 @@ sap.ui.define(
     return Controller.extend(
       'freestylesapui5app.controller.ObjectPageStoreDetails',
       {
+        _activeId: null,
         onInit() {
           const oRouter = this.getOwnerComponent().getRouter();
 
           oRouter
             .getRoute('ObjectPageStoreDetails')
-            .attachPatternMatched(this.onObjectMatched, this);
+            .attachPatternMatched(this._onObjectMatched, this);
         },
 
-        onObjectMatched(oEvent) {
-          const sActiveId = globalThis.decodeURIComponent(
-            oEvent.getParameter('arguments').id
-          );
+        _onObjectMatched(oEvent) {
+          const sActiveId = oEvent.getParameter('arguments').id;
 
-          this.getView().bindElement("/Stores(guid'" + sActiveId + "')");
+          this._activeId = sActiveId;
+          this.getView().bindElement({
+            path: "/Stores(guid'" + sActiveId + "')",
+            parameters: { $expand: 'Products' },
+          });
         },
 
-        onSearchProduct(oEvent) {
+        onSearchFieldProductSearch(oValue) {
           const aFilter = [];
           const sQuery = oEvent.getParameter('query').trim();
 
@@ -48,11 +51,22 @@ sap.ui.define(
             );
           }
 
-          const oTable = this.byId('productsTable');
+          const oTable = this.byId('idProductsTable');
 
           const oBinding = oTable.getBinding('items');
 
           oBinding.filter(aFilter);
+        },
+
+        onStoreLinkGoBackToStoresListReportPress() {
+          const oRouter = this.getOwnerComponent().getRouter();
+          oRouter.navTo('RouteListReport');
+        },
+
+        onColumnListItemGoToProductDetailChartPress() {
+          this.getOwnerComponent()
+            .getRouter()
+            .navTo('ChartPageStoreDetails', { id: this._activeId });
         },
       }
     );

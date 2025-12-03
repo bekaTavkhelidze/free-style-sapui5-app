@@ -3,11 +3,11 @@
     xmlns:f="sap.f"
     xmlns:fb="sap.ui.comp.filterbar"
     xmlns:mvc="sap.ui.core.mvc">
-    <f:DynamicPage id="ListReportPage" headerExpanded="true" toggleHeaderOnTitleClick="true" preserveHeaderStateOnScroll="false">
+    <f:DynamicPage id="idDynamicPage" headerExpanded="true" toggleHeaderOnTitleClick="true" preserveHeaderStateOnScroll="false">
         <f:title>
-            <f:DynamicPageTitle id="dynamicPageTitleId">
+            <f:DynamicPageTitle id="idListReportDynamicPageTitle">
                 <f:heading>
-                    <Title text="{i18n>ListReportPageTitle}" level="H2" />
+                    <Title text="{i18n>listReportPageTitle}" level="H2" />
                 </f:heading>
             </f:DynamicPageTitle>
         </f:title>
@@ -15,11 +15,11 @@
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
-                    <fb:FilterBar id="filterbar" useToolbar="false" search="onGoButtonPressed">
+                    <fb:FilterBar id="idListReportFilterBar" useToolbar="false" search="onFilterBarGoButtonSearch">
                         <fb:filterGroupItems>
-                            <fb:FilterGroupItem name="Name" label="{i18n>nameColumnTitle}" groupName="ListReportGroup" visibleInFilterBar="true">
+                            <fb:FilterGroupItem name="Name" groupName="ListReportGroup" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input name="Name" placeholder="{i18n>searchInput}" />
+                                    <Input liveChange="onInputListReportLiveChange" name="Name" placeholder="{i18n>searchInput}" />
                                 </fb:control>
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem name="Email" label="{i18n>emailFilterLabel}" groupName="ListReportGroup" visibleInFilterBar="true">
@@ -43,7 +43,7 @@
             </f:DynamicPageHeader>
         </f:header>
         <f:content>
-            <Table mode="MultiSelect" items="{/Stores}" id="StoresTable" autoPopinMode="true" width="auto">
+            <Table mode="MultiSelect" items="{/Stores}" id="idStoresTable" autoPopinMode="true" width="auto">
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>
@@ -68,7 +68,7 @@
                         <Text text="{i18n>phoneColumnTitle}" />
                     </Column>
                 </columns>
-                <ColumnListItem type="Navigation" press="onGoToORProductsDetailPress">
+                <ColumnListItem type="Navigation" press="onColumnListItemGoToProductsDetailPress">
                     <cells>
                         <Text text="{Address}" />
                     </cells>

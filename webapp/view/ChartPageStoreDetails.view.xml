@@ -1,0 +1,77 @@
+<mvc:View
+    controllerName="freestylesapui5app.controller.ChartPageStoreDetails"
+    xmlns:f="sap.f"
+    xmlns="sap.m"
+    xmlns:layout="sap.ui.layout"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:vizData="sap.viz.ui5.data"
+    xmlns:vizFeeds="sap.viz.ui5.controls.common.feeds"
+>
+    <f:DynamicPage headerExpanded="true">
+        <f:title>
+            <f:DynamicPageTitle id="idDynamicPageTitle">
+                <f:heading>
+                    <Breadcrumbs currentLocationText="{i18n>prouctDetails}">
+                        <Link
+                            text="{i18n>storeDetails}"
+                            press="onStoreDetailsLinkPress" />
+
+                    </Breadcrumbs>
+                </f:heading>
+                <f:expandedContent>
+                    <Label text="{Name}" />
+                </f:expandedContent>
+                <f:snappedContent>
+                    <Label text="{Name}" />
+                </f:snappedContent>
+                <f:snappedTitleOnMobile>
+                    <Title text="{Name}" />
+                </f:snappedTitleOnMobile>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <layout:HorizontalLayout allowWrapping="true">
+                    <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                        <ObjectAttribute text="{i18n>chartPageDescriptor}" />
+                    </layout:VerticalLayout>
+                </layout:HorizontalLayout>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <viz:VizFrame
+                id="idVizFrame"
+                uiConfig="{applicationSet: 'fiori'}"
+                vizType="column"
+                width="100%"
+                height="500px">
+                <viz:dataset>
+                    <vizData:FlattenedDataset data="{/Stores}">
+                        <vizData:dimensions>
+                            <vizData:DimensionDefinition
+                                name="{i18n>Store}"
+                                value="{Name}" />
+                        </vizData:dimensions>
+                        <vizData:measures>
+                            <vizData:MeasureDefinition
+                                name="{i18n>floorArea}"
+                                value="{FloorArea}" />
+                        </vizData:measures>
+                    </vizData:FlattenedDataset>
+                </viz:dataset>
+
+                <viz:feeds>
+                    <vizFeeds:FeedItem
+                        uid="categoryAxis"
+                        type="Dimension"
+                        values="Store" />
+                    <vizFeeds:FeedItem
+                        uid="valueAxis"
+                        type="Measure"
+                        values="Floor Area" />
+                </viz:feeds>
+            </viz:VizFrame>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>
