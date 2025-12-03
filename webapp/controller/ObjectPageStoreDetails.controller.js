@@ -97,7 +97,8 @@ sap.ui.define(
         onSaveButtonPress() {
           const oEditMode = this.getView().getModel('isEditModeActive');
           const oModel = this.getView().getModel();
-
+          console.log('sss');
+          console.log(this._validate());
           if (!this._validate()) return;
           oModel.submitChanges();
 
@@ -123,9 +124,10 @@ sap.ui.define(
             !oData.Address ||
             !oData.FloorArea ||
             !oData.Name ||
-            bEmailValid
+            !bEmailValid
           )
             return false;
+          return true;
         },
 
         onCancelButtonPress() {
