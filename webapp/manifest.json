@@ -65,7 +65,9 @@
       },
       "": {
         "dataSource": "mainService",
-        "settings": { "defaultBindingMode": "TwoWay" }
+        "settings": {
+          "defaultBindingMode": "TwoWay"
+        }
       }
     },
     "resources": {
@@ -91,7 +93,9 @@
         {
           "name": "RouteListReport",
           "pattern": "",
-          "target": ["TargetListReport"]
+          "target": [
+            "TargetListReport"
+          ]
         },
         {
           "pattern": "StoreDetails/{id}",
@@ -128,5 +132,9 @@
       "id": "App",
       "async": true
     }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "freestylesapui5app"
   }
 }
