@@ -23,10 +23,14 @@ sap.ui.define(
 
         _onObjectMatched(oEvent) {
           const sActiveId = oEvent.getParameter('arguments').id;
-
+          const oDataModel = this.getView().getModel();
           this._activeId = sActiveId;
-          const oData = this.getView().bindElement({
-            path: "/Stores(guid'" + sActiveId + "')",
+          const path = oDataModel.createKey('/Stores', {
+            ID: sActiveId,
+          });
+
+          this.getView().bindElement({
+            path,
             parameters: { $expand: 'Products' },
           });
         },
@@ -97,10 +101,19 @@ sap.ui.define(
         onSaveButtonPress() {
           const oEditMode = this.getView().getModel('isEditModeActive');
           const oModel = this.getView().getModel();
-          console.log('sss');
-          console.log(this._validate());
+
           if (!this._validate()) return;
-          oModel.submitChanges();
+          oModel.submitChanges({
+            success: () => {
+              const sSuccessMsg = oBundle.getText('successEddit');
+              MessageToast.show(sSuccessMsg);
+            },
+            error() {
+              this.onCancelButtonPress();
+              const sErrorMsg = oBundle.getText('errorTextCreate');
+              MessageBox.error(sErrorMsg);
+            },
+          });
 
           oEditMode.setProperty('/isEditModeActive', false);
         },
@@ -176,30 +189,26 @@ sap.ui.define(
         },
 
         onCreateButtonProductPress() {
-          const {
-            Name,
-            Status,
-            MadeIn,
-            Rating,
-            Price_amount,
-            Store_ID,
-            Specs,
-          } = this.byId('idCreateProductDialog')
+          const { Name, Status, MadeIn, Rating, Price_amount } = this.byId(
+            'idCreateProductDialog'
+          )
             .getBindingContext()
             .getObject();
-          console.log(
-            Name,
-            Status,
-            MadeIn,
-            Rating,
-            Price_amount,
-            Store_ID,
-            Specs
-          );
+
           if (!Name || !Status || !MadeIn || !Rating || !Price_amount) return;
           const oModel = this.getView().getModel();
 
-          oModel.submitChanges();
+          oModel.submitChanges({
+            success: () => {
+              const sSuccessMsg = oBundle.getText('successTextCreateProduct');
+              MessageToast.show(sSuccessMsg);
+            },
+            error() {
+              this.onCancelButtonPress();
+              const sErrorMsg = oBundle.getText('errorTextCreate');
+              MessageBox.error(sErrorMsg);
+            },
+          });
           this._oDialog.close();
         },
         onCancelButtonProductPress() {

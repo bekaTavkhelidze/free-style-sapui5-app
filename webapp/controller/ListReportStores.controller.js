@@ -5,8 +5,9 @@ sap.ui.define(
     'sap/ui/model/FilterOperator',
     'sap/ui/model/json/JSONModel',
     'sap/m/MessageToast',
+    'sap/m/MessageBox',
   ],
-  (Controller, Filter, FilterOperator, JSONModel, MessageToast) => {
+  (Controller, Filter, FilterOperator, JSONModel, MessageToast, MessageBox) => {
     'use strict';
 
     return Controller.extend('freestylesapui5app.controller.ListReportStores', {
@@ -88,22 +89,22 @@ sap.ui.define(
       onCreateButtonPress() {
         const oFormData = this.getView().getModel('createStory').getData();
 
-        // validate Input
         if (!this._validate()) return;
 
         const oBundle = this.getView().getModel('i18n').getResourceBundle();
 
         const oDataModel = this.getOwnerComponent().getModel();
+
         oDataModel.create('/Stores', oFormData, {
           success: () => {
             this.onCancelButtonPress();
-            var sSuccessMsg = oBundle.getText('successTextCreateStore');
+            const sSuccessMsg = oBundle.getText('successTextCreateStore');
             MessageToast.show(sSuccessMsg);
           },
           error() {
             this.onCancelButtonPress();
-            var sErrorMsg = oBundle.getText('errorTextCreateStore');
-            MessageToast.show(sErrorMsg);
+            const sErrorMsg = oBundle.getText('errorTextCreate');
+            MessageBox.error(sErrorMsg);
           },
         });
       },
@@ -147,7 +148,7 @@ sap.ui.define(
             },
             error: () => {
               var sErrorMsg = oBundle.getText('errorTextCreateStore');
-              MessageToast.show(sErrorMsg);
+              MessageBox.error(sErrorMsg);
             },
           });
         });
