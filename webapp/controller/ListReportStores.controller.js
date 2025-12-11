@@ -3,12 +3,17 @@ sap.ui.define(
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
+    'sap/ui/model/json/JSONModel',
+    'sap/m/MessageToast',
+    'sap/m/MessageBox',
   ],
-  (Controller, Filter, FilterOperator) => {
+  (Controller, Filter, FilterOperator, JSONModel, MessageToast, MessageBox) => {
     'use strict';
 
     return Controller.extend('freestylesapui5app.controller.ListReportStores', {
-      onGoButtonPressed(oEvent) {
+      _oDialog: null,
+
+      onFilterBarGoButtonSearch(oEvent) {
         const oFilterBarSelectionSet = oEvent.getParameter('selectionSet');
 
         const aFilters = [];
@@ -23,12 +28,10 @@ sap.ui.define(
           }
         }
 
-        const oList = this.byId('StoresTable');
-        const oBinding = oList.getBinding('items');
-        oBinding.filter(aFilters);
+        this._filterFunction(aFilters);
       },
 
-      onGoToORProductsDetailPress(oEvent) {
+      onColumnListItemGoToProductsDetailPress(oEvent) {
         const oItem = oEvent.getSource();
         const oContext = oItem.getBindingContext();
         const sProductId = oContext.getProperty('ID');
@@ -36,6 +39,119 @@ sap.ui.define(
         this.getOwnerComponent()
           .getRouter()
           .navTo('ObjectPageStoreDetails', { id: sProductId });
+      },
+
+      onInputListReportLiveChange(oEvent) {
+        const sValue = oEvent.getSource().getValue().trim();
+
+        const aFilter = [];
+        if (sValue) {
+          aFilter.push(
+            new Filter({
+              filters: [
+                new Filter('Name', FilterOperator.Contains, sValue),
+                new Filter('Address', FilterOperator.Contains, sValue),
+                new Filter('PhoneNumber', FilterOperator.Contains, sValue),
+                new Filter('Email', FilterOperator.Contains, sValue),
+              ],
+              and: false,
+            })
+          );
+        }
+
+        this._filterFunction(aFilter);
+      },
+
+      _filterFunction(aValue) {
+        const oList = this.byId('idStoresTable');
+        const oBinding = oList.getBinding('items');
+        oBinding.filter(aValue);
+      },
+
+      async onAddButtonStorePress() {
+        this._oDialog ??= await this.loadFragment({
+          name: 'freestylesapui5app.fragments.CreateStoreDialog',
+        });
+        this.getView().addDependent(this._oDialog);
+
+        const oDialogData = new JSONModel({
+          Name: '',
+          FloorArea: '',
+          Address: '',
+          Email: '',
+          PhoneNumber: '',
+        });
+        this.getView().setModel(oDialogData, 'createStory');
+
+        this._oDialog.open();
+      },
+
+      onCreateButtonPress() {
+        const oFormData = this.getView().getModel('createStory').getData();
+
+        if (!this._validate()) return;
+
+        const oBundle = this.getView().getModel('i18n').getResourceBundle();
+
+        const oDataModel = this.getOwnerComponent().getModel();
+
+        oDataModel.create('/Stores', oFormData, {
+          success: () => {
+            this.onCancelButtonPress();
+            const sSuccessMsg = oBundle.getText('successTextCreateStore');
+            MessageToast.show(sSuccessMsg);
+          },
+          error() {
+            this.onCancelButtonPress();
+            const sErrorMsg = oBundle.getText('errorTextCreate');
+            MessageBox.error(sErrorMsg);
+          },
+        });
+      },
+      onCancelButtonPress() {
+        this._oDialog.close();
+      },
+
+      _validate() {
+        const oInput = this.getView().getModel('createStory').getData();
+        const oValidationModel =
+          this.getOwnerComponent().getModel('validation');
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        oValidationModel.setProperty('/Name', !!oInput.Name);
+
+        const bEmailValid = !!oInput.Email && emailRegex.test(oInput.Email);
+        oValidationModel.setProperty('/Email', bEmailValid);
+
+        oValidationModel.setProperty('/Address', !!oInput.Address);
+        oValidationModel.setProperty('/FloorArea', !!oInput.FloorArea);
+        oValidationModel.setProperty('/PhoneNumber', !!oInput.PhoneNumber);
+
+        return !Object.values(oValidationModel.getData()).includes(false);
+      },
+
+      onDeleteButtonPress() {
+        const oTable = this.byId('idStoresTable');
+        const oSelected = oTable.getSelectedItems();
+
+        const oDataModel = this.getView().getModel();
+        const oBundle = this.getView().getModel('i18n').getResourceBundle();
+
+        oSelected.forEach((oItem) => {
+          const sPath = oItem.getBindingContext().getPath();
+
+          oDataModel.remove(sPath, {
+            success: () => {
+              var sSuccessMsg = oBundle.getText('successTextDeleteStore');
+              MessageToast.show(sSuccessMsg);
+            },
+            error: () => {
+              var sErrorMsg = oBundle.getText('errorTextCreateStore');
+              MessageBox.error(sErrorMsg);
+            },
+          });
+        });
       },
     });
   }
