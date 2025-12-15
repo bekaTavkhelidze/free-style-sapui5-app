@@ -1,0 +1,32 @@
+{
+  "welcomeFile": "/index.html",
+  "authenticationMethod": "route",
+  "routes": [
+    {
+      "source": "^/ip/(.*)$",
+      "target": "$1",
+      "destination": "ip",
+      "authenticationType": "xsuaa",
+      "csrfProtection": false,
+      "cacheControl": "no-cache"
+    },
+    {
+      "source": "^/userapi/(.*)$",
+      "target": "$1",
+      "service": "sap-approuter-userapi"
+    },
+    {
+      "source": "^/test-resources/(.*)$",
+      "target": "/test-resources/$1",
+      "authenticationType": "xsuaa",
+      "destination": "ui5"
+    },
+    {
+      "source": "^(.*)$",
+      "target": "$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa",
+      "cacheControl": "no-cache"
+    }
+  ]
+}
