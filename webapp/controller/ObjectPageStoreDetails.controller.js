@@ -41,11 +41,15 @@ sap.ui.define(
 
         _onObjectMatched(oEvent) {
           const sActiveId = oEvent.getParameter('arguments').id;
-
+          const oDataModel = this.getView().getModel();
           this._activeId = sActiveId;
-          const oData = this.getView().bindElement({
-            path: "/Stores(guid'" + sActiveId + "' )",
-            Parameters: { $expand: 'Products' },
+          const path = oDataModel.createKey('/Stores', {
+            ID: sActiveId,
+          });
+
+          this.getView().bindElement({
+            path,
+            parameters: { $expand: 'Products' },
           });
         },
 
@@ -133,6 +137,17 @@ sap.ui.define(
 
           if (hasMissing) return;
           if (!this._validate()) return;
+          oModel.submitChanges({
+            success: () => {
+              const sSuccessMsg = oBundle.getText('successEddit');
+              MessageToast.show(sSuccessMsg);
+            },
+            error() {
+              this.onCancelButtonPress();
+              const sErrorMsg = oBundle.getText('errorTextCreate');
+              MessageBox.error(sErrorMsg);
+            },
+          });
 
           oModel.submitChanges();
 
