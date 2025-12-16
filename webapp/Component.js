@@ -37,16 +37,11 @@ sap.ui.define(
 
         this.setModel(oValidationCreateStore, 'validation');
 
-        const isEditModeActive = new JSONModel({
+        const createMode = new JSONModel({
           isEditModeActive: false,
         });
 
-        const isCreateModeActive = new JSONModel({
-          isCreateModeActive: false,
-        });
-
-        this.setModel(isEditModeActive, 'isEditModeActive');
-        this.setModel(isCreateModeActive, 'isCreateModeActive');
+        this.setModel(createMode, 'createMode');
       },
     });
   }

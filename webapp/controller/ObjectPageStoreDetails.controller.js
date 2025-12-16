@@ -5,24 +5,8 @@ sap.ui.define(
     'sap/ui/model/FilterOperator',
     'sap/m/MessageBox',
     'sap/m/MessageToast',
-    'sap/m/ColumnListItem',
-    'sap/m/Input',
-    'sap/m/Select',
-    'sap/ui/core/Item',
-    'sap/ui/model/json/JSONModel',
   ],
-  (
-    Controller,
-    Filter,
-    FilterOperator,
-    MessageBox,
-    MessageToast,
-    ColumnListItem,
-    Input,
-    Select,
-    Item,
-    JSONModel
-  ) => {
+  (Controller, Filter, FilterOperator, MessageBox, MessageToast) => {
     'use strict';
 
     return Controller.extend(
@@ -30,7 +14,7 @@ sap.ui.define(
       {
         _activeId: null,
 
-        _oInlineRow: null,
+        _oInlineRow: [],
         onInit() {
           const oRouter = this.getOwnerComponent().getRouter();
 
@@ -113,13 +97,14 @@ sap.ui.define(
         },
 
         onEditButtonPress() {
-          const oEditMode = this.getView().getModel('isEditModeActive');
+          const oEditMode = this.getView().getModel('createMode');
           oEditMode.setProperty('/isEditModeActive', true);
         },
 
         onSaveButtonPress() {
-          const oEditMode = this.getView().getModel('isEditModeActive');
+          const oEditMode = this.getView().getModel('createMode');
           const oModel = this.getView().getModel();
+          const oBundle = this.getView().getModel('i18n').getResourceBundle();
 
           const oTable = this.byId('idProductsTable');
           const oBinding = oTable.getBinding('items');
@@ -135,11 +120,34 @@ sap.ui.define(
               !product.Price_amount
           );
 
+          const oPending = oModel.getPendingChanges();
+
+          const aProductChanges = Object.keys(oPending).some((path) =>
+            path.startsWith('Products(')
+          );
+
+          if (aProductChanges) {
+            const oModelPendingData = oModel.getPendingChanges();
+            const oBundle = this.getView().getModel('i18n').getResourceBundle();
+
+            const data = Object.values(oModelPendingData)[0];
+
+            if (
+              !data.Name ||
+              !data.Status ||
+              !data.MadeIn ||
+              !data.Price_amount
+            ) {
+              MessageToast.show(oBundle.getText('ProductAddValidation'));
+              return;
+            }
+          }
+
           if (hasMissing) return;
           if (!this._validate()) return;
           oModel.submitChanges({
             success: () => {
-              const sSuccessMsg = oBundle.getText('successEddit');
+              const sSuccessMsg = oBundle.getText('successEdit');
               MessageToast.show(sSuccessMsg);
             },
             error() {
@@ -149,10 +157,9 @@ sap.ui.define(
             },
           });
 
-          oModel.submitChanges();
-
           oEditMode.setProperty('/isEditModeActive', false);
         },
+
         _validate() {
           const oData = this.getView().getBindingContext().getObject();
 
@@ -184,122 +191,54 @@ sap.ui.define(
         onCancelButtonPress() {
           const oModel = this.getView().getModel();
 
+          if (this._oInlineRow) {
+            this._oInlineRow.map((row) => row.delete());
+            this._oInlineRow = [];
+          }
           oModel.resetChanges();
           this._cancelEdit();
         },
 
         _cancelEdit() {
-          const oEditMode = this.getView().getModel('isEditModeActive');
+          const oEditMode = this.getView().getModel('createMode');
           oEditMode.setProperty('/isEditModeActive', false);
         },
 
         onDeleteButtonProductPress() {
           const oTable = this.getView().byId('idProductsTable');
           const aSelectedProducts = oTable.getSelectedItem();
+          const oBundle = this.getView().getModel('i18n').getResourceBundle();
           const sPath = aSelectedProducts.getBindingContext().getPath();
 
           const oModel = this.getView().getModel();
 
+          MessageToast.show(oBundle.getText('productDeleted'));
           oModel.remove(sPath);
         },
 
         async onAddButtonProductPress() {
-          const isCreateModeActive =
-            this.getOwnerComponent().getModel('isCreateModeActive');
-          isCreateModeActive.setProperty('/isCreateModeActive', true);
-
-          const oBundle = this.getView().getModel('i18n').getResourceBundle();
-
-          const oContext = new JSONModel({
-            Name: '',
-            Status: '',
-            MadeIn: '',
-            Rating: 2,
-            Price_amount: '',
-            Specs: 'Test',
-            Store_ID: this._activeId,
-          });
-          this.getView().setModel(oContext, 'createProduct');
-
-          const oSelect = new Select({
-            selectedKey: '{createProduct>/Status}',
-
-            items: [
-              new Item({ key: '', text: oBundle.getText('selectStatus') }),
-              new Item({ key: 'OK', text: oBundle.getText('ok') }),
-              new Item({ key: 'STORAGE', text: oBundle.getText('storage') }),
-              new Item({
-                key: 'OUT_OF_STOCK',
-                text: oBundle.getText('outOfStock'),
-              }),
-            ],
-          });
-
-          const oInlineItemForm = new ColumnListItem({
-            cells: [
-              new Input({ value: '{createProduct>/MadeIn}' }),
-              new Input({ value: '{createProduct>/Name}' }),
-              oSelect,
-              new Input({ value: '{createProduct>/Price_amount}' }),
-            ],
-          });
-          this._oInlineRow = oInlineItemForm;
-
-          const oTable = this.byId('idProductsTable');
-          oTable.insertItem(oInlineItemForm, 0);
-        },
-        onCancelButtonCreateProductPress: function () {
-          const oInlineRow = this._oInlineRow;
-
-          const oTable = this.byId('idProductsTable');
-          const isCreateModeActive =
-            this.getOwnerComponent().getModel('isCreateModeActive');
-          const oCreateModel = this.getView().getModel('createProduct');
-
-          if (oInlineRow) {
-            oTable.removeItem(oInlineRow);
-            oInlineRow.destroy();
-            this._oInlineRow = null;
-          }
-
-          isCreateModeActive.setProperty('/isCreateModeActive', false);
-
-          if (oCreateModel) {
-            oCreateModel.setData({
+          const aggregationBinding = this.getView()
+            .byId('idProductsTable')
+            .getBinding('items')
+            .create({
               Name: '',
-              Status: '',
+              Status: 'selectStatus',
               MadeIn: '',
-              Rating: '',
+              Rating: 2,
               Price_amount: '',
               Specs: 'Test',
               Store_ID: this._activeId,
             });
-          }
-        },
-
-        onSaveButtonProductPress() {
-          const data = this.getView().getModel('createProduct').getData();
-          const oBundle = this.getView().getModel('i18n').getResourceBundle();
-          const oInlineRow = this._oInlineRow;
-          if (!data.Name || !data.Status || !data.MadeIn || !data.Price_amount)
-            return;
-          const oModel = this.getView().getModel();
-
-          oModel.create('/Products', data, {
-            success: () => {
-              if (oInlineRow) {
-                this.onCancelButtonCreateProductPress();
-              }
-              oModel.refresh(true);
-              MessageToast.show(oBundle.getText('productSuccessAdd'));
-            },
-          });
+          this._oInlineRow = [...this._oInlineRow, aggregationBinding];
         },
 
         _CheckCreateProductsInput() {
-          const data = this.getView().getModel('createProduct').getData();
-          if (data.Name || data.Status || data.MadeIn || data.Price_amount)
-            return false;
+          const createProductModel = this.getView().getModel('createProduct');
+          if (createProductModel) {
+            const data = createProductModel.getData();
+            if (data.Name || data.Status || data.MadeIn || data.Price_amount)
+              return false;
+          }
         },
 
         onInvokeImportFunctionButtonPress() {

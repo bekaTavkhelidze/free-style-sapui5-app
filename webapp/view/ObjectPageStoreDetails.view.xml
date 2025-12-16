@@ -5,7 +5,7 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:forms="sap.ui.layout.form">
-    <uxap:ObjectPageLayout id="idStoreObjectPageLayout" showFooter="{isEditModeActive>/isEditModeActive}" enableLazyLoading="true" useIconTabBar="true" showTitleInHeaderContent="true" upperCaseAnchorBar="false">
+    <uxap:ObjectPageLayout id="idStoreObjectPageLayout" showFooter="{createMode>/isEditModeActive}" enableLazyLoading="true" useIconTabBar="true" showTitleInHeaderContent="true" upperCaseAnchorBar="false">
         <uxap:headerTitle>
             <uxap:ObjectPageDynamicHeaderTitle>
 
@@ -32,8 +32,8 @@
                 </uxap:snappedTitleOnMobile>
 
                 <uxap:actions>
-                    <Button text="{i18n>editBtn}" type="Emphasized" press="onEditButtonPress" enabled="{= !${isEditModeActive>/isEditModeActive} }" />
-                    <Button type="Transparent" text="invokeImportFunction" press="onInvokeImportFunctionButtonPress" enabled="{= !${isEditModeActive>/isEditModeActive} }"/>
+                    <Button text="{i18n>editBtn}" type="Emphasized" press="onEditButtonPress" enabled="{= !${createMode>/isEditModeActive} }" />
+                    <Button type="Transparent" text="invokeImportFunction" press="onInvokeImportFunctionButtonPress" enabled="{= !${createMode>/isEditModeActive} }"/>
                 </uxap:actions>
             </uxap:ObjectPageDynamicHeaderTitle>
         </uxap:headerTitle>
@@ -62,20 +62,20 @@
                         <forms:SimpleForm class="sapUxAPObjectPageSubSectionAlignContent">
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                                 <Label labelFor="idNameStoreInput" showColon="true" text="{i18n>nameColumnTitle}" />
-                                <Input value="{Name}" id="idNameStoreInput" valueLiveUpdate="true" valueState="{= ${Name} ? 'None' : 'Error'}" editable="{isEditModeActive>/isEditModeActive}" />
+                                <Input value="{Name}" id="idNameStoreInput" valueLiveUpdate="true" valueState="{= ${Name} ? 'None' : 'Error'}" editable="{createMode>/isEditModeActive}" />
                             </layout:VerticalLayout>
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
                                 <Label showColon="true" labelFor="idPhoneNumberInput" text="{i18n>phoneColumnTitle}" />
-                                <Input value="{PhoneNumber}" id="idPhoneNumberInput" valueLiveUpdate="true" valueState="{= ${PhoneNumber} ? 'None' : 'Error'}" editable="{isEditModeActive>/isEditModeActive}" />
+                                <Input value="{PhoneNumber}" id="idPhoneNumberInput" valueLiveUpdate="true" valueState="{= ${PhoneNumber} ? 'None' : 'Error'}" editable="{createMode>/isEditModeActive}" />
                                 <Label labelFor="idEmailInput" showColon="true" text="{i18n>emailColumnTitle}" />
-                                <Input value="{Email}" id="idEmailInput" valueLiveUpdate="true" valueState="{= ${Email} ? 'None' : 'Error'}" editable="{isEditModeActive>/isEditModeActive}" />
+                                <Input value="{Email}" id="idEmailInput" valueLiveUpdate="true" valueState="{= ${Email} ? 'None' : 'Error'}" editable="{createMode>/isEditModeActive}" />
                             </layout:VerticalLayout>
                             <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
 
                                 <Label labelFor="idAddressInput" showColon="true" text="{i18n>addressColumnTitle}" />
-                                <Input value="{Address}" id="idAddressInput" valueLiveUpdate="true" valueState="{= ${Address} ? 'None' : 'Error'}" editable="{isEditModeActive>/isEditModeActive}" />
+                                <Input value="{Address}" id="idAddressInput" valueLiveUpdate="true" valueState="{= ${Address} ? 'None' : 'Error'}" editable="{createMode>/isEditModeActive}" />
                                 <Label labelFor="idFloorAreaText" showColon="true" text="{i18n>floorArea}" />
-                                <Input value="{FloorArea}" id="idFloorAreaInput" valueLiveUpdate="true" valueState="{= ${FloorArea} ? 'None' : 'Error'}" editable="{isEditModeActive>/isEditModeActive}" />
+                                <Input value="{FloorArea}" id="idFloorAreaInput" valueLiveUpdate="true" valueState="{= ${FloorArea} ? 'None' : 'Error'}" editable="{createMode>/isEditModeActive}" />
                             </layout:VerticalLayout>
                         </forms:SimpleForm>
                     </uxap:ObjectPageSubSection>
@@ -89,22 +89,15 @@
                                         <SearchField search="onSearchFieldProductSearch" placeholder="{i18n>search}" width="200px" />
                                         <HBox
                                         >
-
-                                            <Button text="{i18n>addStore}" type="Emphasized" press="onAddButtonProductPress" enabled="{= !${isEditModeActive>/isEditModeActive} }" visible="{= !${isCreateModeActive>/isCreateModeActive}}" />
-
-                                            <Button text="{i18n>save}" type="Emphasized" press="onSaveButtonProductPress" enabled="{= !${isEditModeActive>/isEditModeActive} }" visible="{= ${isCreateModeActive>/isCreateModeActive}}" />
-                                        </HBox>
-                                        <HBox>
-
-                                            <Button text="{i18n>deleteStore}" type="Default" press="onDeleteButtonProductPress" enabled="{= !${isEditModeActive>/isEditModeActive} }" visible="{= !${isCreateModeActive>/isCreateModeActive}}"/>
-                                            <Button text="{i18n>cancel}" type="Default" press="onCancelButtonCreateProductPress" enabled="{= !${isEditModeActive>/isEditModeActive} }" visible="{= ${isCreateModeActive>/isCreateModeActive}}"/>
+                                            <Button text="{i18n>addStore}" type="Emphasized" press="onAddButtonProductPress" enabled="{= ${createMode>/isEditModeActive} }" visible="{= ${createMode>/isEditModeActive}}" />
+                                            <Button text="{i18n>deleteStore}" type="Default" press="onDeleteButtonProductPress" enabled="{= ${createMode>/isEditModeActive} }" visible="{= ${createMode>/isEditModeActive}}"/>
                                         </HBox>
                                     </content>
                                 </OverflowToolbar>
                             </headerToolbar>
                             <columns>
                                 <Column>
-                                    <Text text="{i18n>madeInColumnTitle}" visible="{!isEditModeActive>isCreateModeActive}"/>
+                                    <Text text="{i18n>madeInColumnTitle}" visible="{!createMode>isEditModeActive}"/>
                                 </Column>
                                 <Column>
                                     <Text text="{i18n>nameColumnTitle}" />
@@ -119,20 +112,20 @@
                             <ColumnListItem type="Navigation" press="onColumnListItemGoToProductDetailChartPress">
                                 <cells>
                                     <VBox >
-                                        <Text text="{MadeIn}" visible="{= !${isEditModeActive>/isEditModeActive} }" />
-                                        <Input value="{MadeIn}" valueLiveUpdate="true" visible="{isEditModeActive>/isEditModeActive}" valueState="{= ${MadeIn} ? 'None' : 'Error'}" />
+                                        <Text text="{MadeIn}" visible="{= !${createMode>/isEditModeActive}}" />
+                                        <Input value="{MadeIn}" valueLiveUpdate="true" visible="{createMode>/isEditModeActive}" valueState="{= ${MadeIn} ? 'None' : 'Error'}" />
                                     </VBox>
                                 </cells>
                                 <cells>
                                     <VBox >
-                                        <Text text="{Name}" visible="{= !${isEditModeActive>/isEditModeActive} }" />
-                                        <Input value="{Name}" valueLiveUpdate="true" visible="{isEditModeActive>/isEditModeActive}" valueState="{= ${Name} ? 'None' : 'Error'}"/>
+                                        <Text text="{Name}" visible="{= !${createMode>/isEditModeActive}}"/>
+                                        <Input value="{Name}" valueLiveUpdate="true" visible="{createMode>/isEditModeActive}" valueState="{= ${Name} ? 'None' : 'Error'}"/>
                                     </VBox>
                                 </cells>
                                 <cells>
                                     <VBox >
-                                        <Text text="{Status}" visible="{= !${isEditModeActive>/isEditModeActive} }" />
-                                        <Select selectedKey="{Status}" visible="{isEditModeActive>/isEditModeActive}">
+                                        <Text text="{Status}" visible="{= !${createMode>/isEditModeActive}}" />
+                                        <Select selectedKey="{Status}" visible="{createMode>/isEditModeActive}">
                                             <core:Item key="STORAGE" text="Storage" />
                                             <core:Item key="OUT_OF_STOCK" text="Out of Stock" />
                                             <core:Item key="OK" text="OK" />
@@ -142,8 +135,8 @@
                                 <cells>
                                     <FlexBox direction="Row" alignItems="Center">
                                         <VBox >
-                                            <Input value="{Price_amount}" type="Number" visible="{isEditModeActive>/isEditModeActive}" valueState="{= ${Price_amount} ? 'None' : 'Error'}"/>
-                                            <Text text="{Price_amount}" visible="{= !${isEditModeActive>/isEditModeActive} }" />
+                                            <Input value="{Price_amount}" type="Number" visible="{createMode>/isEditModeActive}" valueState="{= ${Price_amount} ? 'None' : 'Error'}"/>
+                                            <Text text="{Price_amount}" visible="{= !${createMode>/isEditModeActive}}" />
                                         </VBox>
                                         <Text text="{Price_currency}" />
                                     </FlexBox>
