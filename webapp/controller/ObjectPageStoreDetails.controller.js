@@ -222,7 +222,7 @@ sap.ui.define(
             .getBinding('items')
             .create({
               Name: '',
-              Status: 'selectStatus',
+              Status: 'Storage',
               MadeIn: '',
               Rating: 2,
               Price_amount: '',
