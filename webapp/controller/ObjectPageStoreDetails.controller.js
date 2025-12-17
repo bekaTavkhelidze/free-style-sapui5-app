@@ -4,15 +4,17 @@ sap.ui.define(
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
     'sap/m/MessageBox',
+    'sap/m/MessageToast',
   ],
-  (Controller, Filter, FilterOperator, MessageBox) => {
+  (Controller, Filter, FilterOperator, MessageBox, MessageToast) => {
     'use strict';
 
     return Controller.extend(
       'freestylesapui5app.controller.ObjectPageStoreDetails',
       {
         _activeId: null,
-        _oDialog: null,
+
+        _oInlineRow: [],
         onInit() {
           const oRouter = this.getOwnerComponent().getRouter();
 
@@ -63,7 +65,8 @@ sap.ui.define(
 
         onStoreLinkGoBackToStoresListReportPress() {
           const oModel = this.getView().getModel();
-          if (oModel.getPendingChanges().length < 1) {
+
+          if (oModel.hasPendingChanges() || this._CheckCreateProductsInput()) {
             const vErrorMessage = this.getOwnerComponent()
               .getModel('i18n')
               .getResourceBundle()
@@ -79,7 +82,7 @@ sap.ui.define(
         onColumnListItemGoToProductDetailChartPress() {
           const oModel = this.getView().getModel();
 
-          if (oModel.getPendingChanges().length < 1) {
+          if (oModel.hasPendingChanges() || this._CheckCreateProductsInput()) {
             const vErrorMessage = this.getOwnerComponent()
               .getModel('i18n')
               .getResourceBundle()
@@ -94,18 +97,57 @@ sap.ui.define(
         },
 
         onEditButtonPress() {
-          const oEditMode = this.getView().getModel('isEditModeActive');
+          const oEditMode = this.getView().getModel('createMode');
           oEditMode.setProperty('/isEditModeActive', true);
         },
 
         onSaveButtonPress() {
-          const oEditMode = this.getView().getModel('isEditModeActive');
+          const oEditMode = this.getView().getModel('createMode');
           const oModel = this.getView().getModel();
+          const oBundle = this.getView().getModel('i18n').getResourceBundle();
 
+          const oTable = this.byId('idProductsTable');
+          const oBinding = oTable.getBinding('items');
+
+          const aProductContexts = oBinding.getCurrentContexts();
+          const aProducts = aProductContexts.map((oCtx) => oCtx.getObject());
+          const hasMissing = aProducts.some(
+            (product) =>
+              !product.Name ||
+              !product.Status ||
+              !product.MadeIn ||
+              !product.Rating ||
+              !product.Price_amount
+          );
+
+          const oPending = oModel.getPendingChanges();
+
+          const aProductChanges = Object.keys(oPending).some((path) =>
+            path.startsWith('Products(')
+          );
+
+          if (aProductChanges) {
+            const oModelPendingData = oModel.getPendingChanges();
+            const oBundle = this.getView().getModel('i18n').getResourceBundle();
+
+            const data = Object.values(oModelPendingData)[0];
+
+            if (
+              !data.Name ||
+              !data.Status ||
+              !data.MadeIn ||
+              !data.Price_amount
+            ) {
+              MessageToast.show(oBundle.getText('ProductAddValidation'));
+              return;
+            }
+          }
+
+          if (hasMissing) return;
           if (!this._validate()) return;
           oModel.submitChanges({
             success: () => {
-              const sSuccessMsg = oBundle.getText('successEddit');
+              const sSuccessMsg = oBundle.getText('successEdit');
               MessageToast.show(sSuccessMsg);
             },
             error() {
@@ -117,6 +159,7 @@ sap.ui.define(
 
           oEditMode.setProperty('/isEditModeActive', false);
         },
+
         _validate() {
           const oData = this.getView().getBindingContext().getObject();
 
@@ -138,81 +181,79 @@ sap.ui.define(
             !oData.FloorArea ||
             !oData.Name ||
             !bEmailValid
-          )
+          ) {
             return false;
-          return true;
+          } else {
+            return true;
+          }
         },
 
         onCancelButtonPress() {
           const oModel = this.getView().getModel();
 
+          if (this._oInlineRow) {
+            this._oInlineRow.map((row) => row.delete());
+            this._oInlineRow = [];
+          }
           oModel.resetChanges();
           this._cancelEdit();
         },
 
         _cancelEdit() {
-          const oEditMode = this.getView().getModel('isEditModeActive');
+          const oEditMode = this.getView().getModel('createMode');
           oEditMode.setProperty('/isEditModeActive', false);
         },
 
         onDeleteButtonProductPress() {
           const oTable = this.getView().byId('idProductsTable');
           const aSelectedProducts = oTable.getSelectedItem();
+          const oBundle = this.getView().getModel('i18n').getResourceBundle();
           const sPath = aSelectedProducts.getBindingContext().getPath();
 
           const oModel = this.getView().getModel();
 
+          MessageToast.show(oBundle.getText('productDeleted'));
           oModel.remove(sPath);
         },
 
         async onAddButtonProductPress() {
-          this._oDialog ??= await this.loadFragment({
-            name: 'freestylesapui5app.fragments.CreateProductDialog',
-          });
-          this.getView().addDependent(this._oDialog);
-          const oModel = this.getView().getModel();
-
-          const oContext = oModel.createEntry('/Products', {
-            properties: {
+          const aggregationBinding = this.getView()
+            .byId('idProductsTable')
+            .getBinding('items')
+            .create({
               Name: '',
-              Status: '231',
+              Status: 'Storage',
               MadeIn: '',
-              Rating: null,
+              Rating: 2,
               Price_amount: '',
               Specs: 'Test',
               Store_ID: this._activeId,
-            },
-          });
-          this.byId('idCreateProductDialog').bindElement(oContext.getPath());
-
-          const oDataContext = this._oDialog.open();
+            });
+          this._oInlineRow = [...this._oInlineRow, aggregationBinding];
         },
 
-        onCreateButtonProductPress() {
-          const { Name, Status, MadeIn, Rating, Price_amount } = this.byId(
-            'idCreateProductDialog'
-          )
-            .getBindingContext()
-            .getObject();
+        _CheckCreateProductsInput() {
+          const createProductModel = this.getView().getModel('createProduct');
+          if (createProductModel) {
+            const data = createProductModel.getData();
+            if (data.Name || data.Status || data.MadeIn || data.Price_amount)
+              return false;
+          }
+        },
 
-          if (!Name || !Status || !MadeIn || !Rating || !Price_amount) return;
+        onInvokeImportFunctionButtonPress() {
+          const oBundle = this.getView().getModel('i18n').getResourceBundle();
           const oModel = this.getView().getModel();
 
-          oModel.submitChanges({
-            success: () => {
-              const sSuccessMsg = oBundle.getText('successTextCreateProduct');
-              MessageToast.show(sSuccessMsg);
+          oModel.callFunction('/mutate', {
+            method: 'POST',
+            urlParameters: {
+              param: 'param',
             },
-            error() {
-              this.onCancelButtonPress();
-              const sErrorMsg = oBundle.getText('errorTextCreate');
-              MessageBox.error(sErrorMsg);
+            success() {
+              MessageToast.show(oBundle.getText('mutateExecuted'));
             },
           });
-          this._oDialog.close();
-        },
-        onCancelButtonProductPress() {
-          this._oDialog.close();
         },
       }
     );
