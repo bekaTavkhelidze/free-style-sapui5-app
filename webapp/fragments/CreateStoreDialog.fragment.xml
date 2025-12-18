@@ -5,7 +5,7 @@
         <content>
             <forms:SimpleForm>
                 <Label labelFor="idNameCreateText" required="true" text="{i18n>nameColumnTitle}" showColon="true" />
-                <Input id='idNameCreateText' value="{createStory>/Name}" valueLiveUpdate="true" valueState="{= ${validation>/Name} ? 'None' : 'Warning'}" valueStateText="{i18n>nameInputValidationText}" />
+                <Input id='idNameCreateText' value="{createStory>/Name}" valueLiveUpdate="true" valueState="{= ${validation>/Name} ? 'None' : 'Error'}" valueStateText="{i18n>nameInputValidationText}" />
                 <Label labelFor="idEmailCreateText" required="true" text="{i18n>emailColumnTitle}" showColon="true" />
                 <Input type="Email" value="{createStory>/Email}" id='idEmailCreateText' valueState="{= ${validation>/Email} ? 'None' : 'Error'}" />
                 <Label labelFor="idPhoneNumberCreateText" required="true" text="{i18n>phoneColumnTitle}" showColon="true" />

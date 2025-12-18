@@ -1,158 +1,169 @@
 sap.ui.define(
   [
-    'sap/ui/core/mvc/Controller',
+    'freestylesapui5app/controller/BaseController',
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
     'sap/ui/model/json/JSONModel',
     'sap/m/MessageToast',
     'sap/m/MessageBox',
   ],
-  (Controller, Filter, FilterOperator, JSONModel, MessageToast, MessageBox) => {
+  (
+    BaseController,
+    Filter,
+    FilterOperator,
+    JSONModel,
+    MessageToast,
+    MessageBox
+  ) => {
     'use strict';
 
-    return Controller.extend('freestylesapui5app.controller.ListReportStores', {
-      _oDialog: null,
+    return BaseController.extend(
+      'freestylesapui5app.controller.ListReportStores',
+      {
+        _oDialog: null,
 
-      onFilterBarGoButtonSearch(oEvent) {
-        const oFilterBarSelectionSet = oEvent.getParameter('selectionSet');
+        onFilterBarGoButtonSearch(oEvent) {
+          const oFilterBarSelectionSet = oEvent.getParameter('selectionSet');
 
-        const aFilters = [];
+          const aFilters = [];
 
-        for (let oItem of oFilterBarSelectionSet) {
-          const sValue = oItem.getValue().trim();
+          for (let oItem of oFilterBarSelectionSet) {
+            const sValue = oItem.getValue().trim();
 
-          const sName = oItem.getName();
+            const sName = oItem.getName();
 
-          if (sValue) {
-            aFilters.push(new Filter(sName, FilterOperator.Contains, sValue));
+            if (sValue) {
+              aFilters.push(new Filter(sName, FilterOperator.Contains, sValue));
+            }
           }
-        }
 
-        this._filterFunction(aFilters);
-      },
+          this._filterFunction(aFilters);
+        },
 
-      onColumnListItemGoToProductsDetailPress(oEvent) {
-        const oItem = oEvent.getSource();
-        const oContext = oItem.getBindingContext();
-        const sProductId = oContext.getProperty('ID');
+        onColumnListItemGoToProductsDetailPress(oEvent) {
+          const oItem = oEvent.getSource();
+          const oContext = oItem.getBindingContext();
+          const sProductId = oContext.getProperty('ID');
 
-        this.getOwnerComponent()
-          .getRouter()
-          .navTo('ObjectPageStoreDetails', { id: sProductId });
-      },
+          this.getOwnerComponent()
+            .getRouter()
+            .navTo('ObjectPageStoreDetails', { id: sProductId });
+        },
 
-      onInputListReportLiveChange(oEvent) {
-        const sValue = oEvent.getSource().getValue().trim();
+        onInputListReportLiveChange(oEvent) {
+          const sValue = oEvent.getSource().getValue().trim();
 
-        const aFilter = [];
-        if (sValue) {
-          aFilter.push(
-            new Filter({
-              filters: [
-                new Filter('Name', FilterOperator.Contains, sValue),
-                new Filter('Address', FilterOperator.Contains, sValue),
-                new Filter('PhoneNumber', FilterOperator.Contains, sValue),
-                new Filter('Email', FilterOperator.Contains, sValue),
-              ],
-              and: false,
-            })
-          );
-        }
+          const aFilter = [];
+          if (sValue) {
+            aFilter.push(
+              new Filter({
+                filters: [
+                  new Filter('Name', FilterOperator.Contains, sValue),
+                  new Filter('Address', FilterOperator.Contains, sValue),
+                  new Filter('PhoneNumber', FilterOperator.Contains, sValue),
+                  new Filter('Email', FilterOperator.Contains, sValue),
+                ],
+                and: false,
+              })
+            );
+          }
 
-        this._filterFunction(aFilter);
-      },
+          this._filterFunction(aFilter);
+        },
 
-      _filterFunction(aValue) {
-        const oList = this.byId('idStoresTable');
-        const oBinding = oList.getBinding('items');
-        oBinding.filter(aValue);
-      },
+        _filterFunction(aValue) {
+          const oList = this.byId('idStoresTable');
+          const oBinding = oList.getBinding('items');
+          oBinding.filter(aValue);
+        },
 
-      async onAddButtonStorePress() {
-        this._oDialog ??= await this.loadFragment({
-          name: 'freestylesapui5app.fragments.CreateStoreDialog',
-        });
-        this.getView().addDependent(this._oDialog);
+        async onAddButtonStorePress() {
+          this._oDialog ??= await this.loadFragment({
+            name: 'freestylesapui5app.fragments.CreateStoreDialog',
+          });
+          this.getView().addDependent(this._oDialog);
 
-        const oDialogData = new JSONModel({
-          Name: '',
-          FloorArea: '',
-          Address: '',
-          Email: '',
-          PhoneNumber: '',
-        });
-        this.getView().setModel(oDialogData, 'createStory');
+          const oDialogData = new JSONModel({
+            Name: '',
+            FloorArea: '',
+            Address: '',
+            Email: '',
+            PhoneNumber: '',
+          });
+          this.getView().setModel(oDialogData, 'createStory');
 
-        this._oDialog.open();
-      },
+          this._oDialog.open();
+        },
 
-      onCreateButtonPress() {
-        const oFormData = this.getView().getModel('createStory').getData();
+        onCreateButtonPress() {
+          const oFormData = this.getModel('createStory').getData();
 
-        if (!this._validate()) return;
+          if (!this._validate()) return;
 
-        const oBundle = this.getView().getModel('i18n').getResourceBundle();
+          const oBundle = this.getModel('i18n').getResourceBundle();
 
-        const oDataModel = this.getOwnerComponent().getModel();
+          const oDataModel = this.getOwnerComponent().getModel();
 
-        oDataModel.create('/Stores', oFormData, {
-          success: () => {
-            this.onCancelButtonPress();
-            const sSuccessMsg = oBundle.getText('successTextCreateStore');
-            MessageToast.show(sSuccessMsg);
-          },
-          error() {
-            this.onCancelButtonPress();
-            const sErrorMsg = oBundle.getText('errorTextCreate');
-            MessageBox.error(sErrorMsg);
-          },
-        });
-      },
-      onCancelButtonPress() {
-        this._oDialog.close();
-      },
-
-      _validate() {
-        const oInput = this.getView().getModel('createStory').getData();
-        const oValidationModel =
-          this.getOwnerComponent().getModel('validation');
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        oValidationModel.setProperty('/Name', !!oInput.Name);
-
-        const bEmailValid = !!oInput.Email && emailRegex.test(oInput.Email);
-        oValidationModel.setProperty('/Email', bEmailValid);
-
-        oValidationModel.setProperty('/Address', !!oInput.Address);
-        oValidationModel.setProperty('/FloorArea', !!oInput.FloorArea);
-        oValidationModel.setProperty('/PhoneNumber', !!oInput.PhoneNumber);
-
-        return !Object.values(oValidationModel.getData()).includes(false);
-      },
-
-      onDeleteButtonPress() {
-        const oTable = this.byId('idStoresTable');
-        const oSelected = oTable.getSelectedItems();
-
-        const oDataModel = this.getView().getModel();
-        const oBundle = this.getView().getModel('i18n').getResourceBundle();
-
-        oSelected.forEach((oItem) => {
-          const sPath = oItem.getBindingContext().getPath();
-
-          oDataModel.remove(sPath, {
+          oDataModel.create('/Stores', oFormData, {
             success: () => {
-              var sSuccessMsg = oBundle.getText('successTextDeleteStore');
+              this.onCancelButtonPress();
+              const sSuccessMsg = oBundle.getText('successTextCreateStore');
+
               MessageToast.show(sSuccessMsg);
             },
-            error: () => {
-              var sErrorMsg = oBundle.getText('errorTextCreateStore');
+            error() {
+              this.onCancelButtonPress();
+              const sErrorMsg = oBundle.getText('errorTextCreate');
               MessageBox.error(sErrorMsg);
             },
           });
-        });
-      },
-    });
+        },
+        onCancelButtonPress() {
+          this._oDialog.close();
+        },
+
+        _validate() {
+          const oInput = this.getModel('createStory').getData();
+          const oValidationModel =
+            this.getOwnerComponent().getModel('validation');
+
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          oValidationModel.setProperty('/Name', !!oInput.Name);
+
+          const bEmailValid = !!oInput.Email && emailRegex.test(oInput.Email);
+          oValidationModel.setProperty('/Email', bEmailValid);
+
+          oValidationModel.setProperty('/Address', !!oInput.Address);
+          oValidationModel.setProperty('/FloorArea', !!oInput.FloorArea);
+          oValidationModel.setProperty('/PhoneNumber', !!oInput.PhoneNumber);
+
+          return !Object.values(oValidationModel.getData()).includes(false);
+        },
+
+        onDeleteButtonPress() {
+          const oTable = this.byId('idStoresTable');
+          const oSelected = oTable.getSelectedItems();
+
+          const oDataModel = this.getModel();
+          const oBundle = this.getModel('i18n').getResourceBundle();
+
+          oSelected.forEach((oItem) => {
+            const sPath = oItem.getBindingContext().getPath();
+
+            oDataModel.remove(sPath, {
+              success: () => {
+                var sSuccessMsg = oBundle.getText('successTextDeleteStore');
+                MessageToast.show(sSuccessMsg);
+              },
+              error: () => {
+                var sErrorMsg = oBundle.getText('errorTextCreateStore');
+                MessageBox.error(sErrorMsg);
+              },
+            });
+          });
+        },
+      }
+    );
   }
 );

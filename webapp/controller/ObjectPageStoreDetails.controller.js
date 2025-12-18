@@ -1,15 +1,23 @@
 sap.ui.define(
   [
+    'freestylesapui5app/controller/BaseController',
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
     'sap/m/MessageBox',
     'sap/m/MessageToast',
   ],
-  (Controller, Filter, FilterOperator, MessageBox, MessageToast) => {
+  (
+    BaseController,
+    Controller,
+    Filter,
+    FilterOperator,
+    MessageBox,
+    MessageToast
+  ) => {
     'use strict';
 
-    return Controller.extend(
+    return BaseController.extend(
       'freestylesapui5app.controller.ObjectPageStoreDetails',
       {
         _activeId: null,
@@ -25,7 +33,7 @@ sap.ui.define(
 
         _onObjectMatched(oEvent) {
           const sActiveId = oEvent.getParameter('arguments').id;
-          const oDataModel = this.getView().getModel();
+          const oDataModel = this.getModel();
           this._activeId = sActiveId;
           const path = oDataModel.createKey('/Stores', {
             ID: sActiveId,
@@ -64,7 +72,7 @@ sap.ui.define(
         },
 
         onStoreLinkGoBackToStoresListReportPress() {
-          const oModel = this.getView().getModel();
+          const oModel = this.getModel();
 
           if (oModel.hasPendingChanges() || this._CheckCreateProductsInput()) {
             const vErrorMessage = this.getOwnerComponent()
@@ -80,7 +88,7 @@ sap.ui.define(
         },
 
         onColumnListItemGoToProductDetailChartPress() {
-          const oModel = this.getView().getModel();
+          const oModel = this.getModel();
 
           if (oModel.hasPendingChanges() || this._CheckCreateProductsInput()) {
             const vErrorMessage = this.getOwnerComponent()
@@ -97,14 +105,15 @@ sap.ui.define(
         },
 
         onEditButtonPress() {
-          const oEditMode = this.getView().getModel('createMode');
+          const oEditMode = this.getModel('createMode');
+
           oEditMode.setProperty('/isEditModeActive', true);
         },
 
         onSaveButtonPress() {
-          const oEditMode = this.getView().getModel('createMode');
-          const oModel = this.getView().getModel();
-          const oBundle = this.getView().getModel('i18n').getResourceBundle();
+          const oEditMode = this.getModel('createMode');
+          const oModel = this.getModel();
+          const oBundle = this.getModel('i18n').getResourceBundle();
 
           const oTable = this.byId('idProductsTable');
           const oBinding = oTable.getBinding('items');
@@ -128,7 +137,6 @@ sap.ui.define(
 
           if (aProductChanges) {
             const oModelPendingData = oModel.getPendingChanges();
-            const oBundle = this.getView().getModel('i18n').getResourceBundle();
 
             const data = Object.values(oModelPendingData)[0];
 
@@ -163,7 +171,7 @@ sap.ui.define(
         _validate() {
           const oData = this.getView().getBindingContext().getObject();
 
-          const oValidationModel = this.getView().getModel('validation');
+          const oValidationModel = this.getModel('validation');
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           oValidationModel.setProperty('/PhoneNumber', !!oData.PhoneNumber);
 
@@ -189,7 +197,7 @@ sap.ui.define(
         },
 
         onCancelButtonPress() {
-          const oModel = this.getView().getModel();
+          const oModel = this.getModel();
 
           if (this._oInlineRow) {
             this._oInlineRow.map((row) => row.delete());
@@ -200,17 +208,17 @@ sap.ui.define(
         },
 
         _cancelEdit() {
-          const oEditMode = this.getView().getModel('createMode');
+          const oEditMode = this.getModel('createMode');
           oEditMode.setProperty('/isEditModeActive', false);
         },
 
         onDeleteButtonProductPress() {
           const oTable = this.getView().byId('idProductsTable');
           const aSelectedProducts = oTable.getSelectedItem();
-          const oBundle = this.getView().getModel('i18n').getResourceBundle();
+          const oBundle = this.getModel('i18n').getResourceBundle();
           const sPath = aSelectedProducts.getBindingContext().getPath();
 
-          const oModel = this.getView().getModel();
+          const oModel = this.getModel();
 
           MessageToast.show(oBundle.getText('productDeleted'));
           oModel.remove(sPath);
@@ -233,7 +241,7 @@ sap.ui.define(
         },
 
         _CheckCreateProductsInput() {
-          const createProductModel = this.getView().getModel('createProduct');
+          const createProductModel = this.getModel('createProduct');
           if (createProductModel) {
             const data = createProductModel.getData();
             if (data.Name || data.Status || data.MadeIn || data.Price_amount)
@@ -242,8 +250,8 @@ sap.ui.define(
         },
 
         onInvokeImportFunctionButtonPress() {
-          const oBundle = this.getView().getModel('i18n').getResourceBundle();
-          const oModel = this.getView().getModel();
+          const oBundle = this.getModel('i18n').getResourceBundle();
+          const oModel = this.getModel();
 
           oModel.callFunction('/mutate', {
             method: 'POST',
