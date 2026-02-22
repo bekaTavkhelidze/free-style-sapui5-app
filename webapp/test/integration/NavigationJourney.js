@@ -1,23 +1,21 @@
 /*global QUnit*/
 
-sap.ui.define([
-	"sap/ui/test/opaQunit",
-	"./pages/App",
-	"./pages/ListReport"
-], function (opaTest) {
-	"use strict";
+sap.ui.define(
+  ['sap/ui/test/opaQunit', './pages/App', './pages/ListReportStores'],
+  function (opaTest) {
+    'use strict';
 
-	QUnit.module("Navigation Journey");
+    QUnit.module('List Report Journey');
 
-	opaTest("Should see the initial page of the app", function (Given, When, Then) {
-		// Arrangements
-		Given.iStartMyApp();
+    opaTest('Should load List Report correctly', function (Given, When, Then) {
+      Given.iStartMyApp();
 
-		// Assertions
-		Then.onTheAppPage.iShouldSeeTheApp();
-      	Then.onTheViewPage.iShouldSeeThePageView();
+      Then.onTheAppPage.iShouldSeeTheApp();
+      Then.onTheListReportPage.iShouldSeeThePage();
+      Then.onTheListReportPage.iShouldSeeTheFilterBar();
+      Then.onTheListReportPage.iShouldSeeTheTable();
 
-		//Cleanup
-		Then.iTeardownMyApp();
-	});
-});
+      Then.iTeardownMyApp();
+    });
+  },
+);
