@@ -38,6 +38,15 @@ sap.ui.define(
               errorMessage: 'Search input not found',
             });
           },
+
+          iPressOnFirstRow: function () {
+            return this.waitFor({
+              viewName: sViewName,
+              controlType: 'sap.m.ColumnListItem',
+              actions: new Press(),
+              errorMessage: 'No row found to press',
+            });
+          },
         },
 
         assertions: {
